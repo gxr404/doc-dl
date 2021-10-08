@@ -1,0 +1,113 @@
+import * as fs from 'fs'
+import { Readability } from '@mozilla/readability'
+import { JSDOM } from 'jsdom'
+import * as TurndownService from 'turndown'
+import * as puppeteer from 'puppeteer'
+import * as mdImg from 'pull-md-img'
+import articleTurndown from 'article-turndown'
+import { shellArgsInit } from './args'
+import options from './options'
+
+type TOptions = typeof options
+interface AnyObject {
+  [key: string]: any
+}
+
+/**
+ * 添加脚注额外信息
+ */
+const addExtendInfo = (mdContent: string, options: TOptions, article: AnyObject): string => {
+  const title = options.title || article.title || ''
+  if (title) {
+    mdContent = `# ${title}\n<!--page header-->\n\n${mdContent}\n\n<!--page footer-->\n- 原文: ${options.url}`
+  }
+  return mdContent
+}
+
+/**
+ * 根据url爬取document内容
+ * @param url 文章链接
+ * @returns
+ */
+const getDocument = async (url: string): Promise<string> => {
+  // console.time('browser')
+  const browser = await puppeteer.launch()
+  // console.timeEnd('browser')
+
+  // console.time('page')
+  const page = await browser.newPage()
+  // console.timeEnd('page')
+
+  // console.time('goto')
+  await page.goto(url, {
+    timeout: 0,
+    waitUntil: ['load', 'networkidle0']
+    // TODO
+    // waitUntil: ['domcontentloaded']
+  })
+  // console.timeEnd('goto')
+
+  // console.time('eval')
+  const html = await page.$eval('html', node => node.outerHTML) || ''
+  // console.timeEnd('eval')
+
+  browser.close()
+  return html
+}
+
+
+export const run = async (options: TOptions): Promise<void> => {
+  const turndownService = new TurndownService({
+    codeBlockStyle: 'fenced'
+  })
+
+  turndownService.use(articleTurndown({
+    articleUrl: options.url
+  }))
+  console.log('----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----')
+  console.log('爬取页面中...')
+  const htmlContext = await getDocument(options.url).catch((e)=>{
+    console.log(e)
+    return ''
+  })
+  console.log('√ 爬取页面')
+  const dom = new JSDOM(htmlContext)
+  const newDom = dom.window.document.cloneNode(true) as Document
+  const reader = new Readability(newDom, {
+      keepClasses: true
+  })
+
+  const article = reader.parse() || {title: options.title, content: '' }
+  const title = options.title || article.title
+  let mdContent = turndownService.turndown(article.content)
+
+  console.log('√ 转换markdown')
+
+  // 添加标题和原文链接
+  mdContent = addExtendInfo(mdContent, options, article)
+
+
+  mdContent = await mdImg.run(mdContent, {
+    path: '',
+    suffix: '',
+    dist: options.dist,
+    imgDir: `${options.imgDir}${Date.now()}`,
+    isIgnoreConsole: true
+  })
+
+  console.log('√ 下载markdown中的图片')
+
+  fs.writeFileSync(`${options.dist}/${title}.md`, mdContent)
+
+  console.log('success')
+}
+
+/**
+ * 初始化
+ */
+export const bin = async (): Promise<void> => {
+  // shell参数初始化 并合并config
+  shellArgsInit()
+
+  await run(options)
+}

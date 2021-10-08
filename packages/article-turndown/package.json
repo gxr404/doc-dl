@@ -1,0 +1,26 @@
+{
+  "name": "article-turndown",
+  "version": "0.0.8",
+  "description": "turndown plugin",
+  "author": "gxr1020 <1650542259@qq.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "dist/index.js",
+  "typings": "types/index.d.ts",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "turndown": "^7.1.1",
+    "turndown-plugin-gfm": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/turndown": "^5.0.1",
+    "typescript": "^4.4.3"
+  },
+  "gitHead": "0b29a4c72f19399a3902e48428d526498f16f19c"
+}
