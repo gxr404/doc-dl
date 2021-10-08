@@ -30,7 +30,7 @@ Examples:
 article-pull -u https://文章链接...
 ```
 
-## 改项目分以下三个包
+## 该项目分以下三个包
 
 - [article-pull](./packages/article-pull/README.md) 核心包
 - [pull-md-img](./packages/pull-md-img/README.md) 下载markdown中的图片并更新markdown路径
