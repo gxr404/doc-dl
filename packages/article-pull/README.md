@@ -1,6 +1,6 @@
 # article-pull
 
-获取url中的文章转成markdown保存，并下载文章中的图片到本地
+根据输入的文章链接url 抓取页面内容,并转成markdown，其中文章有图片会保存到本地
 
 ## 安装
 
@@ -27,7 +27,7 @@ Examples:
 ## example
 
 ```shell
-article-pull -u https://segmentfault.com/a/1190000040747951
+article-pull -u https://文章链接...
 ```
 
 ## 实现原理
