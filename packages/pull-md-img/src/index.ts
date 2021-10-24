@@ -164,6 +164,8 @@ export const run = async (data: string, customConfig: TConfig): Promise<string> 
   Object.assign(config, customConfig)
   // 获取文件内容中的图片列表
   const imgList = getImgList(data)
+  // 无图片无需处理直接返回
+  if (!imgList.length) { return data }
   const imgDirPath = path.resolve(config.dist, config.imgDir)
   // 创建目录 img 目录
   await createDir(imgDirPath)

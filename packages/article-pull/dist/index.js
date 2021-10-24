@@ -46,6 +46,8 @@ var mdImg = require("pull-md-img");
 var article_turndown_1 = require("article-turndown");
 var args_1 = require("./args");
 var options_1 = require("./options");
+var packageJson = require("../package.json");
+var utils_1 = require("./utils");
 var addExtendInfo = function (mdContent, options, article) {
     var title = options.title || article.title || '';
     if (title) {
@@ -78,7 +80,7 @@ var getDocument = function (url) { return __awaiter(void 0, void 0, void 0, func
     });
 }); };
 var run = function (options) { return __awaiter(void 0, void 0, void 0, function () {
-    var turndownService, htmlContext, dom, newDom, reader, article, title, mdContent;
+    var turndownService, errorPrefix, infoPrefix, htmlContext, dom, newDom, reader, article, title, mdContent, oldMdContent, fileNameReg, fileName, distPath;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -88,15 +90,22 @@ var run = function (options) { return __awaiter(void 0, void 0, void 0, function
                 turndownService.use((0, article_turndown_1.default)({
                     articleUrl: options.url
                 }));
+                errorPrefix = packageJson.name + "[ERROR]: ";
+                infoPrefix = packageJson.name + "[INFO]: ";
                 console.log('----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----');
                 console.log('爬取页面中...');
                 return [4, getDocument(options.url).catch(function (e) {
+                        console.log(errorPrefix);
                         console.log(e);
                         return '';
                     })];
             case 1:
                 htmlContext = _a.sent();
-                console.log('√ 爬取页面');
+                if (!htmlContext) {
+                    console.log(errorPrefix + "\u722C\u53D6\u5185\u5BB9\u5F02\u5E38 (\u2565\uFE4F\u2565)");
+                    return [2];
+                }
+                console.log(infoPrefix + "\u221A \u722C\u53D6\u9875\u9762");
                 dom = new jsdom_1.JSDOM(htmlContext);
                 newDom = dom.window.document.cloneNode(true);
                 reader = new readability_1.Readability(newDom, {
@@ -105,20 +114,34 @@ var run = function (options) { return __awaiter(void 0, void 0, void 0, function
                 article = reader.parse() || { title: options.title, content: '' };
                 title = options.title || article.title;
                 mdContent = turndownService.turndown(article.content);
-                console.log('√ 转换markdown');
+                console.log(infoPrefix + "\u221A \u8F6C\u6362markdown");
                 mdContent = addExtendInfo(mdContent, options, article);
+                oldMdContent = mdContent;
                 return [4, mdImg.run(mdContent, {
                         path: '',
                         suffix: '',
                         dist: options.dist,
                         imgDir: "" + options.imgDir + Date.now(),
                         isIgnoreConsole: true
+                    }).catch(function (err) {
+                        console.log("" + errorPrefix);
+                        console.log(err);
+                        console.log(errorPrefix + "\u56FE\u7247\u4E0B\u8F7D\u5931\u8D25, \u4EC5\u4F5C\u8F6C\u6362");
+                        return mdContent;
                     })];
             case 2:
                 mdContent = _a.sent();
-                console.log('√ 下载markdown中的图片');
-                fs.writeFileSync(options.dist + "/" + title + ".md", mdContent);
-                console.log('success');
+                return [4, (0, utils_1.createDir)("" + options.dist)];
+            case 3:
+                _a.sent();
+                if (mdContent !== oldMdContent) {
+                    console.log(infoPrefix + "\u221A \u4E0B\u8F7Dmarkdown\u4E2D\u7684\u56FE\u7247");
+                }
+                fileNameReg = new RegExp('[\\\\/:*?\\"\'<>|\\s]', 'g');
+                fileName = (title + ".md").replace(fileNameReg, '_');
+                distPath = options.dist + "/" + fileName;
+                fs.writeFileSync(distPath, mdContent);
+                console.log(infoPrefix + "\\(^o^)/ success " + distPath);
                 return [2];
         }
     });

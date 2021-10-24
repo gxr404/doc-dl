@@ -10,11 +10,10 @@ var shellArgsInit = function () {
         .version(packageJson.version)
         .option('-u, --url <url>', '文章url')
         .option('-t, --title <title>', '自定义文章标题')
-        .option('-d, --dir <path>', '生成的目录(eg: -d res)')
+        .option('-d, --dist <path>', '生成的目录(eg: -d res)')
         .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)');
     program.on('--help', function () {
-        console.log('');
-        console.log('Examples:');
+        console.log('\nExamples:');
         console.log('  $ custom-help --help');
         console.log('  $ custom-help -h');
     });

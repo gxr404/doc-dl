@@ -155,6 +155,9 @@ var run = function (data, customConfig) { return __awaiter(void 0, void 0, void 
             case 0:
                 Object.assign(config_1.default, customConfig);
                 imgList = getImgList(data);
+                if (!imgList.length) {
+                    return [2, data];
+                }
                 imgDirPath = path.resolve(config_1.default.dist, config_1.default.imgDir);
                 return [4, (0, utils_1.createDir)(imgDirPath)];
             case 1:
