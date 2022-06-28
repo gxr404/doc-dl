@@ -77,6 +77,7 @@ var getFileSate = function (path) {
 exports.getFileSate = getFileSate;
 var changeFileName = function (pathSrc) {
     var pathObj = path.parse(pathSrc);
-    return pathObj.dir + "/" + pathObj.name + "-" + ~~(Math.random() * 1000000) + pathObj.ext;
+    var fileName = (pathObj.name || '').replace(/~|:|\?|\*|\||\\|\/|\.|>|</g, '_');
+    return pathObj.dir + "/" + fileName + "-" + ~~(Math.random() * 1000000) + pathObj.ext;
 };
 exports.changeFileName = changeFileName;

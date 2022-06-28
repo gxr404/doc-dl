@@ -124,7 +124,8 @@ const getFileSate = (path: string): Promise<any> => {
  */
 const changeFileName = (pathSrc: string): string => {
   const pathObj = path.parse(pathSrc)
-  return `${pathObj.dir}/${pathObj.name}-${~~(Math.random()*1000000)}${pathObj.ext}`
+  const fileName = (pathObj.name || '').replace(/~|:|\?|\*|\||\\|\/|\.|>|</g, '_')
+  return `${pathObj.dir}/${fileName}-${~~(Math.random()*1000000)}${pathObj.ext}`
 }
 
 export {
