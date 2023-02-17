@@ -19,15 +19,15 @@ var shellArgsInit = function () {
     });
     program.parse(process.argv);
     var programOpt = program.opts();
-    var argsKey = Object.keys(options_1.default);
+    var argsKey = Object.keys(options_1.options);
     var shellArgs = {};
     argsKey.forEach(function (key) {
         if (checkOptions(programOpt[key], key)) {
             shellArgs[key] = programOpt[key];
         }
     });
-    Object.assign(options_1.default, shellArgs);
-    if (!options_1.default.url) {
+    Object.assign(options_1.options, shellArgs);
+    if (!options_1.options.url) {
         console.error('-u, --url <url> 必须！');
         process.exitCode = 1;
         process.exit(1);

@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -47,7 +47,7 @@ var args_1 = require("./args");
 var utils_1 = require("./utils");
 var logger = (0, log_1.default)();
 var getImgList = function (data) {
-    var list = data.match(config_1.default.mdImgReg) || [];
+    var list = Array.from(data.match(config_1.default.mdImgReg));
     list = list.map(function (itemUrl) {
         itemUrl = itemUrl.replace(config_1.default.mdImgReg, '$2');
         var itemUrlObj = new url.URL(itemUrl);
@@ -74,15 +74,15 @@ var downloadImg = function (url, imgDir) {
             var isRedirect = [302, 301].indexOf(res.statusCode);
             if (~isRedirect) {
                 if (!config_1.default.isIgnoreConsole) {
-                    logger.info(fileName + " \u91CD\u5B9A\u5411...");
+                    logger.info("".concat(fileName, " \u91CD\u5B9A\u5411..."));
                 }
                 resolve(downloadImg(res.headers['location'], imgDir));
                 return;
             }
             var contentLength = parseInt(res.headers['content-length'], 10);
-            var distPath = imgDir + "/" + fileName;
+            var distPath = "".concat(imgDir, "/").concat(fileName);
             var out = fs.createWriteStream(distPath);
-            var bar = new progressBar("downloading " + fileName + " [:bar] :rate/bps :percent :etas", {
+            var bar = new progressBar("downloading ".concat(fileName, " [:bar] :rate/bps :percent :etas"), {
                 complete: '=',
                 incomplete: ' ',
                 width: 20,
@@ -100,7 +100,7 @@ var downloadImg = function (url, imgDir) {
             });
         });
         req.on('error', function (e) {
-            logger.error("download " + fileName + " error:", e);
+            logger.error("download ".concat(fileName, " error:"), e);
             reject(e);
         });
         req.end();
@@ -111,7 +111,7 @@ var changeMarkdown = function (data, imgList) {
         if (config_1.default.suffix)
             src = (0, utils_1.changeSuffix)(src, config_1.default.suffix);
         var fileName = path.basename(src);
-        return config_1.default.imgDir + "/" + fileName;
+        return "".concat(config_1.default.imgDir, "/").concat(fileName);
     });
     var newData = data;
     var list = data.match(config_1.default.mdImgReg) || [];

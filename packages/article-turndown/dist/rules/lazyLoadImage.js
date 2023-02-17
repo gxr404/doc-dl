@@ -11,12 +11,12 @@ function default_1(options) {
                     var attribute = attributes_1[_i];
                     var dataSrc = node.getAttribute(attribute);
                     if (dataSrc) {
-                        return "![](" + index_1.default.fixUrl(dataSrc, options.articleUrl) + ")\n";
+                        return "![](".concat(index_1.default.fixUrl(dataSrc, options.articleUrl), ")\n");
                     }
                 }
                 var src = node.getAttribute('src');
                 if (src) {
-                    return "![](" + index_1.default.fixUrl(node.getAttribute('src'), options.articleUrl) + ")\n";
+                    return "![](".concat(index_1.default.fixUrl(node.getAttribute('src'), options.articleUrl), ")\n");
                 }
                 return '';
             },

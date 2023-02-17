@@ -25,7 +25,7 @@ function default_1(options) {
                 if (src) {
                     var index = src.lastIndexOf('.');
                     src = src.slice(0, index).concat('.gif');
-                    return "![](" + index_1.default.fixUrl(src, options.articleUrl) + ")\n";
+                    return "![](".concat(index_1.default.fixUrl(src, options.articleUrl), ")\n");
                 }
                 return '';
             },

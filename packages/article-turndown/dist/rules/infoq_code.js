@@ -27,7 +27,7 @@ function default_1(turndownService) {
                 .map(function (o) { return o.textContent; })
                 .join('\n')
                 .trim();
-            return "```\n" + finalCode + "\n```\n\n";
+            return "```\n".concat(finalCode, "\n```\n\n");
         },
     });
 }

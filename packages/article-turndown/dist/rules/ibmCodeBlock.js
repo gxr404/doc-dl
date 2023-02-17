@@ -26,7 +26,7 @@ function default_1(turndownService) {
             var finalCode = Array.from(codeNode.querySelectorAll('.line'))
                 .map(function (o) { return o.textContent; })
                 .join('\n');
-            return "```\n" + finalCode + "\n```\n\n";
+            return "```\n".concat(finalCode, "\n```\n\n");
         },
     });
 }

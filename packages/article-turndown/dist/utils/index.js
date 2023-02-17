@@ -6,10 +6,10 @@ var fixUrl = function (url, articleUrl) {
     }
     var urlObj = new URL(articleUrl);
     if (url.startsWith('//')) {
-        return "" + urlObj.protocol + url;
+        return "".concat(urlObj.protocol).concat(url);
     }
     if (url.startsWith('/')) {
-        return "" + urlObj.origin + url;
+        return "".concat(urlObj.origin).concat(url);
     }
     return url;
 };
@@ -21,7 +21,7 @@ var codeBlock = function (code, language) {
     if (typeof code !== 'string' || !code) {
         return '';
     }
-    return "```" + languageString + "\n" + code + "\n```\n\n";
+    return "```".concat(languageString, "\n").concat(code, "\n```\n\n");
 };
 var notEmptyIndex = function (data, index) {
     var expect = index;

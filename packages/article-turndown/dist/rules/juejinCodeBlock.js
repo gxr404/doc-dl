@@ -30,7 +30,7 @@ function default_1(turndownService) {
                 return content;
             }
             (_a = node.querySelector('.copy-code-btn')) === null || _a === void 0 ? void 0 : _a.remove();
-            return "```" + ((_b = node.firstChild) === null || _b === void 0 ? void 0 : _b.getAttribute('lang')) + "\n" + ((_c = node.firstChild) === null || _c === void 0 ? void 0 : _c.textContent) + "\n```\n\n";
+            return "```".concat((_b = node.firstChild) === null || _b === void 0 ? void 0 : _b.getAttribute('lang'), "\n").concat((_c = node.firstChild) === null || _c === void 0 ? void 0 : _c.textContent, "\n```\n\n");
         },
     });
 }

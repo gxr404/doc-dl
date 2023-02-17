@@ -1,7 +1,11 @@
-declare const options: {
+export declare const options: {
     url: string;
     title: string;
     dist: string;
     imgDir: string;
 };
-export default options;
+export declare const puppeteerOptions: {
+    args: string[];
+    headless: boolean;
+    ignoreHTTPSErrors: boolean;
+};

@@ -1,4 +1,5 @@
 /// <reference types="node" />
+/// <reference types="node" />
 import * as http from 'http';
 import * as https from 'https';
 declare const changeSuffix: (pathSrc: string, suffix: string) => string;

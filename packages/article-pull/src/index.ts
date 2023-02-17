@@ -6,7 +6,7 @@ import * as puppeteer from 'puppeteer'
 import * as mdImg from 'pull-md-img'
 import articleTurndown from 'article-turndown'
 import { shellArgsInit } from './args'
-import options from './options'
+import { options, puppeteerOptions } from './options'
 import * as packageJson from '../package.json'
 import {createDir} from './utils'
 
@@ -33,7 +33,7 @@ const addExtendInfo = (mdContent: string, options: TOptions, article: AnyObject)
  */
 const getDocument = async (url: string): Promise<string> => {
   // console.time('browser')
-  const browser = await puppeteer.launch()
+  const browser = await puppeteer.launch(puppeteerOptions)
   // console.timeEnd('browser')
 
   // console.time('page')

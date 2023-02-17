@@ -9,9 +9,9 @@ function default_1(turndownService) {
             }
             var result = content.trim();
             if (['：', '】', '▐', '。'].some(function (o) { return result.endsWith(o); })) {
-                return "**" + result + "** ";
+                return "**".concat(result, "** ");
             }
-            return "**" + result + "**";
+            return "**".concat(result, "**");
         },
     });
 }

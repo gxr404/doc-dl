@@ -31,7 +31,7 @@ function default_1(turndownService) {
             var finalCode = Array.from(pre.querySelectorAll('code'))
                 .map(function (o) { return o.textContent; })
                 .join('\n');
-            return "```" + language + "\n" + finalCode + "\n```\n\n";
+            return "```".concat(language, "\n").concat(finalCode, "\n```\n\n");
         },
     });
 }

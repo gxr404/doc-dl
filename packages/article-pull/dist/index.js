@@ -14,7 +14,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -51,7 +51,7 @@ var utils_1 = require("./utils");
 var addExtendInfo = function (mdContent, options, article) {
     var title = options.title || article.title || '';
     if (title) {
-        mdContent = "# " + title + "\n<!--page header-->\n\n" + mdContent + "\n\n<!--page footer-->\n- \u539F\u6587: " + options.url;
+        mdContent = "# ".concat(title, "\n<!--page header-->\n\n").concat(mdContent, "\n\n<!--page footer-->\n- \u539F\u6587: ").concat(options.url);
     }
     return mdContent;
 };
@@ -59,7 +59,7 @@ var getDocument = function (url) { return __awaiter(void 0, void 0, void 0, func
     var browser, page, html;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4, puppeteer.launch()];
+            case 0: return [4, puppeteer.launch(options_1.puppeteerOptions)];
             case 1:
                 browser = _a.sent();
                 return [4, browser.newPage()];
@@ -90,8 +90,8 @@ var run = function (options) { return __awaiter(void 0, void 0, void 0, function
                 turndownService.use((0, article_turndown_1.default)({
                     articleUrl: options.url
                 }));
-                errorPrefix = packageJson.name + "[ERROR]: ";
-                infoPrefix = packageJson.name + "[INFO]: ";
+                errorPrefix = "".concat(packageJson.name, "[ERROR]: ");
+                infoPrefix = "".concat(packageJson.name, "[INFO]: ");
                 console.log('----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----');
                 console.log('爬取页面中...');
                 return [4, getDocument(options.url).catch(function (e) {
@@ -102,10 +102,10 @@ var run = function (options) { return __awaiter(void 0, void 0, void 0, function
             case 1:
                 htmlContext = _a.sent();
                 if (!htmlContext) {
-                    console.log(errorPrefix + "\u722C\u53D6\u5185\u5BB9\u5F02\u5E38 (\u2565\uFE4F\u2565)");
+                    console.log("".concat(errorPrefix, "\u722C\u53D6\u5185\u5BB9\u5F02\u5E38 (\u2565\uFE4F\u2565)"));
                     return [2];
                 }
-                console.log(infoPrefix + "\u221A \u722C\u53D6\u9875\u9762");
+                console.log("".concat(infoPrefix, "\u221A \u722C\u53D6\u9875\u9762"));
                 dom = new jsdom_1.JSDOM(htmlContext);
                 newDom = dom.window.document.cloneNode(true);
                 reader = new readability_1.Readability(newDom, {
@@ -114,34 +114,34 @@ var run = function (options) { return __awaiter(void 0, void 0, void 0, function
                 article = reader.parse() || { title: options.title, content: '' };
                 title = options.title || article.title;
                 mdContent = turndownService.turndown(article.content);
-                console.log(infoPrefix + "\u221A \u8F6C\u6362markdown");
+                console.log("".concat(infoPrefix, "\u221A \u8F6C\u6362markdown"));
                 mdContent = addExtendInfo(mdContent, options, article);
                 oldMdContent = mdContent;
                 return [4, mdImg.run(mdContent, {
                         path: '',
                         suffix: '',
                         dist: options.dist,
-                        imgDir: "" + options.imgDir + Date.now(),
+                        imgDir: "".concat(options.imgDir).concat(Date.now()),
                         isIgnoreConsole: true
                     }).catch(function (err) {
-                        console.log("" + errorPrefix);
+                        console.log("".concat(errorPrefix));
                         console.log(err);
-                        console.log(errorPrefix + "\u56FE\u7247\u4E0B\u8F7D\u5931\u8D25, \u4EC5\u4F5C\u8F6C\u6362");
+                        console.log("".concat(errorPrefix, "\u56FE\u7247\u4E0B\u8F7D\u5931\u8D25, \u4EC5\u4F5C\u8F6C\u6362"));
                         return mdContent;
                     })];
             case 2:
                 mdContent = _a.sent();
-                return [4, (0, utils_1.createDir)("" + options.dist)];
+                return [4, (0, utils_1.createDir)("".concat(options.dist))];
             case 3:
                 _a.sent();
                 if (mdContent !== oldMdContent) {
-                    console.log(infoPrefix + "\u221A \u4E0B\u8F7Dmarkdown\u4E2D\u7684\u56FE\u7247");
+                    console.log("".concat(infoPrefix, "\u221A \u4E0B\u8F7Dmarkdown\u4E2D\u7684\u56FE\u7247"));
                 }
                 fileNameReg = new RegExp('[\\\\/:*?\\"\'<>|\\s]', 'g');
-                fileName = (title + ".md").replace(fileNameReg, '_');
-                distPath = options.dist + "/" + fileName;
+                fileName = "".concat(title, ".md").replace(fileNameReg, '_');
+                distPath = "".concat(options.dist, "/").concat(fileName);
                 fs.writeFileSync(distPath, mdContent);
-                console.log(infoPrefix + "\\(^o^)/ success " + distPath);
+                console.log("".concat(infoPrefix, "\\(^o^)/ success ").concat(distPath));
                 return [2];
         }
     });
@@ -152,7 +152,7 @@ var bin = function () { return __awaiter(void 0, void 0, void 0, function () {
         switch (_a.label) {
             case 0:
                 (0, args_1.shellArgsInit)();
-                return [4, (0, exports.run)(options_1.default)];
+                return [4, (0, exports.run)(options_1.options)];
             case 1:
                 _a.sent();
                 return [2];

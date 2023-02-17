@@ -1,6 +1,6 @@
 import { Command } from 'commander'
 import * as packageJson from '../package.json'
-import options from './options'
+import { options } from './options'
 
 /**
  * shell参数初始化 并合并config

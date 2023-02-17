@@ -27,7 +27,7 @@ function default_1(turndownService) {
                 return content;
             }
             var finalCode = codeArray.map(function (o) { return o.textContent; }).join('\n');
-            return "```" + language + "\n" + finalCode + "\n```\n\n";
+            return "```".concat(language, "\n").concat(finalCode, "\n```\n\n");
         },
     });
 }

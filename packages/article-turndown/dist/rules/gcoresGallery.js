@@ -36,10 +36,10 @@ function default_1(turndownService) {
                 var _a, _b;
                 var href = o.getAttribute('href');
                 var gallery_imageCaption = (_a = o.querySelector('.gallery_imageCaption')) === null || _a === void 0 ? void 0 : _a.textContent;
-                return "![" + ((_b = gallery_imageCaption !== null && gallery_imageCaption !== void 0 ? gallery_imageCaption : title) !== null && _b !== void 0 ? _b : '') + "](" + href + ")";
+                return "![".concat((_b = gallery_imageCaption !== null && gallery_imageCaption !== void 0 ? gallery_imageCaption : title) !== null && _b !== void 0 ? _b : '', "](").concat(href, ")");
             })
                 .join('\n');
-            return code + "\n";
+            return "".concat(code, "\n");
         },
     });
 }

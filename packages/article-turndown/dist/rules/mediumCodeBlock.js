@@ -22,7 +22,7 @@ function default_1(turndownService) {
             if (!(node instanceof Object)) {
                 return content;
             }
-            return "```\n" + content + "\n```\n\n";
+            return "```\n".concat(content, "\n```\n\n");
         },
     });
 }

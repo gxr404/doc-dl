@@ -49,7 +49,7 @@ function default_1(turndownService) {
             });
             var divider = result[0].map(function () { return '-'; });
             result.splice(1, 0, divider);
-            return result.map(function (row) { return "|" + row.join('|') + "|"; }).join('\n') + "\n\n";
+            return "".concat(result.map(function (row) { return "|".concat(row.join('|'), "|"); }).join('\n'), "\n\n");
         },
     });
 }

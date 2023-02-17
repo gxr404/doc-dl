@@ -32,7 +32,7 @@ function default_1(turndownService) {
                 language = languageMatchResult[1];
             }
             language = language.split(' ')[0];
-            return "```" + language + "\n" + code + "\n```\n\n";
+            return "```".concat(language, "\n").concat(code, "\n```\n\n");
         },
     });
 }

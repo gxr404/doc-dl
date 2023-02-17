@@ -24,8 +24,8 @@ function default_1(turndownService) {
             }
             var src = node.getAttribute('src');
             var width = node.getAttribute('width');
-            var result = src.replace(/https:\/\/miro.medium.com\/max\/(\d*)\//, "https://miro.medium.com/max/" + Number(width) * 2 + "/");
-            return "![](" + result + ")";
+            var result = src.replace(/https:\/\/miro.medium.com\/max\/(\d*)\//, "https://miro.medium.com/max/".concat(Number(width) * 2, "/"));
+            return "![](".concat(result, ")");
         },
     });
 }
