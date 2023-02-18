@@ -25,7 +25,7 @@ const logger = getLogger()
  * @returns {string[]}
  */
 const getImgList = (data: string): Array<string> => {
-  let list = Array.from(data.match(config.mdImgReg))
+  let list = Array.from(data.match(config.mdImgReg) || [])
   list = list.map(itemUrl => {
     itemUrl = itemUrl.replace(config.mdImgReg, '$2')
     const itemUrlObj = new url.URL(itemUrl)
