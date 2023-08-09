@@ -6,6 +6,7 @@ import * as progressBar from 'progress'
 import getLogger from './log'
 import config from './config'
 import { shellArgsInit } from './args'
+import * as randUserAgent from 'rand-user-agent'
 
 import {
   createDir,
@@ -56,7 +57,11 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   // 检查协议
   const lib = checkProtocol(url)
   return new Promise((resolve, reject) => {
-    const req = lib.request(url, (res) => {
+    const req = lib.request(url,{
+      headers: {
+        "user-agent": randUserAgent("desktop")
+      }
+    }, (res) => {
       // 检查是否重定向
       const isRedirect = [302, 301].indexOf(res.statusCode)
       if (~isRedirect) {
@@ -71,7 +76,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       const contentLength = parseInt(res.headers['content-length'], 10)
       const distPath = `${imgDir}/${fileName}`
       const out = fs.createWriteStream(distPath)
-
+      const disableProgressBar = isNaN(contentLength)
       const bar = new progressBar(`downloading ${fileName} [:bar] :rate/bps :percent :etas`, {
         complete: '=',
         incomplete: ' ',
@@ -82,7 +87,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       res.on('data', (chunk) => {
           // 输入后的回调
         out.write(chunk, () => {
-          if (!config.isIgnoreConsole) {
+          if (!config.isIgnoreConsole || !disableProgressBar) {
             bar.tick(chunk.length)
           }
           // logger.error('file wirte error: ',e)

@@ -44,6 +44,7 @@ var progressBar = require("progress");
 var log_1 = require("./log");
 var config_1 = require("./config");
 var args_1 = require("./args");
+var randUserAgent = require("rand-user-agent");
 var utils_1 = require("./utils");
 var logger = (0, log_1.default)();
 var getImgList = function (data) {
@@ -70,7 +71,11 @@ var downloadImg = function (url, imgDir) {
         fileName = (0, utils_1.changeSuffix)(fileName, config_1.default.suffix);
     var lib = (0, utils_1.checkProtocol)(url);
     return new Promise(function (resolve, reject) {
-        var req = lib.request(url, function (res) {
+        var req = lib.request(url, {
+            headers: {
+                "user-agent": randUserAgent("desktop")
+            }
+        }, function (res) {
             var isRedirect = [302, 301].indexOf(res.statusCode);
             if (~isRedirect) {
                 if (!config_1.default.isIgnoreConsole) {
@@ -82,6 +87,7 @@ var downloadImg = function (url, imgDir) {
             var contentLength = parseInt(res.headers['content-length'], 10);
             var distPath = "".concat(imgDir, "/").concat(fileName);
             var out = fs.createWriteStream(distPath);
+            var disableProgressBar = isNaN(contentLength);
             var bar = new progressBar("downloading ".concat(fileName, " [:bar] :rate/bps :percent :etas"), {
                 complete: '=',
                 incomplete: ' ',
@@ -90,7 +96,7 @@ var downloadImg = function (url, imgDir) {
             });
             res.on('data', function (chunk) {
                 out.write(chunk, function () {
-                    if (!config_1.default.isIgnoreConsole) {
+                    if (!config_1.default.isIgnoreConsole || !disableProgressBar) {
                         bar.tick(chunk.length);
                     }
                 });
