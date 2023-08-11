@@ -96,7 +96,7 @@ var downloadImg = function (url, imgDir) {
             });
             res.on('data', function (chunk) {
                 out.write(chunk, function () {
-                    if (!config_1.default.isIgnoreConsole || !disableProgressBar) {
+                    if (!config_1.default.isIgnoreConsole && !disableProgressBar) {
                         bar.tick(chunk.length);
                     }
                 });

@@ -87,7 +87,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       res.on('data', (chunk) => {
           // 输入后的回调
         out.write(chunk, () => {
-          if (!config.isIgnoreConsole || !disableProgressBar) {
+          if (!config.isIgnoreConsole && !disableProgressBar) {
             bar.tick(chunk.length)
           }
           // logger.error('file wirte error: ',e)
