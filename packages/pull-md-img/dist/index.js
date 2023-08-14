@@ -45,6 +45,7 @@ var log_1 = require("./log");
 var config_1 = require("./config");
 var args_1 = require("./args");
 var randUserAgent = require("rand-user-agent");
+var mime = require("mime-types");
 var utils_1 = require("./utils");
 var logger = (0, log_1.default)();
 var getImgList = function (data) {
@@ -76,6 +77,13 @@ var downloadImg = function (url, imgDir) {
                 "user-agent": randUserAgent("desktop")
             }
         }, function (res) {
+            var isExt = path.parse(fileName).ext;
+            var contentType = res.headers['content-type'];
+            if (!isExt) {
+                var fileSuffix = mime.extension(contentType);
+                if (fileSuffix)
+                    fileName = (0, utils_1.changeSuffix)(fileName, fileSuffix);
+            }
             var isRedirect = [302, 301].indexOf(res.statusCode);
             if (~isRedirect) {
                 if (!config_1.default.isIgnoreConsole) {

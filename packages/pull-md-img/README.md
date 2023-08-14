@@ -2,6 +2,9 @@
 
 - 下载markdown中的图片
 - 更改markdown中的图片路径改为本地
+- 根据`Content-Type`定义图片后缀
+- 302, 301重定向下载重定向后的target
+- 随机ua头
 
 ## 安装
 

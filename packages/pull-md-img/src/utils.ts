@@ -15,7 +15,7 @@ const logger = getLogger()
  */
 const changeSuffix = (pathSrc: string, suffix: string): string => {
   const pathObj = path.parse(pathSrc)
-  return `${pathObj.dir}/${pathObj.name}.${suffix}`
+  return `${pathObj.dir !== '/' ? pathObj.dir+'/' : '/'}${pathObj.name}.${suffix}`
 }
 
 /**
@@ -125,7 +125,8 @@ const getFileSate = (path: string): Promise<any> => {
 const changeFileName = (pathSrc: string): string => {
   const pathObj = path.parse(pathSrc)
   const fileName = (pathObj.name || '').replace(/~|:|\?|\*|\||\\|\/|\.|>|</g, '_')
-  return `${pathObj.dir}/${fileName}-${~~(Math.random()*1000000)}${pathObj.ext}`
+  const randomStr = String(Math.floor(Math.random() * 1000000)).padStart(6, '0')
+  return `${pathObj.dir}/${fileName}-${randomStr}${pathObj.ext}`
 }
 
 export {

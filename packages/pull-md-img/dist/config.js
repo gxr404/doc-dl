@@ -4,7 +4,7 @@ var config = {
     path: '',
     suffix: '',
     dist: './res/',
-    imgDir: './img/1',
+    imgDir: "./img/".concat(Date.now()),
     mdImgReg: /!\[(.*?)\]\((.*?)\)/gm,
     isIgnoreConsole: false
 };

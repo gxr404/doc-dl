@@ -7,6 +7,7 @@ import getLogger from './log'
 import config from './config'
 import { shellArgsInit } from './args'
 import * as randUserAgent from 'rand-user-agent'
+import * as mime from 'mime-types'
 
 import {
   createDir,
@@ -62,6 +63,15 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
         "user-agent": randUserAgent("desktop")
       }
     }, (res) => {
+
+      // url是否带有文件后缀 没有则尝试从content-type获取
+      const isExt = path.parse(fileName).ext
+      const contentType = res.headers['content-type']
+      if (!isExt) {
+        const fileSuffix = mime.extension(contentType)
+        if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
+      }
+
       // 检查是否重定向
       const isRedirect = [302, 301].indexOf(res.statusCode)
       if (~isRedirect) {

@@ -10,7 +10,7 @@ var log_1 = require("./log");
 var logger = (0, log_1.default)();
 var changeSuffix = function (pathSrc, suffix) {
     var pathObj = path.parse(pathSrc);
-    return "".concat(pathObj.dir, "/").concat(pathObj.name, ".").concat(suffix);
+    return "".concat(pathObj.dir !== '/' ? pathObj.dir + '/' : '/').concat(pathObj.name, ".").concat(suffix);
 };
 exports.changeSuffix = changeSuffix;
 var createDir = function (imgDir) {
@@ -78,6 +78,7 @@ exports.getFileSate = getFileSate;
 var changeFileName = function (pathSrc) {
     var pathObj = path.parse(pathSrc);
     var fileName = (pathObj.name || '').replace(/~|:|\?|\*|\||\\|\/|\.|>|</g, '_');
-    return "".concat(pathObj.dir, "/").concat(fileName, "-").concat(~~(Math.random() * 1000000)).concat(pathObj.ext);
+    var randomStr = String(Math.floor(Math.random() * 1000000)).padStart(6, '0');
+    return "".concat(pathObj.dir, "/").concat(fileName, "-").concat(randomStr).concat(pathObj.ext);
 };
 exports.changeFileName = changeFileName;
