@@ -58,9 +58,9 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   // 检查协议
   const lib = checkProtocol(url)
   return new Promise((resolve, reject) => {
-    const req = lib.request(url,{
+    const req = lib.request(url, {
       headers: {
-        "user-agent": randUserAgent("desktop")
+        "user-agent": randUserAgent("desktop", "chrome")
       }
     }, (res) => {
 
@@ -110,7 +110,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
 
     })
     req.on('error', e => {
-      logger.error(`download ${fileName} error:`, e)
+      logger.error(`download ${url} error:`, e)
       reject(e)
     })
     req.end()
