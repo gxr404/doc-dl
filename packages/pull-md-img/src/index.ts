@@ -110,7 +110,8 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
 
     })
     req.on('error', e => {
-      logger.error(`download ${url} error:`, e)
+      logger.error(`download ${url} error`)
+      logger.error(e)
       reject(e)
     })
     req.end()
