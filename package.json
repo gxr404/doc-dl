@@ -7,7 +7,7 @@
     "install": "lerna bootstrap",
     "build": "lerna run build",
     "clean": "lerna exec -- rm -rf node_modules dist types",
-    "publish": "lerna publish",
+    "publish": "npm run build & lerna publish",
     "eslintLog": "eslint ./packages > eslint.error.log",
     "eslintFix": "eslint ./packages --fix"
   },

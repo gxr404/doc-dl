@@ -110,9 +110,14 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
 
     })
     req.on('error', e => {
-      logger.error(`download ${url} error`)
-      logger.error(e)
-      reject(e)
+      if (!config.isIgnoreConsole) {
+        logger.error(`download ${url} error`)
+        logger.error(e)
+      }
+      reject({
+        error: e,
+        url
+      })
     })
     req.end()
   })
