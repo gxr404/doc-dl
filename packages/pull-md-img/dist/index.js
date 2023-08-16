@@ -74,7 +74,7 @@ var downloadImg = function (url, imgDir) {
     return new Promise(function (resolve, reject) {
         var req = lib.request(url, {
             headers: {
-                "user-agent": randUserAgent("desktop")
+                "user-agent": randUserAgent("desktop", "chrome")
             }
         }, function (res) {
             var isExt = path.parse(fileName).ext;
@@ -114,8 +114,14 @@ var downloadImg = function (url, imgDir) {
             });
         });
         req.on('error', function (e) {
-            logger.error("download ".concat(fileName, " error:"), e);
-            reject(e);
+            if (!config_1.default.isIgnoreConsole) {
+                logger.error("download ".concat(url, " error"));
+                logger.error(e);
+            }
+            reject({
+                error: e,
+                url: url
+            });
         });
         req.end();
     });
