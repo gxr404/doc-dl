@@ -5,6 +5,7 @@
 - 根据`Content-Type`定义图片后缀
 - 302, 301重定向下载重定向后的target
 - 随机ua头
+- 跳过markdown的本地图片
 
 ## 安装
 

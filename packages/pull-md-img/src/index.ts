@@ -30,6 +30,8 @@ const getImgList = (data: string): Array<string> => {
   let list = Array.from(data.match(config.mdImgReg) || [])
   list = list.map(itemUrl => {
     itemUrl = itemUrl.replace(config.mdImgReg, '$2')
+    // 如果出现非http开头的图片 如 "./xx.png" 则跳过
+    if (!(/^http.*/g.test(itemUrl))) return ''
     const itemUrlObj = new url.URL(itemUrl)
     itemUrl = url.format(itemUrlObj, {
       fragment: false,
@@ -38,7 +40,7 @@ const getImgList = (data: string): Array<string> => {
       search: false
     })
     return itemUrl
-  })
+  }).filter(url => Boolean(url))
   // 去重
   const resSet = new Set(list)
   list = Array.from(resSet)
@@ -142,9 +144,12 @@ const changeMarkdown = (data: string, imgList: Array<string>): string => {
   const list = data.match(config.mdImgReg) || []
   // 替换其中url文本
   list.forEach((src, index) => {
-    // 动态reg
-    const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
-    newData = newData.replace(imgReg, '![$1]('+newImgList[index]+')')
+    // console.log(src)
+    if (/.*\]\(http.*/g.test(src)) {
+      // 动态reg
+      const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
+      newData = newData.replace(imgReg, '![$1]('+newImgList[index]+')')
+    }
   })
   return newData
 

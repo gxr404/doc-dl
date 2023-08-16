@@ -52,6 +52,8 @@ var getImgList = function (data) {
     var list = Array.from(data.match(config_1.default.mdImgReg) || []);
     list = list.map(function (itemUrl) {
         itemUrl = itemUrl.replace(config_1.default.mdImgReg, '$2');
+        if (!(/^http.*/g.test(itemUrl)))
+            return '';
         var itemUrlObj = new url.URL(itemUrl);
         itemUrl = url.format(itemUrlObj, {
             fragment: false,
@@ -60,7 +62,7 @@ var getImgList = function (data) {
             search: false
         });
         return itemUrl;
-    });
+    }).filter(function (url) { return Boolean(url); });
     var resSet = new Set(list);
     list = Array.from(resSet);
     return list;
@@ -136,8 +138,10 @@ var changeMarkdown = function (data, imgList) {
     var newData = data;
     var list = data.match(config_1.default.mdImgReg) || [];
     list.forEach(function (src, index) {
-        var imgReg = new RegExp((0, utils_1.replaceSpecialReg)(src), 'gm');
-        newData = newData.replace(imgReg, '![$1](' + newImgList[index] + ')');
+        if (/.*\]\(http.*/g.test(src)) {
+            var imgReg = new RegExp((0, utils_1.replaceSpecialReg)(src), 'gm');
+            newData = newData.replace(imgReg, '![$1](' + newImgList[index] + ')');
+        }
     });
     return newData;
 };

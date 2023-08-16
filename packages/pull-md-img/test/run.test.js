@@ -20,3 +20,10 @@ test('run content-type suffix test', () => {
     expect(data).toMatch(/\!\[\]\(\.\/img\/run_test\/640-\d{6}\.png\)/)
   })
 })
+
+test('ignore local img', () => {
+  const mdData = `![](./test.png)`
+  return run(mdData, config).then(data => {
+    expect(data).toBe(mdData)
+  })
+})
