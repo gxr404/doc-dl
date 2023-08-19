@@ -1,6 +1,8 @@
 # article-pull
 
-根据输入的文章链接url 抓取页面内容,并转成markdown，其中文章有图片会保存到本地
+根据输入的文章url 抓取页面内容,并转成markdown，连同文章中的图片也给保存到本地
+
+![example](/assets/example.gif)
 
 ## 安装
 
@@ -24,10 +26,12 @@ Examples:
   $ custom-help -h
 ```
 
-## example
+## Usage
+
+url文章链接支持大部分网站，如掘金/知乎文章/微信公众号文章...
 
 ```shell
-article-pull -u https://文章链接...
+article-pull -u <url>
 ```
 
 ## 实现原理

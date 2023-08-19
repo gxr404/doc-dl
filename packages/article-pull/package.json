@@ -10,6 +10,13 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
+  "keywords": [
+    "article-pull",
+    "article download",
+    "spider",
+    "cli",
+    "markdown"
+  ],
   "scripts": {
     "dev": "tsc -w",
     "build": "tsc"
