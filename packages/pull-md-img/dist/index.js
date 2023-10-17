@@ -173,11 +173,14 @@ var bin = function () { return __awaiter(void 0, void 0, void 0, function () {
 }); };
 exports.bin = bin;
 var run = function (data, customConfig) { return __awaiter(void 0, void 0, void 0, function () {
-    var imgList, imgDirPath, imgListPromise, resList, newData;
+    var dirNameReg, imgList, imgDirPath, imgListPromise, resList, newData;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 Object.assign(config_1.default, customConfig);
+                dirNameReg = /[:*?"<>|\n\r]/g;
+                config_1.default.dist = config_1.default.dist.replace(dirNameReg, '_').replace(/\s/, '');
+                config_1.default.imgDir = config_1.default.imgDir.replace(dirNameReg, '_').replace(/\s/, '');
                 imgList = getImgList(data);
                 if (!imgList.length) {
                     return [2, data];

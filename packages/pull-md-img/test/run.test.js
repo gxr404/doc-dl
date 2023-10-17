@@ -27,3 +27,14 @@ test('ignore local img', () => {
     expect(data).toBe(mdData)
   })
 })
+
+test('mkdir img Special symbols', () => {
+  const mdData = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+  return run(mdData, {
+    dist: 'test/dist/',
+    imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
+    isIgnoreConsole: true
+  }).then(data => {
+    expect(data).toMatch(/\!\[\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/)
+  })
+})
