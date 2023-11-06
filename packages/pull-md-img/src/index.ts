@@ -190,8 +190,8 @@ export const run = async (data: string, customConfig: TConfig): Promise<string> 
   Object.assign(config, customConfig)
   // 过滤 config 中 dist目录和 imgDir目录的特殊字符 替换_
   const dirNameReg = /[:*?"<>|\n\r]/g
-  config.dist = config.dist.replace(dirNameReg, '_').replace(/\s/, '')
-  config.imgDir = config.imgDir.replace(dirNameReg, '_').replace(/\s/, '')
+  config.dist = config.dist.replace(dirNameReg, '_').replace(/\s/g, '')
+  config.imgDir = config.imgDir.replace(dirNameReg, '_').replace(/\s/g, '')
   // 获取文件内容中的图片列表
   const imgList = getImgList(data)
   // 无图片无需处理直接返回
