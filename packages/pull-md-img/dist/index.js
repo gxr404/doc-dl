@@ -179,8 +179,8 @@ var run = function (data, customConfig) { return __awaiter(void 0, void 0, void 
             case 0:
                 Object.assign(config_1.default, customConfig);
                 dirNameReg = /[:*?"<>|\n\r]/g;
-                config_1.default.dist = config_1.default.dist.replace(dirNameReg, '_').replace(/\s/, '');
-                config_1.default.imgDir = config_1.default.imgDir.replace(dirNameReg, '_').replace(/\s/, '');
+                config_1.default.dist = config_1.default.dist.replace(dirNameReg, '_').replace(/\s/g, '');
+                config_1.default.imgDir = config_1.default.imgDir.replace(dirNameReg, '_').replace(/\s/g, '');
                 imgList = getImgList(data);
                 if (!imgList.length) {
                     return [2, data];
