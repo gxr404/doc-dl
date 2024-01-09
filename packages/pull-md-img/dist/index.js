@@ -69,6 +69,7 @@ var getImgList = function (data) {
 };
 var downloadImg = function (url, imgDir) {
     var fileName = path.basename(url);
+    fileName = fileName.replace(/(\?.*)|(#.*)/g, '');
     fileName = (0, utils_1.changeFileName)(fileName);
     if (config_1.default.suffix)
         fileName = (0, utils_1.changeSuffix)(fileName, config_1.default.suffix);
