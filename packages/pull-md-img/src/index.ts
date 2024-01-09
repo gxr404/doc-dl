@@ -54,6 +54,8 @@ const getImgList = (data: string): Array<string> => {
  */
 const downloadImg = (url: string, imgDir: string): Promise<string> => {
   let fileName = path.basename(url)
+  // 移除带有 1.jpg?xxx或 1.jpg#12的 fileName
+  fileName = fileName.replace(/(\?.*)|(#.*)/g, '')
   fileName = changeFileName(fileName)
   if (config.suffix) fileName = changeSuffix(fileName, config.suffix)
 
