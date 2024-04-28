@@ -12,6 +12,6 @@ export default function (turndownService: TurndownService): void {
         return `**${result}** `
       }
       return `**${result}**`
-    },
+    }
   })
 }

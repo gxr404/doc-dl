@@ -32,9 +32,9 @@ export default function (turndownService: TurndownService): void {
       const width = node.getAttribute('width')
       const result = src.replace(
         /https:\/\/miro.medium.com\/max\/(\d*)\//,
-        `https://miro.medium.com/max/${Number(width) * 2}/`,
+        `https://miro.medium.com/max/${Number(width) * 2}/`
       )
       return `![](${result})`
-    },
+    }
   })
 }

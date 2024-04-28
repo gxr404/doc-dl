@@ -43,7 +43,7 @@ const genPlugin = (options: IOptions): TurndownService.Plugin => {
       juejinCodeBlock,
       strong,
       syntaxhighlighter,
-      infoq_code,
+      infoq_code
     ])
   }
 }

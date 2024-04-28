@@ -50,9 +50,10 @@ var utils_1 = require("./utils");
 var logger = (0, log_1.default)();
 var getImgList = function (data) {
     var list = Array.from(data.match(config_1.default.mdImgReg) || []);
-    list = list.map(function (itemUrl) {
+    list = list
+        .map(function (itemUrl) {
         itemUrl = itemUrl.replace(config_1.default.mdImgReg, '$2');
-        if (!(/^http.*/g.test(itemUrl)))
+        if (!/^http.*/g.test(itemUrl))
             return '';
         var itemUrlObj = new url.URL(itemUrl);
         itemUrl = url.format(itemUrlObj, {
@@ -62,7 +63,8 @@ var getImgList = function (data) {
             search: false
         });
         return itemUrl;
-    }).filter(function (url) { return Boolean(url); });
+    })
+        .filter(function (url) { return Boolean(url); });
     var resSet = new Set(list);
     list = Array.from(resSet);
     return list;
@@ -77,7 +79,7 @@ var downloadImg = function (url, imgDir) {
     return new Promise(function (resolve, reject) {
         var req = lib.request(url, {
             headers: {
-                "user-agent": randUserAgent("desktop", "chrome")
+                'user-agent': randUserAgent('desktop', 'chrome')
             }
         }, function (res) {
             var isExt = path.parse(fileName).ext;

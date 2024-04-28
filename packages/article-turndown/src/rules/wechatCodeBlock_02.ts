@@ -39,6 +39,6 @@ export default function (turndownService: TurndownService): void {
         return `\`\`\`${language}\n${finalCode}\n\`\`\`\n\n`
       }
       return `\`\`\`\n${finalCode}\n\`\`\`\n\n`
-    },
+    }
   })
 }

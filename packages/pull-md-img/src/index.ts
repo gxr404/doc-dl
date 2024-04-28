@@ -15,7 +15,7 @@ import {
   checkProtocol,
   replaceSpecialReg,
   readFile,
-  changeFileName,
+  changeFileName
 } from './utils'
 
 // log 初始化
@@ -38,7 +38,7 @@ const getImgList = (data: string): Array<string> => {
         fragment: false,
         unicode: false,
         auth: false,
-        search: false,
+        search: false
       })
       return itemUrl
     })
@@ -68,8 +68,8 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       url,
       {
         headers: {
-          'user-agent': randUserAgent('desktop', 'chrome'),
-        },
+          'user-agent': randUserAgent('desktop', 'chrome')
+        }
       },
       (res) => {
         // url是否带有文件后缀 没有则尝试从content-type获取
@@ -101,8 +101,8 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
             complete: '=',
             incomplete: ' ',
             width: 20,
-            total: contentLength,
-          },
+            total: contentLength
+          }
         )
 
         res.on('data', (chunk) => {
@@ -118,7 +118,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
           // logger.info(`${fileName} download OK`)
           resolve(distPath)
         })
-      },
+      }
     )
     req.on('error', (e) => {
       if (!config.isIgnoreConsole) {
@@ -127,7 +127,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       }
       reject({
         error: e,
-        url,
+        url
       })
     })
     req.end()
@@ -195,7 +195,7 @@ type TConfig = Partial<typeof config>
  */
 export const run = async (
   data: string,
-  customConfig: TConfig,
+  customConfig: TConfig
 ): Promise<string> => {
   Object.assign(config, customConfig)
   // 过滤 config 中 dist目录和 imgDir目录的特殊字符 替换_

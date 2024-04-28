@@ -5,6 +5,6 @@ export default function (turndownService: TurndownService): void {
     filter: ['noscript'],
     replacement: function () {
       return ``
-    },
+    }
   })
 }

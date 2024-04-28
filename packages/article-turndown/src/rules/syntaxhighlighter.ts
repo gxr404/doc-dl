@@ -31,6 +31,6 @@ export default function (turndownService: TurndownService): void {
         .map((o) => o.textContent)
         .join('\n')
       return `\`\`\`\n${finalCode}\n\`\`\`\n\n`
-    },
+    }
   })
 }

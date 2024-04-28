@@ -35,6 +35,6 @@ export default function (turndownService: TurndownService): void {
       }
       language = language.split(' ')[0]
       return `\`\`\`${language}\n${code}\n\`\`\`\n\n`
-    },
+    }
   })
 }

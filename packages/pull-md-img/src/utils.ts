@@ -125,7 +125,7 @@ const changeFileName = (pathSrc: string): string => {
   const pathObj = path.parse(pathSrc)
   const fileName = (pathObj.name || '').replace(
     /~|:|\?|\*|\||\\|\/|\.|>|</g,
-    '_',
+    '_'
   )
   const randomStr = String(Math.floor(Math.random() * 1000000)).padStart(6, '0')
   return `${pathObj.dir}/${fileName}-${randomStr}${pathObj.ext}`
@@ -138,5 +138,5 @@ export {
   checkProtocol,
   readFile,
   getFileSate,
-  changeFileName,
+  changeFileName
 }

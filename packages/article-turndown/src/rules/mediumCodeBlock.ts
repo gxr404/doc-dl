@@ -25,6 +25,6 @@ export default function (turndownService: TurndownService): void {
         return content
       }
       return `\`\`\`\n${content}\n\`\`\`\n\n`
-    },
+    }
   })
 }

@@ -3,14 +3,14 @@ const { run } = require('../dist/index.js')
 const config = {
   dist: 'test/dist/',
   imgDir: './img/run_test',
-  isIgnoreConsole: true,
+  isIgnoreConsole: true
 }
 test('run test', () => {
   const mdData = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
 
   return run(mdData, config).then((data) => {
     expect(data).toMatch(
-      /\!\[\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/,
+      /\!\[\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
 })
@@ -35,10 +35,10 @@ test('mkdir img Special symbols', () => {
   return run(mdData, {
     dist: 'test/dist/',
     imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
-    isIgnoreConsole: true,
+    isIgnoreConsole: true
   }).then((data) => {
     expect(data).toMatch(
-      /\!\[\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/,
+      /\!\[\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
 })

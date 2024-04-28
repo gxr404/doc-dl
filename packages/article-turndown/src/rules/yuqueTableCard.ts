@@ -36,7 +36,7 @@ export default function (turndownService: TurndownService): void {
           rowSpan: Number(node.getAttribute('rowspan')) || 1,
           content: Array.from(node.querySelectorAll('p'))
             .map((o) => o.textContent)
-            .join('<br />'),
+            .join('<br />')
         }))
         jsonNodes.push(nodesValue)
       }
@@ -57,6 +57,6 @@ export default function (turndownService: TurndownService): void {
       const divider = result[0].map(() => '-')
       result.splice(1, 0, divider)
       return `${result.map((row) => `|${row.join('|')}|`).join('\n')}\n\n`
-    },
+    }
   })
 }

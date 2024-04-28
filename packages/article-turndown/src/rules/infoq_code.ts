@@ -33,6 +33,6 @@ export default function (turndownService: TurndownService): void {
         .join('\n')
         .trim()
       return `\`\`\`\n${finalCode}\n\`\`\`\n\n`
-    },
+    }
   })
 }

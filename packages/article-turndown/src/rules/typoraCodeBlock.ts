@@ -39,6 +39,6 @@ export default function (turndownService: TurndownService): void {
 
       const lang = node.getAttribute('lang')
       return utils.codeBlock(code, lang)
-    },
+    }
   })
 }

@@ -33,7 +33,7 @@ export default function (options: IOptions) {
           return `![](${utils.fixUrl(src, options.articleUrl)})\n`
         }
         return ''
-      },
+      }
     })
   }
 }

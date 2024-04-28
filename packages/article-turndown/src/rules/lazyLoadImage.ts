@@ -19,7 +19,7 @@ export default function (options: IOptions) {
           return `![](${utils.fixUrl(node.getAttribute('src'), options.articleUrl)})\n`
         }
         return ''
-      },
+      }
     })
   }
 }

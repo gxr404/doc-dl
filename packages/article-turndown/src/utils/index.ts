@@ -41,5 +41,5 @@ const notEmptyIndex = (data: any[], index: number): number => {
 export default {
   fixUrl,
   codeBlock,
-  notEmptyIndex,
+  notEmptyIndex
 }

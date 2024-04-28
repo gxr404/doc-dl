@@ -42,12 +42,12 @@ export default function (turndownService: TurndownService): void {
         .map((o) => {
           const href = o.getAttribute('href')
           const gallery_imageCaption = o.querySelector(
-            '.gallery_imageCaption',
+            '.gallery_imageCaption'
           )?.textContent
           return `![${gallery_imageCaption ?? title ?? ''}](${href})`
         })
         .join('\n')
       return `${code}\n`
-    },
+    }
   })
 }
