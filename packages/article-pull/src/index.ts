@@ -21,7 +21,7 @@ interface AnyObject {
 const addExtendInfo = (
   mdContent: string,
   options: TOptions,
-  article: AnyObject,
+  article: AnyObject
 ): string => {
   const title = options.title || article.title || ''
   if (title) {
@@ -47,7 +47,7 @@ const getDocument = async (url: string): Promise<string> => {
   // console.time('goto')
   await page.goto(url, {
     timeout: 0,
-    waitUntil: ['load', 'networkidle0'],
+    waitUntil: ['load', 'networkidle0']
     // TODO
     // waitUntil: ['domcontentloaded']
   })
@@ -63,20 +63,20 @@ const getDocument = async (url: string): Promise<string> => {
 
 export const run = async (options: TOptions): Promise<void> => {
   const turndownService = new TurndownService({
-    codeBlockStyle: 'fenced',
+    codeBlockStyle: 'fenced'
   })
 
   turndownService.use(
     articleTurndown({
-      articleUrl: options.url,
-    }),
+      articleUrl: options.url
+    })
   )
 
   const errorPrefix = `${packageJson.name}[ERROR]: `
   const infoPrefix = `${packageJson.name}[INFO]: `
 
   console.log(
-    '----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----',
+    '----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----'
   )
   console.log('爬取页面中...')
 
@@ -96,7 +96,7 @@ export const run = async (options: TOptions): Promise<void> => {
   const dom = new JSDOM(htmlContext)
   const newDom = dom.window.document.cloneNode(true) as Document
   const reader = new Readability(newDom, {
-    keepClasses: true,
+    keepClasses: true
   })
 
   const article = reader.parse() || { title: options.title, content: '' }
@@ -116,7 +116,7 @@ export const run = async (options: TOptions): Promise<void> => {
       suffix: '',
       dist: options.dist,
       imgDir: `${options.imgDir}${Date.now()}`,
-      isIgnoreConsole: true,
+      isIgnoreConsole: true
     })
     .catch((err) => {
       console.log(`${errorPrefix}`)

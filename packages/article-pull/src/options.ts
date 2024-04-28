@@ -6,7 +6,7 @@ export const options = {
   /** 生成目录 */
   dist: './res',
   /** 自定义图片目录 */
-  imgDir: './img/',
+  imgDir: './img/'
 }
 
 const UA =
@@ -20,8 +20,8 @@ export const puppeteerOptions = {
     '--window-position=0,0',
     '--ignore-certificate-errors',
     '--ignore-certificate-errors-spki-list',
-    `--user-agent=${UA}`,
+    `--user-agent=${UA}`
   ],
   headless: true,
-  ignoreHTTPSErrors: true,
+  ignoreHTTPSErrors: true
 }
