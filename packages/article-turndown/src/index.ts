@@ -24,7 +24,6 @@ export interface IOptions {
 }
 
 const genPlugin = (options: IOptions): TurndownService.Plugin => {
-
   return (turndownService: TurndownService) => {
     turndownService.use([
       gfm,

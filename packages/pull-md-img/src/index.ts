@@ -15,7 +15,7 @@ import {
   checkProtocol,
   replaceSpecialReg,
   readFile,
-  changeFileName
+  changeFileName,
 } from './utils'
 
 // log 初始化
@@ -28,19 +28,21 @@ const logger = getLogger()
  */
 const getImgList = (data: string): Array<string> => {
   let list = Array.from(data.match(config.mdImgReg) || [])
-  list = list.map(itemUrl => {
-    itemUrl = itemUrl.replace(config.mdImgReg, '$2')
-    // 如果出现非http开头的图片 如 "./xx.png" 则跳过
-    if (!(/^http.*/g.test(itemUrl))) return ''
-    const itemUrlObj = new url.URL(itemUrl)
-    itemUrl = url.format(itemUrlObj, {
-      fragment: false,
-      unicode: false,
-      auth: false,
-      search: false
+  list = list
+    .map((itemUrl) => {
+      itemUrl = itemUrl.replace(config.mdImgReg, '$2')
+      // 如果出现非http开头的图片 如 "./xx.png" 则跳过
+      if (!/^http.*/g.test(itemUrl)) return ''
+      const itemUrlObj = new url.URL(itemUrl)
+      itemUrl = url.format(itemUrlObj, {
+        fragment: false,
+        unicode: false,
+        auth: false,
+        search: false,
+      })
+      return itemUrl
     })
-    return itemUrl
-  }).filter(url => Boolean(url))
+    .filter((url) => Boolean(url))
   // 去重
   const resSet = new Set(list)
   list = Array.from(resSet)
@@ -62,65 +64,70 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   // 检查协议
   const lib = checkProtocol(url)
   return new Promise((resolve, reject) => {
-    const req = lib.request(url, {
-      headers: {
-        "user-agent": randUserAgent("desktop", "chrome")
-      }
-    }, (res) => {
-
-      // url是否带有文件后缀 没有则尝试从content-type获取
-      const isExt = path.parse(fileName).ext
-      const contentType = res.headers['content-type']
-      if (!isExt) {
-        const fileSuffix = mime.extension(contentType)
-        if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
-      }
-
-      // 检查是否重定向
-      const isRedirect = [302, 301].indexOf(res.statusCode)
-      if (~isRedirect) {
-        if (!config.isIgnoreConsole) {
-          logger.info(`${fileName} 重定向...`)
+    const req = lib.request(
+      url,
+      {
+        headers: {
+          'user-agent': randUserAgent('desktop', 'chrome'),
+        },
+      },
+      (res) => {
+        // url是否带有文件后缀 没有则尝试从content-type获取
+        const isExt = path.parse(fileName).ext
+        const contentType = res.headers['content-type']
+        if (!isExt) {
+          const fileSuffix = mime.extension(contentType)
+          if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
         }
-        // 重定向则向 响应头的location 重新下载
-        resolve(downloadImg(res.headers['location'], imgDir))
-        return
-      }
 
-      const contentLength = parseInt(res.headers['content-length'], 10)
-      const distPath = `${imgDir}/${fileName}`
-      const out = fs.createWriteStream(distPath)
-      const disableProgressBar = isNaN(contentLength)
-      const bar = new progressBar(`downloading ${fileName} [:bar] :rate/bps :percent :etas`, {
-        complete: '=',
-        incomplete: ' ',
-        width: 20,
-        total: contentLength
-      })
-
-      res.on('data', (chunk) => {
-          // 输入后的回调
-        out.write(chunk, () => {
-          if (!config.isIgnoreConsole && !disableProgressBar) {
-            bar.tick(chunk.length)
+        // 检查是否重定向
+        const isRedirect = [302, 301].indexOf(res.statusCode)
+        if (~isRedirect) {
+          if (!config.isIgnoreConsole) {
+            logger.info(`${fileName} 重定向...`)
           }
-          // logger.error('file wirte error: ',e)
-        })
-      })
-      res.on('end', () => {
-        // logger.info(`${fileName} download OK`)
-        resolve(distPath)
-      })
+          // 重定向则向 响应头的location 重新下载
+          resolve(downloadImg(res.headers['location'], imgDir))
+          return
+        }
 
-    })
-    req.on('error', e => {
+        const contentLength = parseInt(res.headers['content-length'], 10)
+        const distPath = `${imgDir}/${fileName}`
+        const out = fs.createWriteStream(distPath)
+        const disableProgressBar = isNaN(contentLength)
+        const bar = new progressBar(
+          `downloading ${fileName} [:bar] :rate/bps :percent :etas`,
+          {
+            complete: '=',
+            incomplete: ' ',
+            width: 20,
+            total: contentLength,
+          },
+        )
+
+        res.on('data', (chunk) => {
+          // 输入后的回调
+          out.write(chunk, () => {
+            if (!config.isIgnoreConsole && !disableProgressBar) {
+              bar.tick(chunk.length)
+            }
+            // logger.error('file wirte error: ',e)
+          })
+        })
+        res.on('end', () => {
+          // logger.info(`${fileName} download OK`)
+          resolve(distPath)
+        })
+      },
+    )
+    req.on('error', (e) => {
       if (!config.isIgnoreConsole) {
         logger.error(`download ${url} error`)
         logger.error(e)
       }
       reject({
         error: e,
-        url
+        url,
       })
     })
     req.end()
@@ -135,7 +142,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
  */
 const changeMarkdown = (data: string, imgList: Array<string>): string => {
   // 创建新的img url list
-  const newImgList = imgList.map(src => {
+  const newImgList = imgList.map((src) => {
     if (config.suffix) src = changeSuffix(src, config.suffix)
 
     const fileName = path.basename(src)
@@ -150,11 +157,10 @@ const changeMarkdown = (data: string, imgList: Array<string>): string => {
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg
       const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
-      newData = newData.replace(imgReg, '![$1]('+newImgList[index]+')')
+      newData = newData.replace(imgReg, '![$1](' + newImgList[index] + ')')
     }
   })
   return newData
-
 }
 
 /**
@@ -183,12 +189,14 @@ export const bin = async (): Promise<void> => {
   }, 100)
 }
 
-
 type TConfig = Partial<typeof config>
 /**
  * @param data
  */
-export const run = async (data: string, customConfig: TConfig): Promise<string> => {
+export const run = async (
+  data: string,
+  customConfig: TConfig,
+): Promise<string> => {
   Object.assign(config, customConfig)
   // 过滤 config 中 dist目录和 imgDir目录的特殊字符 替换_
   const dirNameReg = /[:*?"<>|\n\r]/g
@@ -197,11 +205,13 @@ export const run = async (data: string, customConfig: TConfig): Promise<string> 
   // 获取文件内容中的图片列表
   const imgList = getImgList(data)
   // 无图片无需处理直接返回
-  if (!imgList.length) { return data }
+  if (!imgList.length) {
+    return data
+  }
   const imgDirPath = path.resolve(config.dist, config.imgDir)
   // 创建目录 img 目录
   await createDir(imgDirPath)
-  const imgListPromise = imgList.map(src => {
+  const imgListPromise = imgList.map((src) => {
     return downloadImg(src, imgDirPath)
   })
   const resList = await Promise.all(imgListPromise)

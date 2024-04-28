@@ -13,11 +13,11 @@ const getLogger = () => {
           // type: 'messagePassThrough',
           type: 'pattern',
           // pattern: '%[%d{yyyy-MM-dd hh:mm:ss} [%p] %c -%] %m%n'
-          pattern: '%[%c [%p]:%] %m%n'
-        }
-      }
+          pattern: '%[%c [%p]:%] %m%n',
+        },
+      },
     },
-    categories: { default: { appenders: ['cheese'], level: 'trace' } }
+    categories: { default: { appenders: ['cheese'], level: 'trace' } },
   })
   return log4js.getLogger('mdDownloadImg')
 }

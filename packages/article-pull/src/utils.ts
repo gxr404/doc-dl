@@ -6,7 +6,7 @@ import * as path from 'path'
  * @param {*} imgDir
  * @returns {Promise}
  */
-const createDir = (imgDir:string): Promise<any> => {
+const createDir = (imgDir: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     mkDirs(imgDir, (e) => {
       if (e) reject(e)
@@ -24,16 +24,14 @@ const createDir = (imgDir:string): Promise<any> => {
  */
 const mkDirs = (dirname: string, callback: fs.NoParamCallback) => {
   fs.exists(dirname, function (exists) {
-      if (exists) {
-        callback(null)
-      } else {
-        mkDirs(path.dirname(dirname), () => {
-          fs.mkdir(dirname, callback)
-        })
-      }
+    if (exists) {
+      callback(null)
+    } else {
+      mkDirs(path.dirname(dirname), () => {
+        fs.mkdir(dirname, callback)
+      })
+    }
   })
 }
 
-export {
-  createDir
-}
+export { createDir }

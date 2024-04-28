@@ -4,7 +4,8 @@ export default function (turndownService: TurndownService): void {
   turndownService.addRule('hexoCodeBlock', {
     filter: ['figure', 'table'],
     replacement: function (content: string, node: HTMLElement) {
-      if (!(node instanceof Object)) { // TODO node instanceof HTMLElement
+      if (!(node instanceof Object)) {
+        // TODO node instanceof HTMLElement
         return content
       }
       let language = ''

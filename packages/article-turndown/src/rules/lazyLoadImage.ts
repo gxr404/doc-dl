@@ -7,20 +7,19 @@ export default function (options: IOptions) {
     turndownService.addRule('lazyLoadImage', {
       filter: ['img'],
       replacement: function (_: any, node: any) {
-          const attributes = ['data-src', 'data-original-src']
-          for (const attribute of attributes) {
-              const dataSrc: string = node.getAttribute(attribute)
-              if (dataSrc) {
-              return `![](${utils.fixUrl(dataSrc, options.articleUrl)})\n`
-              }
+        const attributes = ['data-src', 'data-original-src']
+        for (const attribute of attributes) {
+          const dataSrc: string = node.getAttribute(attribute)
+          if (dataSrc) {
+            return `![](${utils.fixUrl(dataSrc, options.articleUrl)})\n`
           }
-          const src = node.getAttribute('src')
-          if (src) {
-              return `![](${utils.fixUrl(node.getAttribute('src'), options.articleUrl)})\n`
-          }
-          return ''
+        }
+        const src = node.getAttribute('src')
+        if (src) {
+          return `![](${utils.fixUrl(node.getAttribute('src'), options.articleUrl)})\n`
+        }
+        return ''
       },
-  })
+    })
   }
-
 }

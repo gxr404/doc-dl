@@ -9,7 +9,8 @@ export const options = {
   imgDir: './img/',
 }
 
-const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
+const UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'
 
 export const puppeteerOptions = {
   args: [
@@ -19,8 +20,8 @@ export const puppeteerOptions = {
     '--window-position=0,0',
     '--ignore-certificate-errors',
     '--ignore-certificate-errors-spki-list',
-    `--user-agent=${UA}`
+    `--user-agent=${UA}`,
   ],
   headless: true,
-  ignoreHTTPSErrors: true
+  ignoreHTTPSErrors: true,
 }

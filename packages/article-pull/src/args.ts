@@ -24,7 +24,6 @@ const shellArgsInit = (): void => {
   program.parse(process.argv)
   const programOpt = program.opts()
 
-
   // 校验shell参数 并与就参数合并
   const argsKey = Object.keys(options)
   const shellArgs: { [key: string]: string } = {}
@@ -72,6 +71,4 @@ const checkUrl = (href: string): boolean => {
   return reg.test(href)
 }
 
-export {
-  shellArgsInit
-}
+export { shellArgsInit }

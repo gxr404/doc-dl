@@ -7,7 +7,8 @@ import * as TurndownService from 'turndown'
 export default function (turndownService: TurndownService): void {
   turndownService.addRule('wechatCodeBlock_02', {
     filter: (node) => {
-      if (!(node instanceof Object)) { // TODO node instanceof HTMLElement
+      if (!(node instanceof Object)) {
+        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'SECTION') {
@@ -16,13 +17,17 @@ export default function (turndownService: TurndownService): void {
       if (!node.className.includes('code-snippet__github')) {
         return false
       }
-      if (!node.querySelector('pre') || node.querySelectorAll('code').length === 0) {
+      if (
+        !node.querySelector('pre') ||
+        node.querySelectorAll('code').length === 0
+      ) {
         return false
       }
       return true
     },
     replacement: function (content: string, node: HTMLElement) {
-      if (!(node instanceof Object)) { // TODO node instanceof HTMLElement
+      if (!(node instanceof Object)) {
+        // TODO node instanceof HTMLElement
         return content
       }
       const pre = node.querySelector('pre')

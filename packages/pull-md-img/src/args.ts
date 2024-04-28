@@ -15,7 +15,10 @@ const shellArgsInit = (): void => {
   program
     .version(packageJson.version) //定义版本号
     .option('-p, --path <path>', 'markdown 目标文件')
-    .option('-s, --suffix <suffix>', '需要更改下载的图片的后缀的话 后缀(eg: -s jpg)')
+    .option(
+      '-s, --suffix <suffix>',
+      '需要更改下载的图片的后缀的话 后缀(eg: -s jpg)',
+    )
     .option('-d, --dir <path>', '生成的目录(eg: -d res)')
     .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)')
   // 帮助
@@ -79,6 +82,4 @@ const checkSuffix = (pathArg: string) => {
   return true
 }
 
-export {
-  shellArgsInit
-}
+export { shellArgsInit }

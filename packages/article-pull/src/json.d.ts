@@ -1,4 +1,4 @@
-declare module "*.json" {
+declare module '*.json' {
   interface anyObject {
     [key: string]: any
   }

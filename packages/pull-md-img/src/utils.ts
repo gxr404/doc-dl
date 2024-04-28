@@ -1,4 +1,3 @@
-
 import * as fs from 'fs'
 import * as path from 'path'
 import * as url from 'url'
@@ -15,7 +14,7 @@ const logger = getLogger()
  */
 const changeSuffix = (pathSrc: string, suffix: string): string => {
   const pathObj = path.parse(pathSrc)
-  return `${pathObj.dir !== '/' ? pathObj.dir+'/' : '/'}${pathObj.name}.${suffix}`
+  return `${pathObj.dir !== '/' ? pathObj.dir + '/' : '/'}${pathObj.name}.${suffix}`
 }
 
 /**
@@ -23,7 +22,7 @@ const changeSuffix = (pathSrc: string, suffix: string): string => {
  * @param {*} imgDir
  * @returns {Promise}
  */
-const createDir = (imgDir:string): Promise<any> => {
+const createDir = (imgDir: string): Promise<any> => {
   return new Promise((resolve, reject) => {
     mkDirs(imgDir, (e) => {
       if (e) reject(e)
@@ -41,13 +40,13 @@ const createDir = (imgDir:string): Promise<any> => {
  */
 const mkDirs = (dirname: string, callback: fs.NoParamCallback) => {
   fs.exists(dirname, function (exists) {
-      if (exists) {
-        callback(null)
-      } else {
-        mkDirs(path.dirname(dirname), () => {
-          fs.mkdir(dirname, callback)
-        })
-      }
+    if (exists) {
+      callback(null)
+    } else {
+      mkDirs(path.dirname(dirname), () => {
+        fs.mkdir(dirname, callback)
+      })
+    }
   })
 }
 
@@ -113,7 +112,7 @@ const getFileSate = (path: string): Promise<any> => {
       }
       resolve(stat)
     })
-  }).catch(e => {
+  }).catch((e) => {
     logger.error(e)
   })
 }
@@ -124,7 +123,10 @@ const getFileSate = (path: string): Promise<any> => {
  */
 const changeFileName = (pathSrc: string): string => {
   const pathObj = path.parse(pathSrc)
-  const fileName = (pathObj.name || '').replace(/~|:|\?|\*|\||\\|\/|\.|>|</g, '_')
+  const fileName = (pathObj.name || '').replace(
+    /~|:|\?|\*|\||\\|\/|\.|>|</g,
+    '_',
+  )
   const randomStr = String(Math.floor(Math.random() * 1000000)).padStart(6, '0')
   return `${pathObj.dir}/${fileName}-${randomStr}${pathObj.ext}`
 }
@@ -136,5 +138,5 @@ export {
   checkProtocol,
   readFile,
   getFileSate,
-  changeFileName
+  changeFileName,
 }

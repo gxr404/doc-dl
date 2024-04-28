@@ -6,13 +6,17 @@ export default function (options: IOptions) {
   return (turndownService: TurndownService): void => {
     turndownService.addRule('zhihuGif', {
       filter: (node) => {
-        if (!(node instanceof Object)) { // TODO node instanceof HTMLElement
+        if (!(node instanceof Object)) {
+          // TODO node instanceof HTMLElement
           return false
         }
         if (node.tagName !== 'IMG') {
           return false
         }
-        if (!node.getAttribute('class') || !node.getAttribute('data-thumbnail')) {
+        if (
+          !node.getAttribute('class') ||
+          !node.getAttribute('data-thumbnail')
+        ) {
           return false
         }
         const className = node.getAttribute('class') as string

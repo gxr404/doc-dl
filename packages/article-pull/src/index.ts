@@ -8,7 +8,7 @@ import articleTurndown from 'article-turndown'
 import { shellArgsInit } from './args'
 import { options, puppeteerOptions } from './options'
 import * as packageJson from '../package.json'
-import {createDir} from './utils'
+import { createDir } from './utils'
 
 type TOptions = typeof options
 interface AnyObject {
@@ -18,7 +18,11 @@ interface AnyObject {
 /**
  * 添加脚注额外信息
  */
-const addExtendInfo = (mdContent: string, options: TOptions, article: AnyObject): string => {
+const addExtendInfo = (
+  mdContent: string,
+  options: TOptions,
+  article: AnyObject,
+): string => {
   const title = options.title || article.title || ''
   if (title) {
     mdContent = `# ${title}\n<!--page header-->\n\n${mdContent}\n\n<!--page footer-->\n- 原文: ${options.url}`
@@ -43,34 +47,37 @@ const getDocument = async (url: string): Promise<string> => {
   // console.time('goto')
   await page.goto(url, {
     timeout: 0,
-    waitUntil: ['load', 'networkidle0']
+    waitUntil: ['load', 'networkidle0'],
     // TODO
     // waitUntil: ['domcontentloaded']
   })
   // console.timeEnd('goto')
 
   // console.time('eval')
-  const html = await page.$eval('html', node => node.outerHTML) || ''
+  const html = (await page.$eval('html', (node) => node.outerHTML)) || ''
   // console.timeEnd('eval')
 
   browser.close()
   return html
 }
 
-
 export const run = async (options: TOptions): Promise<void> => {
   const turndownService = new TurndownService({
-    codeBlockStyle: 'fenced'
+    codeBlockStyle: 'fenced',
   })
 
-  turndownService.use(articleTurndown({
-    articleUrl: options.url
-  }))
+  turndownService.use(
+    articleTurndown({
+      articleUrl: options.url,
+    }),
+  )
 
   const errorPrefix = `${packageJson.name}[ERROR]: `
   const infoPrefix = `${packageJson.name}[INFO]: `
 
-  console.log('----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----')
+  console.log(
+    '----由于爬取页面可能为SPA页面需等待页面所有js请求都加载完毕后爬取该过程比较耗时,请耐心等待----',
+  )
   console.log('爬取页面中...')
 
   const htmlContext = await getDocument(options.url).catch((e) => {
@@ -89,10 +96,10 @@ export const run = async (options: TOptions): Promise<void> => {
   const dom = new JSDOM(htmlContext)
   const newDom = dom.window.document.cloneNode(true) as Document
   const reader = new Readability(newDom, {
-      keepClasses: true
+    keepClasses: true,
   })
 
-  const article = reader.parse() || {title: options.title, content: '' }
+  const article = reader.parse() || { title: options.title, content: '' }
   const title = options.title || article.title
   let mdContent = turndownService.turndown(article.content)
 
@@ -103,18 +110,20 @@ export const run = async (options: TOptions): Promise<void> => {
 
   const oldMdContent = mdContent
 
-  mdContent = await mdImg.run(mdContent, {
-    path: '',
-    suffix: '',
-    dist: options.dist,
-    imgDir: `${options.imgDir}${Date.now()}`,
-    isIgnoreConsole: true
-  }).catch(err => {
-    console.log(`${errorPrefix}`)
-    console.log(err)
-    console.log(`${errorPrefix}图片下载失败, 仅作转换`)
-    return mdContent
-  })
+  mdContent = await mdImg
+    .run(mdContent, {
+      path: '',
+      suffix: '',
+      dist: options.dist,
+      imgDir: `${options.imgDir}${Date.now()}`,
+      isIgnoreConsole: true,
+    })
+    .catch((err) => {
+      console.log(`${errorPrefix}`)
+      console.log(err)
+      console.log(`${errorPrefix}图片下载失败, 仅作转换`)
+      return mdContent
+    })
 
   await createDir(`${options.dist}`)
 
