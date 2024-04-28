@@ -1,0 +1,6 @@
+dist
+types
+*.md
+*.html
+pnpm-lock.yaml
+.vscode
