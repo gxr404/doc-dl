@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { changeMarkdown, getImgList, run } from '../src/index'
 
 vi.mock('../src/config', () => {
-  const date = new Date(2000, 1, 1, 0, 0, 0)
+  const date = new Date(949334400000)
   vi.setSystemTime(date)
   return {
     default: {
