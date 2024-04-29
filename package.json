@@ -14,7 +14,7 @@
     "release": "node scripts/release.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "prepare": "husky",
-    "test": "echo test"
+    "test": "pnpm -r run test --run"
   },
   "author": "gxr404 <1650542259@qq.com>",
   "license": "ISC",
@@ -31,7 +31,8 @@
     "minimist": "^1.2.8",
     "prettier": "^3.2.5",
     "semver": "^7.6.0",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vitest": "^1.5.2"
   },
   "lint-staged": {
     "*.{js,json}": [

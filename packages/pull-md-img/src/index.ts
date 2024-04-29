@@ -1,13 +1,13 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import * as url from 'url'
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
 
-import * as progressBar from 'progress'
+import progressBar from 'progress'
 import getLogger from './log'
 import config from './config'
 import { shellArgsInit } from './args'
-import * as randUserAgent from 'rand-user-agent'
-import * as mime from 'mime-types'
+import randUserAgent from 'rand-user-agent'
+import mime from 'mime-types'
 
 import {
   createDir,
@@ -26,7 +26,7 @@ const logger = getLogger()
  * @param {*} data
  * @returns {string[]}
  */
-const getImgList = (data: string): Array<string> => {
+export const getImgList = (data: string): Array<string> => {
   let list = Array.from(data.match(config.mdImgReg) || [])
   list = list
     .map((itemUrl) => {
@@ -34,12 +34,7 @@ const getImgList = (data: string): Array<string> => {
       // 如果出现非http开头的图片 如 "./xx.png" 则跳过
       if (!/^http.*/g.test(itemUrl)) return ''
       const itemUrlObj = new url.URL(itemUrl)
-      itemUrl = url.format(itemUrlObj, {
-        fragment: false,
-        unicode: false,
-        auth: false,
-        search: false
-      })
+      itemUrl = `${itemUrlObj.origin}${itemUrlObj.pathname}`
       return itemUrl
     })
     .filter((url) => Boolean(url))
@@ -104,7 +99,6 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
             total: contentLength
           }
         )
-
         res.on('data', (chunk) => {
           // 输入后的回调
           out.write(chunk, () => {
@@ -140,7 +134,10 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
  * @param {array} imgList 图片列表
  * @return {string} 更改markdown中远程图片链接为本地链接
  */
-const changeMarkdown = (data: string, imgList: Array<string>): string => {
+export const changeMarkdown = (
+  data: string,
+  imgList: Array<string>
+): string => {
   // 创建新的img url list
   const newImgList = imgList.map((src) => {
     if (config.suffix) src = changeSuffix(src, config.suffix)
@@ -151,8 +148,9 @@ const changeMarkdown = (data: string, imgList: Array<string>): string => {
 
   let newData = data
   const list = data.match(config.mdImgReg) || []
+  const listSet = Array.from(new Set(list))
   // 替换其中url文本
-  list.forEach((src, index) => {
+  listSet.forEach((src, index) => {
     // console.log(src)
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg

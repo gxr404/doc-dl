@@ -1,8 +1,8 @@
-import * as fs from 'fs'
-import * as path from 'path'
-import * as url from 'url'
-import * as http from 'http'
-import * as https from 'https'
+import fs from 'fs'
+import path from 'path'
+import url from 'url'
+import http from 'http'
+import https from 'https'
 
 import getLogger from './log'
 const logger = getLogger()

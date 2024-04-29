@@ -1,8 +1,8 @@
-import * as path from 'path'
+import path from 'path'
 import { Command } from 'commander'
 import getLogger from './log'
 import config from './config'
-import * as packageJson from '../package.json'
+import packageJson from '../package.json'
 
 const logger = getLogger()
 

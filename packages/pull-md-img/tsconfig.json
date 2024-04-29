@@ -6,7 +6,8 @@
     "removeComments": true,
     "outDir": "dist",
     "declaration": true,
-    "declarationDir": "types"
+    "declarationDir": "types",
+    "esModuleInterop": true
   },
   "include": ["src/**/*"]
 }
