@@ -95,17 +95,17 @@ async function main() {
     console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-    const token = process.env.GITHUB_TOKEN
-    if (token) {
-      await run('git', [
-        'remote',
-        'set-url',
-        'origin',
-        `https://gxr404:${token}@github.com/gxr404/article-pull.git`
-      ])
-    }
+    // const token = process.env.GITHUB_TOKEN
+    // if (token) {
+    //   await run('git', [
+    //     'remote',
+    //     'set-url',
+    //     'origin',
+    //     `https://gxr404:${token}@github.com/gxr404/article-pull.git`
+    //   ])
+    // }
 
-    await run('git', ['push'].concat(token ? ['origin', 'main'] : []))
+    await run('git', ['push'])
   }
 
   console.log(`✓success release:v${targetVersion}`)
