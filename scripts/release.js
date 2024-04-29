@@ -163,9 +163,9 @@ async function publishPackage(pkgName, version, additionalFlags) {
       [
         'publish',
         '--access',
-        'public',
+        'public'
         // TODO
-        '--dry-run'
+        // '--dry-run'
       ],
       {
         cwd: getPkgRoot(pkgName),
