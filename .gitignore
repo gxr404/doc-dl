@@ -2,7 +2,6 @@ node_modules
 *.log
 .DS_Store
 **/test/dist
-.husky
 dist
 temp
 types
