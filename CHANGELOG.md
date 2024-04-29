@@ -1,3 +1,12 @@
+## 0.0.38 (2024-04-29)
+
+
+### Bug Fixes
+
+* **ci:** set version ([57d9bb4](https://github.com/gxr404/article-pull/commit/57d9bb4e572cf51ecb734bc1c4712ca3e8a6bfcd))
+
+
+
 ## 0.0.36 (2024-04-29)
 
 
