@@ -17,6 +17,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref_name }}
       - name: Set up Git
         run: |
           git config user.email "gxr40404@gmail.com"
