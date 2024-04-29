@@ -2,6 +2,7 @@ const fs = require('node:fs')
 const path = require('node:path')
 const minimist = require('minimist')
 const semver = require('semver')
+
 const packageJSON = require('../package.json')
 
 const argv = minimist(process.argv.slice(2), {
@@ -33,7 +34,9 @@ const packages = fs
  * @param {ReadonlyArray<string>} args
  * @param {import('execa').Options} opts
  */
-function run(bin, args, opts) {
+async function run(bin, args, opts) {
+  const { execa } = await import('execa')
+  console.log(execa)
   return execa(bin, args, { stdio: 'inherit', ...opts })
 }
 
@@ -68,15 +71,15 @@ async function main() {
   }
 
   // generate changelog
-  step('\nGenerating changelog...')
+  console.log('\nGenerating changelog...')
   await run(`pnpm`, ['run', 'changelog'])
 
   if (!argv.skipGit) {
     const { stdout } = await run('git', ['diff'], { stdio: 'pipe' })
     if (stdout) {
-      step('\nCommitting changes...')
-      await runIfNotDry('git', ['add', '-A'])
-      await runIfNotDry('git', ['commit', '-m', `release: v${targetVersion}`])
+      console.log('\nCommitting changes...')
+      await run('git', ['add', '-A'])
+      await run('git', ['commit', '-m', `release: v${targetVersion}`])
     } else {
       console.log('No changes to commit.')
     }
@@ -84,15 +87,15 @@ async function main() {
 
   // npm publish
   for (const pkg of packages) {
-    await publishPackage(pkg, targetVersion, additionalPublishFlags)
+    await publishPackage(pkg, targetVersion)
   }
 
   // push to GitHub
   if (!skipGit) {
-    step('\nPushing to GitHub...')
+    console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-    await runIfNotDry('git', ['push'])
+    await run('git', ['push'])
   }
 
   console.log(`✓success release:v${targetVersion}`)
