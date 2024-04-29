@@ -1,3 +1,12 @@
+## 0.0.36 (2024-04-29)
+
+
+### Bug Fixes
+
+* add commit release type ([f4596de](https://github.com/gxr404/article-pull/commit/f4596de7bc4f5a9e73cabc909a3c3b8ec432c58c))
+
+
+
 ## 0.0.34 (2024-04-29)
 
 
