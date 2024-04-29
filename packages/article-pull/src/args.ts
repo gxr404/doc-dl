@@ -1,5 +1,5 @@
 import { Command } from 'commander'
-import * as packageJson from '../package.json'
+import packageJson from '../package.json'
 import { options } from './options'
 
 /**
@@ -67,7 +67,7 @@ const checkOptions = (val: string, key: string) => {
  * @return {boolean}
  */
 const checkUrl = (href: string): boolean => {
-  const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?/
+  const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w\- ./?%&=]*)?/
   return reg.test(href)
 }
 

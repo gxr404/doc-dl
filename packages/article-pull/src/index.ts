@@ -1,13 +1,13 @@
-import * as fs from 'fs'
+import fs from 'fs'
 import { Readability } from '@mozilla/readability'
 import { JSDOM } from 'jsdom'
-import * as TurndownService from 'turndown'
-import * as puppeteer from 'puppeteer'
+import TurndownService from 'turndown'
+import puppeteer from 'puppeteer'
 import * as mdImg from 'pull-md-img'
 import articleTurndown from 'article-turndown'
 import { shellArgsInit } from './args'
 import { options, puppeteerOptions } from './options'
-import * as packageJson from '../package.json'
+import packageJson from '../package.json'
 import { createDir } from './utils'
 
 type TOptions = typeof options
