@@ -96,17 +96,16 @@ async function main() {
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
     const token = process.env.GITHUB_TOKEN
-    await run(
-      'git',
-      ['push'].concat(
-        token
-          ? [
-              `https://gxr404:${token}@github.com/gxr404/article-pull.git`,
-              'main'
-            ]
-          : []
-      )
-    )
+    if (token) {
+      await run('git', [
+        'remote',
+        'set-url',
+        'origin',
+        `https://gxr404:${token}@github.com/gxr404/article-pull.git`
+      ])
+    }
+
+    await run('git', ['push'].concat(token ? ['origin', 'main'] : []))
   }
 
   console.log(`✓success release:v${targetVersion}`)
