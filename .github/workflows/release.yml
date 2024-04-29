@@ -28,8 +28,8 @@ jobs:
 
       - name: Set version
         run: |
-          TAG=${{ github.event.release.tag_name }}
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3.0.0
