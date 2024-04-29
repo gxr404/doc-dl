@@ -55,7 +55,7 @@ async function main() {
 
   if (!argv.skipTests) {
     console.log(`Testing all packages... `)
-    await run('pnpm', ['run', 'test', '--run'])
+    await run('pnpm', ['run', 'test'])
   } else {
     console.log('Tests skipped')
   }
