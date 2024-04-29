@@ -18,13 +18,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@master
         with:
+          # ${{ github.ref_name }} 是 v1.x.x
           ref: main
       - name: Set up Git
         run: |
           git config user.email "gxr40404@gmail.com"
           git config user.name "ci"
           git remote set-url origin https://gxr404:${{ secrets.GITHUB_TOKEN }}@github.com/gxr404/article-pull.git
-          echo ${{ github.ref_name }}
 
       - name: Get version
         id: get_version

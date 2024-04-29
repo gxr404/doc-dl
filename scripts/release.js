@@ -86,9 +86,9 @@ async function main() {
   }
 
   // npm publish
-  // for (const pkg of packages) {
-  //   await publishPackage(pkg, targetVersion)
-  // }
+  for (const pkg of packages) {
+    await publishPackage(pkg, targetVersion)
+  }
 
   // push to GitHub
   if (!argv.skipGit) {
@@ -104,7 +104,6 @@ async function main() {
     //     `https://gxr404:${token}@github.com/gxr404/article-pull.git`
     //   ])
     // }
-    await run('git', ['status'])
     await run('git', ['push'])
   }
 
