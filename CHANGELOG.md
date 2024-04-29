@@ -1,3 +1,12 @@
+## 0.0.34 (2024-04-29)
+
+
+### Bug Fixes
+
+* **ci:** add test ([d13d77c](https://github.com/gxr404/article-pull/commit/d13d77c98de31b905640288966671daa1756164a))
+
+
+
 ## [0.0.27](https://github.com/gxr404/article-pull/compare/v0.0.26...v0.0.27) (2024-04-28)
 
 
