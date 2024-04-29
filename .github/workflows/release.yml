@@ -27,8 +27,9 @@ jobs:
           git remote set-url origin https://gxr404:${{ secrets.GITHUB_TOKEN }}@github.com/gxr404/article-pull.git
 
       - name: Set version
-        TAG=${{ github.event.release.tag_name }}
-        echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3.0.0
