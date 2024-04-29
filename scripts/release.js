@@ -91,7 +91,7 @@ async function main() {
   }
 
   // push to GitHub
-  if (!skipGit) {
+  if (!argv.skipGit) {
     console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
