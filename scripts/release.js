@@ -100,7 +100,10 @@ async function main() {
       'git',
       ['push'].concat(
         token
-          ? [`https://gxr404:${token}@github.com/gxr404/article-pull.git`]
+          ? [
+              `https://gxr404:${token}@github.com/gxr404/article-pull.git`,
+              'main'
+            ]
           : []
       )
     )
