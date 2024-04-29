@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { changeMarkdown, getImgList, run } from '../src/index'
 
 vi.mock('../src/config', () => {
-  const date = new Date(949334400000)
+  const date = new Date(Date.UTC(2000, 0))
   vi.setSystemTime(date)
   return {
     default: {
@@ -58,7 +58,7 @@ describe('Change markdown based on image list', () => {
 
     const newMd = changeMarkdown(mdStr, ['1xxxx.jpg', '2xxxx.jpg'])
     expect(newMd).toBe(
-      `- ![1.jpg](./test-img/949334400000/1xxxx.jpg)\n- ![2.jpg](./test-img/949334400000/2xxxx.jpg)`
+      `- ![1.jpg](./test-img/946684800000/1xxxx.jpg)\n- ![2.jpg](./test-img/946684800000/2xxxx.jpg)`
     )
   })
   // 相同url的图片 用相同的本地文件
@@ -76,12 +76,12 @@ describe('Change markdown based on image list', () => {
 
     expect(newMd).toBe(
       [
-        '- ![1.jpg](./test-img/949334400000/1xxxx.jpg)',
-        '- ![2.jpg](./test-img/949334400000/2xxxx.jpg)',
-        '- ![1.jpg](./test-img/949334400000/1xxxx.jpg)',
-        '- ![3.jpg](./test-img/949334400000/3xxxx.jpg)',
-        '- ![2.jpg](./test-img/949334400000/2xxxx.jpg)',
-        '- ![1.jpg](./test-img/949334400000/1xxxx.jpg)'
+        '- ![1.jpg](./test-img/946684800000/1xxxx.jpg)',
+        '- ![2.jpg](./test-img/946684800000/2xxxx.jpg)',
+        '- ![1.jpg](./test-img/946684800000/1xxxx.jpg)',
+        '- ![3.jpg](./test-img/946684800000/3xxxx.jpg)',
+        '- ![2.jpg](./test-img/946684800000/2xxxx.jpg)',
+        '- ![1.jpg](./test-img/946684800000/1xxxx.jpg)'
       ].join('\n')
     )
   })
