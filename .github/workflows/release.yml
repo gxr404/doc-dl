@@ -1,12 +1,9 @@
-  #  - name: Get version
-  #       id: get_version
-  #       uses: battila7/get-version-action@v2
 name: Release
 
 on:
   push:
     tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+      - 'v*'
 
 permissions: {}
 jobs:
@@ -39,24 +36,3 @@ jobs:
 
       - name: run release script
         run: pnpm run release ${{ steps.get_version.outputs.version-without-v }}
-
-    permissions:
-      contents: write
-    runs-on: ubuntu-20.04
-    needs: [create-release, build-tauri, build-clip-extension, build-browser-extension]
-
-    steps:
-      - name: publish release
-        id: publish-release
-        uses: actions/github-script@v6
-        env:
-          release_id: ${{ needs.create-release.outputs.release_id }}
-        with:
-          script: |
-            github.rest.repos.updateRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              release_id: process.env.release_id,
-              draft: false,
-              prerelease: false
-            })
