@@ -95,7 +95,7 @@ async function main() {
     console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-    const token = process.env.NPM_TOKEN
+    const token = process.env.GITHUB_TOKEN
     await run(
       'git',
       ['push'].concat(
@@ -158,7 +158,7 @@ async function publishPackage(pkgName, version, additionalFlags) {
   try {
     // Don't change the package manager here as we rely on pnpm to handle
     // workspace:* deps
-    const npmToken = process.env.GH_TOKEN
+    const npmToken = process.env.NPM_TOKEN
     if (npmToken) {
       await run('pnpm', [
         'config',
