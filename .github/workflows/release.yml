@@ -17,7 +17,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@master
-
+      - run: |
+          echo ${{ github.workspace }}
+          echo $GITHUB_WORKSPACE
       - name: Get version
         id: get_version
         uses: battila7/get-version-action@v2
