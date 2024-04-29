@@ -163,7 +163,8 @@ async function publishPackage(pkgName, version, additionalFlags) {
       [
         'publish',
         '--access',
-        'public'
+        'public',
+        '--no-git-checks'
         // TODO
         // '--dry-run'
       ],
