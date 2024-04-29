@@ -95,7 +95,15 @@ async function main() {
     console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-    await run('git', ['push'])
+    const token = process.env.GH_TOKEN
+    await run(
+      'git',
+      ['push'].concat(
+        token
+          ? [`https://gxr404:${token}@github.com/gxr404/article-pull.git`]
+          : []
+      )
+    )
   }
 
   console.log(`✓success release:v${targetVersion}`)
