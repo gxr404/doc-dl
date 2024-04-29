@@ -3,6 +3,7 @@
     "commitlint",
     "domcontentloaded",
     "execa",
-    "networkidle"
+    "networkidle",
+    "npmjs"
   ]
 }

@@ -158,6 +158,15 @@ async function publishPackage(pkgName, version, additionalFlags) {
   try {
     // Don't change the package manager here as we rely on pnpm to handle
     // workspace:* deps
+    const npmToken = process.env.GH_TOKEN
+    if (npmToken) {
+      await run('pnpm', [
+        'config',
+        'set',
+        '//registry.npmjs.org/:_authToken',
+        npmToken
+      ])
+    }
     await run(
       'pnpm',
       [
