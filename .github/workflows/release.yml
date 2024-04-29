@@ -26,9 +26,9 @@ jobs:
           git config user.name "ci"
           git remote set-url origin https://gxr404:${{ secrets.GITHUB_TOKEN }}@github.com/gxr404/article-pull.git
 
-      - name: Get version
-        id: get_version
-        uses: battila7/get-version-action@v2
+      - name: Set version
+        TAG=${{ github.event.release.tag_name }}
+        echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3.0.0
@@ -43,4 +43,4 @@ jobs:
         run: pnpm install
 
       - name: run release script
-        run: pnpm run release ${{ steps.get_version.outputs.version-without-v }}
+        run: pnpm run release ${VERSION}
