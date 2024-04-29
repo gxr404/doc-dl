@@ -182,7 +182,7 @@ async function publishPackage(pkgName, version, additionalFlags) {
         stdio: 'pipe'
       }
     )
-    console.log(pico.green(`Successfully published ${pkgName}@${version}`))
+    console.log(`Successfully published ${pkgName}@${version}`)
   } catch (/** @type {any} */ e) {
     if (e && e.stderr && e.stderr.match(/previously published/)) {
       console.log(`Skipping already published: ${pkgName}`)
