@@ -1,6 +1,6 @@
 {
   "name": "article-pull-monorepo",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "packageManager": "pnpm@9.0.5",
   "description": "",
   "main": "index.js",

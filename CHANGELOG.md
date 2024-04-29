@@ -1,3 +1,12 @@
+## 0.0.39 (2024-04-29)
+
+
+### Bug Fixes
+
+* **ci:** 移除release多余--run ([7d864ec](https://github.com/gxr404/article-pull/commit/7d864ec49b93167c61d2e6fba56b889d0516acc4))
+
+
+
 ## 0.0.38 (2024-04-29)
 
 
