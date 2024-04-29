@@ -95,7 +95,7 @@ async function main() {
     console.log('\nPushing to GitHub...')
     // await runIfNotDry('git', ['tag', `v${targetVersion}`])
     // await runIfNotDry('git', ['push', 'origin', `refs/tags/v${targetVersion}`])
-    const token = process.env.GH_TOKEN
+    const token = process.env.NPM_TOKEN
     await run(
       'git',
       ['push'].concat(
