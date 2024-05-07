@@ -1,6 +1,6 @@
 {
   "name": "pull-md-img",
-  "version": "0.0.39",
+  "version": "0.0.40",
   "packageManager": "pnpm@9.0.5",
   "description": "download img in markdown",
   "author": "gxr404 <1650542259@qq.com>",
