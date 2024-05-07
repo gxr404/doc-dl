@@ -5,7 +5,8 @@ const config = {
   imgDir: `./img/${Date.now()}`,
   // markdown img 正则 注意多行匹配
   mdImgReg: /!\[(.*?)\]\((.*?)\)/gm,
-  isIgnoreConsole: false
+  isIgnoreConsole: false,
+  referer: ''
 }
 
 export default config

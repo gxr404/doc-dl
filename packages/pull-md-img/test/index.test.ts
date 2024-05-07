@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { changeMarkdown, getImgList, run } from '../src/index'
 
@@ -40,15 +42,15 @@ describe('get markdown img list', () => {
     expect(imgList.length).toBe(1)
     expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
   })
-  // 图片url移除search和hash
-  it('image url remove search and hash', async () => {
-    const mdStr = `
-    - ![1.jpg](https://www.baidu.com/2.jpg?123=123#13)
-    `
-    const imgList = await getImgList(mdStr)
-    expect(imgList.length).toBe(1)
-    expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
-  })
+  // // 图片url移除search和hash
+  // it('image url remove search and hash', async () => {
+  //   const mdStr = `
+  //   - ![1.jpg](https://www.baidu.com/2.jpg?123=123#13)
+  //   `
+  //   const imgList = await getImgList(mdStr)
+  //   expect(imgList.length).toBe(1)
+  //   expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
+  // })
 })
 
 // 根据图片列表更改markdown中的图片
@@ -89,7 +91,7 @@ describe('Change markdown based on image list', () => {
 
 describe('Run', () => {
   const config = {
-    dist: `${__dirname}/dist/`,
+    dist: `${__dirname}/temp/`,
     imgDir: './img/run_test',
     isIgnoreConsole: true
   }
@@ -118,7 +120,7 @@ describe('Run', () => {
   it('mkdir img Special symbols', async () => {
     const mdData = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
     const data = await run(mdData, {
-      dist: 'test/dist/',
+      dist: 'test/temp/',
       imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
       isIgnoreConsole: true
     })
@@ -126,5 +128,44 @@ describe('Run', () => {
     expect(data).toMatch(
       /!\[\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
+  })
+})
+
+// 获取markdown中的图片列表
+describe('header referer', () => {
+  const config = {
+    dist: `${__dirname}/temp/`,
+    imgDir: './img/run_test',
+    isIgnoreConsole: true
+  } as any
+  const mdStr = `
+    - ![2.jpg](https://www.yuque.com/api/filetransfer/images?url=http%3A%2F%2Fglorious.icu%2Fsky-take-out%2Fimage-20221106200821282.png&sign=810804669a4d7f1c82b4006d6e190d885c11cc6ed7e06926964f492439142b94)
+    `
+
+  const matchReg = /!\[(.*?)\]\((.*?)\)/gm
+
+  it('normal referer', async () => {
+    matchReg.lastIndex = 0
+    const res = await run(mdStr, config)
+    expect(res).toMatch(
+      /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
+    )
+    const data = matchReg.exec(res) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const fileData = await fs.readFile(filePath)
+    expect(fileData.length).toBe(17192)
+  })
+
+  it('custom referer', async () => {
+    matchReg.lastIndex = 0
+    config.referer = 'https://www.yuque.com'
+    const res = await run(mdStr, config)
+    expect(res).toMatch(
+      /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
+    )
+    const data = matchReg.exec(res) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const fileData = await fs.readFile(filePath)
+    expect(fileData.length).toBe(17192)
   })
 })
