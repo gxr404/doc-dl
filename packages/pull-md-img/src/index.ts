@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import url from 'url'
 
 import progressBar from 'progress'
 import getLogger from './log'
@@ -33,8 +32,8 @@ export const getImgList = (data: string): Array<string> => {
       itemUrl = itemUrl.replace(config.mdImgReg, '$2')
       // 如果出现非http开头的图片 如 "./xx.png" 则跳过
       if (!/^http.*/g.test(itemUrl)) return ''
-      const itemUrlObj = new url.URL(itemUrl)
-      itemUrl = `${itemUrlObj.origin}${itemUrlObj.pathname}`
+      // const itemUrlObj = new url.URL(itemUrl)
+      // itemUrl = `${itemUrlObj.origin}${itemUrlObj.pathname}`
       return itemUrl
     })
     .filter((url) => Boolean(url))
@@ -56,64 +55,63 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   fileName = changeFileName(fileName)
   if (config.suffix) fileName = changeSuffix(fileName, config.suffix)
 
+  let referer = url
+  if (config.referer) referer = config.referer
+
   // 检查协议
   const lib = checkProtocol(url)
+  const headers = {
+    'user-agent': randUserAgent('desktop', 'chrome'),
+    referer
+  }
   return new Promise((resolve, reject) => {
-    const req = lib.request(
-      url,
-      {
-        headers: {
-          'user-agent': randUserAgent('desktop', 'chrome')
-        }
-      },
-      (res) => {
-        // url是否带有文件后缀 没有则尝试从content-type获取
-        const isExt = path.parse(fileName).ext
-        const contentType = res.headers['content-type']
-        if (!isExt) {
-          const fileSuffix = mime.extension(contentType)
-          if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
-        }
-
-        // 检查是否重定向
-        const isRedirect = [302, 301].indexOf(res.statusCode)
-        if (~isRedirect) {
-          if (!config.isIgnoreConsole) {
-            logger.info(`${fileName} 重定向...`)
-          }
-          // 重定向则向 响应头的location 重新下载
-          resolve(downloadImg(res.headers['location'], imgDir))
-          return
-        }
-
-        const contentLength = parseInt(res.headers['content-length'], 10)
-        const distPath = `${imgDir}/${fileName}`
-        const out = fs.createWriteStream(distPath)
-        const disableProgressBar = isNaN(contentLength)
-        const bar = new progressBar(
-          `downloading ${fileName} [:bar] :rate/bps :percent :etas`,
-          {
-            complete: '=',
-            incomplete: ' ',
-            width: 20,
-            total: contentLength
-          }
-        )
-        res.on('data', (chunk) => {
-          // 输入后的回调
-          out.write(chunk, () => {
-            if (!config.isIgnoreConsole && !disableProgressBar) {
-              bar.tick(chunk.length)
-            }
-            // logger.error('file wirte error: ',e)
-          })
-        })
-        res.on('end', () => {
-          // logger.info(`${fileName} download OK`)
-          resolve(distPath)
-        })
+    const req = lib.request(url, { headers }, (res) => {
+      // url是否带有文件后缀 没有则尝试从content-type获取
+      const isExt = path.parse(fileName).ext
+      const contentType = res.headers['content-type']
+      if (!isExt) {
+        const fileSuffix = mime.extension(contentType)
+        if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
       }
-    )
+
+      // 检查是否重定向
+      const isRedirect = [302, 301].indexOf(res.statusCode)
+      if (~isRedirect) {
+        if (!config.isIgnoreConsole) {
+          logger.info(`${fileName} 重定向...`)
+        }
+        // 重定向则向 响应头的location 重新下载
+        resolve(downloadImg(res.headers['location'], imgDir))
+        return
+      }
+
+      const contentLength = parseInt(res.headers['content-length'], 10)
+      const distPath = `${imgDir}/${fileName}`
+      const out = fs.createWriteStream(distPath)
+      const disableProgressBar = isNaN(contentLength)
+      const bar = new progressBar(
+        `downloading ${fileName} [:bar] :rate/bps :percent :etas`,
+        {
+          complete: '=',
+          incomplete: ' ',
+          width: 20,
+          total: contentLength
+        }
+      )
+      res.on('data', (chunk) => {
+        // 输入后的回调
+        out.write(chunk, () => {
+          if (!config.isIgnoreConsole && !disableProgressBar) {
+            bar.tick(chunk.length)
+          }
+          // logger.error('file wirte error: ',e)
+        })
+      })
+      res.on('end', () => {
+        // logger.info(`${fileName} download OK`)
+        resolve(distPath)
+      })
+    })
     req.on('error', (e) => {
       if (!config.isIgnoreConsole) {
         logger.error(`download ${url} error`)
@@ -149,13 +147,14 @@ export const changeMarkdown = (
   let newData = data
   const list = data.match(config.mdImgReg) || []
   const listSet = Array.from(new Set(list))
+  let listIndex = 0
   // 替换其中url文本
-  listSet.forEach((src, index) => {
-    // console.log(src)
+  listSet.forEach((src) => {
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg
       const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
-      newData = newData.replace(imgReg, '![$1](' + newImgList[index] + ')')
+      newData = newData.replace(imgReg, '![$1](' + newImgList[listIndex] + ')')
+      listIndex = listIndex + 1
     }
   })
   return newData
