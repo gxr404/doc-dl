@@ -1,3 +1,12 @@
+## 0.0.41 (2024-05-07)
+
+
+### Bug Fixes
+
+* **article-pull:** 添加默认值 ([0299cae](https://github.com/gxr404/article-pull/commit/0299cae3eae3250966c9a3d6d40d1a1ef7237809))
+
+
+
 ## 0.0.40 (2024-05-07)
 
 
