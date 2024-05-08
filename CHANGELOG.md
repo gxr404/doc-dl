@@ -1,3 +1,12 @@
+## 0.0.44 (2024-05-08)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 不对dist配置进行特殊字符替换,因为可能存在绝对路径 ([a8e52fd](https://github.com/gxr404/article-pull/commit/a8e52fdd634f9a62ee2bb4e14901d9b76f32c052))
+
+
+
 ## 0.0.43 (2024-05-08)
 
 
