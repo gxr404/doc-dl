@@ -40,6 +40,9 @@ export const getImgList = (data: string): Array<string> => {
   // 去重
   const resSet = new Set(list)
   list = Array.from(resSet)
+  if (typeof config.transform === 'function') {
+    list = list.map((url) => config.transform(url))
+  }
   return list
 }
 

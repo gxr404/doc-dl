@@ -169,3 +169,30 @@ describe('header referer', () => {
     expect(fileData.length).toBe(17192)
   })
 })
+
+// 图片转换函数
+describe('transform', () => {
+  const config = {
+    dist: `${__dirname}/temp/`,
+    imgDir: './img/run_test',
+    isIgnoreConsole: true
+  } as any
+  const mdStr = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+  const matchReg = /!\[(.*?)\]\((.*?)\)/gm
+
+  it('custom transform', async () => {
+    matchReg.lastIndex = 0
+    config.transform = (url) => {
+      return url ===
+        'https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png'
+        ? 'https://news-bos.cdn.bcebos.com/mvideo/log-news.png'
+        : url
+    }
+    const res = await run(mdStr, config)
+    const data = matchReg.exec(res) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const fileData = await fs.readFile(filePath)
+    // 24774
+    expect(fileData.length).toBe(88360)
+  })
+})

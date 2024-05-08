@@ -6,7 +6,8 @@ const config = {
   // markdown img 正则 注意多行匹配
   mdImgReg: /!\[(.*?)\]\((.*?)\)/gm,
   isIgnoreConsole: false,
-  referer: ''
+  referer: '',
+  transform: (url: string) => url
 }
 
 export default config
