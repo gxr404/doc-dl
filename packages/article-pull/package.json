@@ -1,6 +1,6 @@
 {
   "name": "article-pull",
-  "version": "0.0.41",
+  "version": "0.0.42",
   "packageManager": "pnpm@9.0.5",
   "description": "article-pull",
   "author": "gxr404 <1650542259@qq.com>",

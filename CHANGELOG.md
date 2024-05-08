@@ -1,3 +1,12 @@
+## 0.0.42 (2024-05-08)
+
+
+### Features
+
+* **pull-md-img:** 添加transform方法 ([85c75e5](https://github.com/gxr404/article-pull/commit/85c75e5297183d8666f96cecd63f3699ff72f2fd))
+
+
+
 ## 0.0.41 (2024-05-07)
 
 
