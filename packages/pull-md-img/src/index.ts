@@ -52,7 +52,15 @@ export const getImgList = (data: string): Array<string> => {
  * @param {*} imgDir
  */
 const downloadImg = (url: string, imgDir: string): Promise<string> => {
-  let fileName = path.basename(url)
+  let fileName = ''
+  try {
+    // fix url --> 有种特殊情况 ![](http://xxx "xxx")
+    const { pathname, href } = new URL(url)
+    fileName = path.basename(pathname)
+    url = href
+  } catch (e) {
+    fileName = path.basename(url)
+  }
   // 移除带有 1.jpg?xxx或 1.jpg#12的 fileName
   fileName = fileName.replace(/(\?.*)|(#.*)/g, '')
   fileName = changeFileName(fileName)
