@@ -7,41 +7,22 @@ on:
 
 permissions: {}
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  build:
     permissions:
-      contents: write
+      contents: write # to create release (yyx990803/release-tag)
+
+    name: Create Release
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@master
+      - name: Create Release for Tag
+        id: release_tag
+        uses: yyx990803/release-tag@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          # ${{ github.ref_name }} 是 v1.x.x
-          ref: main
-      - name: Set up Git
-        run: |
-          git config user.email "gxr40404@gmail.com"
-          git config user.name "ci"
-          git remote set-url origin https://gxr404:${{ secrets.GITHUB_TOKEN }}@github.com/gxr404/article-pull.git
-
-      - name: Set version
-        run: |
-          VERSION=${GITHUB_REF_NAME#v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3.0.0
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.node-version'
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm install
-
-      - name: run release script
-        run: pnpm run release ${VERSION}
+          tag_name: ${{ github.ref }}
+          body: |
+            For stable releases, please refer to [CHANGELOG.md](https://github.com/vuejs/core/blob/main/CHANGELOG.md) for details.
+            For pre-releases, please refer to [CHANGELOG.md](https://github.com/vuejs/core/blob/minor/CHANGELOG.md) of the `minor` branch.
