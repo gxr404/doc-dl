@@ -164,7 +164,14 @@ export const changeMarkdown = (
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg
       const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
-      newData = newData.replace(imgReg, '![$1](' + newImgList[listIndex] + ')')
+      newData = newData.replace(imgReg, (_, $1) => {
+        let altText = $1
+        if (!altText) {
+          const fileName = path.basename(src)
+          altText = fileName.replace(/\?(.*)|#(.*)/, '')
+        }
+        return `![${altText}](${newImgList[listIndex]})`
+      })
       listIndex = listIndex + 1
     }
   })

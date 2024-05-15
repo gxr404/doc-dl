@@ -87,6 +87,14 @@ describe('Change markdown based on image list', () => {
       ].join('\n')
     )
   })
+
+  it('markdown image without alt, then set default alt', async () => {
+    const mdStr = `- ![](https://www.baidu.com/1.jpg?123=123#13)\n- ![2.jpg](https://www.baidu.com/2.jpg?123=123#13)`
+    const newMd = changeMarkdown(mdStr, ['1xxxx.jpg', '2xxxx.jpg'])
+    expect(newMd).toBe(
+      `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)\n- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`
+    )
+  })
 })
 
 describe('Run', () => {
@@ -97,18 +105,18 @@ describe('Run', () => {
   }
 
   it('normal', async () => {
-    const mdData = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
 
     const newMdData = await run(mdData, config)
     expect(newMdData).toMatch(
-      /!\[\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
+      /!\[test\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
 
   it('content-type suffix test', async () => {
-    const mdData = `![](https://mmbiz.qpic.cn/mmbiz_png/2esNbY6p4sZrUzvXjmsXNsLIEiaUDznZiaF3qkkcWeSxAbm8cPEHN8rszoadUDFYyWYdHIIHGI0C4aPntRw07pBg/640)`
+    const mdData = `![test](https://mmbiz.qpic.cn/mmbiz_png/2esNbY6p4sZrUzvXjmsXNsLIEiaUDznZiaF3qkkcWeSxAbm8cPEHN8rszoadUDFYyWYdHIIHGI0C4aPntRw07pBg/640)`
     const data = await run(mdData, config)
-    expect(data).toMatch(/!\[\]\(\.\/img\/run_test\/640-\d{6}\.png\)/)
+    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/640-\d{6}\.png\)/)
   })
 
   it('ignore local img', async () => {
@@ -118,7 +126,7 @@ describe('Run', () => {
   })
 
   it('mkdir img Special symbols', async () => {
-    const mdData = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
     const data = await run(mdData, {
       dist: 'test/temp/',
       imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
@@ -126,7 +134,7 @@ describe('Run', () => {
     })
 
     expect(data).toMatch(
-      /!\[\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
+      /!\[test\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
 })
