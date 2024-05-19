@@ -1,5 +1,5 @@
 {
-  "name": "article-pull-monorepo",
+  "name": "doc-dl-monorepo",
   "version": "0.0.45",
   "packageManager": "pnpm@9.0.5",
   "description": "",
@@ -16,7 +16,7 @@
     "prepare": "husky",
     "test": "pnpm -r run test --run"
   },
-  "author": "gxr404 <1650542259@qq.com>",
+  "author": "gxr404 <1gxr40404@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
@@ -38,7 +38,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gxr404/article-pull.git"
+    "url": "git+https://github.com/gxr404/doc-dl.git"
   },
   "lint-staged": {
     "*.{js,json}": [

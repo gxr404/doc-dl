@@ -3,7 +3,7 @@
   "version": "0.0.45",
   "packageManager": "pnpm@9.0.5",
   "description": "download img in markdown",
-  "author": "gxr404 <1650542259@qq.com>",
+  "author": "gxr404 <1gxr40404@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",

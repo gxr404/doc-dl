@@ -1,9 +1,9 @@
 {
-  "name": "article-pull",
+  "name": "doc-dl",
   "version": "0.0.45",
   "packageManager": "pnpm@9.0.5",
-  "description": "article-pull",
-  "author": "gxr404 <1650542259@qq.com>",
+  "description": "doc downloader",
+  "author": "gxr404 <1gxr40404@gmail.com>",
   "homepage": "",
   "license": "ISC",
   "main": "dist/index.js",
@@ -12,8 +12,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "keywords": [
-    "article-pull",
-    "article download",
+    "doc-dl",
+    "document download",
     "spider",
     "cli",
     "markdown"
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@mozilla/readability": "0.4.2",
-    "article-turndown": "workspace:*",
+    "@doc-dl/turndown": "workspace:*",
     "commander": "^8.2.0",
     "jsdom": "21.1.0",
     "pull-md-img": "workspace:*",
