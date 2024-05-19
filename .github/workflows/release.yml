@@ -25,4 +25,3 @@ jobs:
           tag_name: ${{ github.ref }}
           body: |
             Please refer to [CHANGELOG.md](https://github.com/gxr404/doc-dl/blob/main/CHANGELOG.md) for details.
-            echo 123
