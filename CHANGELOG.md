@@ -1,3 +1,12 @@
+## [0.0.46](https://github.com/gxr404/doc-dl/compare/v0.0.45...v0.0.46) (2024-05-19)
+
+
+### Features
+
+* renaming  "article-pull"  to "doc-dl" ([305ac73](https://github.com/gxr404/doc-dl/commit/305ac73b889d4edcd5b697e0956412beaf089840))
+
+
+
 ## [0.0.45](https://github.com/gxr404/doc-dl/compare/v0.0.44...v0.0.45) (2024-05-15)
 
 
