@@ -146,6 +146,12 @@ describe('Run', () => {
       /!\[test\]\(\.\/img\/run_test\/eda8490a0609d437f24c116bf72df379_200x200-\d{6}\.webp\)/
     )
   })
+  // 后缀名以content-type优先 jpg类型需识别为 jpeg
+  it('Suffix names prioritize content-type', async () => {
+    const mdData = `![test](http://www.xzclass.com/img.php?img=https://mmbiz.qpic.cn/sz_mmbiz_png/pUm6Hxkd434kficgNzJa7NqvNOg406ol3iajYjgeh12Q61pLtt3x2xZ8c2xJx5U8tViczPdvRvdI5xmlMbavtKFPw/640?wx_fmt=png)`
+    const newMdData = await run(mdData, config)
+    expect(newMdData).toMatch(/!\[test\]\(\.\/img\/run_test\/img-\d{6}\.jpeg\)/)
+  })
 })
 
 // 获取markdown中的图片列表

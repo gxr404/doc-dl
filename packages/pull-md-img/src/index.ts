@@ -78,7 +78,12 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const req = lib.request(url, { headers }, (res) => {
       // 优先使用content-type识别的文件后缀
-      const contentType = res.headers['content-type']
+      let contentType = res.headers['content-type']
+      // 'image/jpg' 需要识别成 'image/jpeg', 因为mime类型只有 jpeg
+      // https://stackoverflow.com/questions/33692835/is-the-mime-type-image-jpg-the-same-as-image-jpeg
+      if (contentType === 'image/jpg') {
+        contentType = 'image/jpeg'
+      }
       const fileSuffix = mime.extension(contentType)
       if (fileSuffix) {
         fileName = changeSuffix(fileName, fileSuffix)
