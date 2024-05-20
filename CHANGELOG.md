@@ -1,3 +1,12 @@
+## [0.0.47](https://github.com/gxr404/doc-dl/compare/v0.0.46...v0.0.47) (2024-05-20)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 下载的图片后缀优先以content-type为准 ([ba6418a](https://github.com/gxr404/doc-dl/commit/ba6418aba0107106050694e4350bcd503a4daa8a))
+
+
+
 ## [0.0.46](https://github.com/gxr404/doc-dl/compare/v0.0.45...v0.0.46) (2024-05-19)
 
 
