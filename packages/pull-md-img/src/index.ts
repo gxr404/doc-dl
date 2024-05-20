@@ -77,12 +77,11 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
   }
   return new Promise((resolve, reject) => {
     const req = lib.request(url, { headers }, (res) => {
-      // url是否带有文件后缀 没有则尝试从content-type获取
-      const isExt = path.parse(fileName).ext
+      // 优先使用content-type识别的文件后缀
       const contentType = res.headers['content-type']
-      if (!isExt) {
-        const fileSuffix = mime.extension(contentType)
-        if (fileSuffix) fileName = changeSuffix(fileName, fileSuffix)
+      const fileSuffix = mime.extension(contentType)
+      if (fileSuffix) {
+        fileName = changeSuffix(fileName, fileSuffix)
       }
 
       // 检查是否重定向

@@ -137,6 +137,15 @@ describe('Run', () => {
       /!\[test\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
+  // 后缀名以content-type优先
+  it('Suffix names prioritize content-type', async () => {
+    const mdData = `![test](https://p6-passport.byteacctimg.com/img/user-avatar/eda8490a0609d437f24c116bf72df379~200x200.awebp)`
+
+    const newMdData = await run(mdData, config)
+    expect(newMdData).toMatch(
+      /!\[test\]\(\.\/img\/run_test\/eda8490a0609d437f24c116bf72df379_200x200-\d{6}\.webp\)/
+    )
+  })
 })
 
 // 获取markdown中的图片列表
