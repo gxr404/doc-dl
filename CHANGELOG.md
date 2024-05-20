@@ -1,3 +1,12 @@
+## [0.0.48](https://github.com/gxr404/doc-dl/compare/v0.0.47...v0.0.48) (2024-05-20)
+
+
+### Bug Fixes
+
+* **pull-md-img:** image/jpg类型不是标准的mime类型, 手动修复为jpeg ([97f6a3f](https://github.com/gxr404/doc-dl/commit/97f6a3fefec25c2c5823b7f817ef6fe783cc1a8e))
+
+
+
 ## [0.0.47](https://github.com/gxr404/doc-dl/compare/v0.0.46...v0.0.47) (2024-05-20)
 
 
