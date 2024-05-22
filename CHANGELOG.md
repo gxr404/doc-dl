@@ -1,3 +1,12 @@
+## [0.0.49](https://github.com/gxr404/doc-dl/compare/v0.0.48...v0.0.49) (2024-05-22)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 图片名称最多保留100个字符, 避免太长报错 ([6092067](https://github.com/gxr404/doc-dl/commit/6092067622f3e694557061fce94577563c493a99))
+
+
+
 ## [0.0.48](https://github.com/gxr404/doc-dl/compare/v0.0.47...v0.0.48) (2024-05-20)
 
 

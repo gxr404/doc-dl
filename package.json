@@ -1,6 +1,6 @@
 {
   "name": "doc-dl-monorepo",
-  "version": "0.0.48",
+  "version": "0.0.49",
   "packageManager": "pnpm@9.0.5",
   "description": "",
   "main": "index.js",
