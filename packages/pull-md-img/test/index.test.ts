@@ -152,6 +152,16 @@ describe('Run', () => {
     const newMdData = await run(mdData, config)
     expect(newMdData).toMatch(/!\[test\]\(\.\/img\/run_test\/img-\d{6}\.jpeg\)/)
   })
+
+  // 图片名称太长仅保留100个字符
+  it('img name too long', async () => {
+    const mdData =
+      '![test](https://gxr404.github.io/gxr_test/11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111.jpg)'
+    const newMdData = await run(mdData, config)
+    expect(newMdData).toMatch(
+      /!\[test\]\(\.\/img\/run_test\/1{100}-\d{6}\.jpeg\)/
+    )
+  })
 })
 
 // 获取markdown中的图片列表
