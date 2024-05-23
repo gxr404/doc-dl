@@ -3,10 +3,12 @@ import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { changeMarkdown, getImgList, run } from '../src/index'
 
-vi.mock('../src/config', () => {
+vi.mock('../src/config', async (importOriginal) => {
   const date = new Date(Date.UTC(2000, 0))
   vi.setSystemTime(date)
+  const mod = await importOriginal<typeof import('../src/config')>()
   return {
+    ...mod,
     default: {
       path: 'test',
       suffix: '',
@@ -245,5 +247,22 @@ describe('transform', () => {
     const fileData = await fs.readFile(filePath)
     // 24774
     expect(fileData.length).toBe(88360)
+  })
+})
+
+// 相同的图片只下载一张
+describe('same image', () => {
+  const config = {
+    dist: `${__dirname}/temp/`,
+    imgDir: './img/run_test',
+    isIgnoreConsole: true
+  } as any
+  const mdStr = `![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)\n![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+
+  it('Download the same image only once', async () => {
+    const res = await run(mdStr, config)
+    expect(res).toMatch(
+      /!\[1\]\((\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png)\)\n!\[2\]\(\1\)/gm
+    )
   })
 })

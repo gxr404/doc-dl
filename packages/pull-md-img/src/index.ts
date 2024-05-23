@@ -3,7 +3,7 @@ import path from 'path'
 
 import progressBar from 'progress'
 import getLogger from './log'
-import config from './config'
+import config, { resetConfig } from './config'
 import { shellArgsInit } from './args'
 import randUserAgent from 'rand-user-agent'
 import mime from 'mime-types'
@@ -79,9 +79,6 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
     referer
   }
   return new Promise((resolve, reject) => {
-    // 已经下载过了 直接返回
-    if (downloadImg.cache[url]) return downloadImg.cache[url]
-
     const req = lib.request(url, { headers }, (res) => {
       // 优先使用content-type识别的文件后缀
       let contentType = res.headers['content-type']
@@ -130,7 +127,6 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       })
       res.on('end', () => {
         // logger.info(`${fileName} download OK`)
-        downloadImg.cache[url] = distPath
         resolve(distPath)
       })
     })
@@ -147,9 +143,6 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
     req.end()
   })
 }
-type TDownloadImgCache = { [key: string]: string }
-// 下载图片缓存对应已下载的内容 避免重复下载
-downloadImg.cache = {} as TDownloadImgCache
 
 /**
  * 创建新的markdown并更改img Url
@@ -224,6 +217,8 @@ export const run = async (
   data: string,
   customConfig: TConfig
 ): Promise<string> => {
+  // 重置配置 避免多次调用run
+  resetConfig(config)
   Object.assign(config, customConfig)
   // 过滤 config 中 dist目录和 imgDir目录的特殊字符 替换_
   // config.dist = config.dist.replace(dirNameReg, '_').replace(/\s/g, '')
@@ -239,13 +234,24 @@ export const run = async (
   const imgDirPath = path.resolve(config.dist, config.imgDir)
   // 创建目录 img 目录
   await createDir(imgDirPath)
+
+  // 下载的图片列表去重
+  const uniqueImgList = Array.from(new Set(imgList))
   // 重置已下载缓存
-  downloadImg.cache = {} as TDownloadImgCache
-  const imgListPromise = imgList.map((src) => {
+  const imgListPromise = uniqueImgList.map((src) => {
     return downloadImg(src, imgDirPath)
   })
   const resList = await Promise.all(imgListPromise)
+
+  // 根据去重的列表还原原始的图片列表
+  const matchMap: { [key: string]: string } = {}
+  uniqueImgList.forEach((rawUrl, index) => {
+    const key = rawUrl
+    const value = resList[index]
+    matchMap[key] = value
+  })
+  const pathImgList = imgList.map((url) => matchMap[url] || url)
   // 更改md文件
-  const newData = changeMarkdown(data, resList)
+  const newData = changeMarkdown(data, pathImgList)
   return newData
 }
