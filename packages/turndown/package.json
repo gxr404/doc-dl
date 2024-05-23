@@ -1,6 +1,6 @@
 {
   "name": "@doc-dl/turndown",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "packageManager": "pnpm@9.0.5",
   "description": "turndown plugin",
   "author": "gxr404 <1gxr40404@gmail.com>",

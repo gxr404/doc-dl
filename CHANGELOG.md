@@ -1,3 +1,7 @@
+## [0.0.52](https://github.com/gxr404/doc-dl/compare/v0.0.51...v0.0.52) (2024-05-23)
+
+
+
 ## [0.0.51](https://github.com/gxr404/doc-dl/compare/v0.0.50...v0.0.51) (2024-05-23)
 
 
