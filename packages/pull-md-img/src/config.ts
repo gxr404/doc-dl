@@ -22,7 +22,6 @@ export function resetConfig(needResetConfig: typeof config) {
     referer: '',
     transform: (url: string) => url
   })
-  console.log('reset', config)
 }
 
 export default config
