@@ -1,3 +1,17 @@
+## [0.0.53](https://github.com/gxr404/doc-dl/compare/v0.0.52...v0.0.53) (2024-05-23)
+
+
+### Bug Fixes
+
+* **doc-dl:** pull-md-img 更新返回 ([165ad9e](https://github.com/gxr404/doc-dl/commit/165ad9ecadb7d0f44aa37713d60d6132cd2a472a))
+
+
+### Features
+
+* **pull-md-img:** 添加errorStillReturn 选项 忽略错误 替换部分成功 ([6218e58](https://github.com/gxr404/doc-dl/commit/6218e58122e5ce3658385e5ca3bc0b688dd02ac0))
+
+
+
 ## [0.0.52](https://github.com/gxr404/doc-dl/compare/v0.0.51...v0.0.52) (2024-05-23)
 
 
