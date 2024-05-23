@@ -1,3 +1,12 @@
+## [0.0.51](https://github.com/gxr404/doc-dl/compare/v0.0.50...v0.0.51) (2024-05-23)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 修复多张相同图片应下载一张 ([afdbd8d](https://github.com/gxr404/doc-dl/commit/afdbd8d1b30053a86688d9ab7658dbf1d47a99c3))
+
+
+
 ## [0.0.50](https://github.com/gxr404/doc-dl/compare/v0.0.49...v0.0.50) (2024-05-23)
 
 
