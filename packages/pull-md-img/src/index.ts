@@ -103,7 +103,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       }
       if (res.statusCode !== 200) {
         reject({
-          error: `Error Status Code: ${res.statusCode}`,
+          error: new Error(`Error Status Code: ${res.statusCode}`),
           url
         })
         return
@@ -227,13 +227,17 @@ export const bin = async (): Promise<void> => {
 }
 
 type TConfig = Partial<typeof config>
+type ErrorInfoItem = {
+  url: string
+  error: Error
+}
 /**
  * @param data
  */
 export const run = async (
   data: string,
   customConfig: TConfig
-): Promise<string> => {
+): Promise<{ data: string; errorInfo: ErrorInfoItem[] }> => {
   // 重置配置 避免多次调用run
   resetConfig(config)
   Object.assign(config, customConfig)
@@ -246,7 +250,10 @@ export const run = async (
   const imgList = getImgList(data, config.transform)
   // 无图片无需处理直接返回
   if (!imgList.length) {
-    return data
+    return {
+      data,
+      errorInfo: []
+    }
   }
   const imgDirPath = path.resolve(config.dist, config.imgDir)
   // 创建目录 img 目录
@@ -258,9 +265,27 @@ export const run = async (
   const imgListPromise = uniqueImgList.map((src) => {
     return downloadImg(src, imgDirPath)
   })
-  const resList = await Promise.all(imgListPromise)
+  let resList: string[] = []
+  const errorInfo: ErrorInfoItem[] = []
+  if (config.errorStillReturn) {
+    const hasErrorResList = await Promise.allSettled(imgListPromise)
+    hasErrorResList.forEach((item) => {
+      if (item.status === 'fulfilled') {
+        resList.push(item.value)
+        return
+      }
+      if (item.status === 'rejected') {
+        errorInfo.push(item.reason)
+      }
+    })
+  } else {
+    resList = await Promise.all(imgListPromise)
+  }
 
   // 更改md文件
   const newData = changeMarkdown(data, resList)
-  return newData
+  return {
+    errorInfo,
+    data: newData
+  }
 }

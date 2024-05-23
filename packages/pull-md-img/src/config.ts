@@ -6,6 +6,8 @@ const config = {
   // markdown img 正则 注意多行匹配
   mdImgReg: /!\[(.*?)\]\((.*?)\)/gm,
   isIgnoreConsole: false,
+  /** 含有错误仍然返回 忽略错误的图片 */
+  errorStillReturn: false,
   referer: '',
   transform: (url: string) => url
 }
@@ -19,6 +21,8 @@ export function resetConfig(needResetConfig: typeof config) {
     // markdown img 正则 注意多行匹配
     mdImgReg: /!\[(.*?)\]\((.*?)\)/gm,
     isIgnoreConsole: false,
+    /** 含有错误仍然返回 忽略错误的图片 */
+    errorStillReturn: false,
     referer: '',
     transform: (url: string) => url
   })

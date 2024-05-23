@@ -131,27 +131,27 @@ describe('Run', () => {
   it('normal', async () => {
     const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
 
-    const newMdData = await run(mdData, config)
-    expect(newMdData).toMatch(
+    const { data } = await run(mdData, config)
+    expect(data).toMatch(
       /!\[test\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
     )
   })
 
   it('content-type suffix test', async () => {
     const mdData = `![test](https://mmbiz.qpic.cn/mmbiz_png/2esNbY6p4sZrUzvXjmsXNsLIEiaUDznZiaF3qkkcWeSxAbm8cPEHN8rszoadUDFYyWYdHIIHGI0C4aPntRw07pBg/640)`
-    const data = await run(mdData, config)
+    const { data } = await run(mdData, config)
     expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/640-\d{6}\.png\)/)
   })
 
   it('ignore local img', async () => {
     const mdData = `![](./test.png)`
-    const data = await run(mdData, config)
+    const { data } = await run(mdData, config)
     expect(data).toBe(mdData)
   })
 
   it('mkdir img Special symbols', async () => {
     const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
-    const data = await run(mdData, {
+    const { data } = await run(mdData, {
       dist: 'test/temp/',
       imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
       isIgnoreConsole: true
@@ -166,16 +166,16 @@ describe('Run', () => {
   it('Suffix names prioritize content-type', async () => {
     const mdData = `![test](https://p6-passport.byteacctimg.com/img/user-avatar/eda8490a0609d437f24c116bf72df379~200x200.awebp)`
 
-    const newMdData = await run(mdData, config)
-    expect(newMdData).toMatch(
+    const { data } = await run(mdData, config)
+    expect(data).toMatch(
       /!\[test\]\(\.\/img\/run_test\/eda8490a0609d437f24c116bf72df379_200x200-\d{6}\.webp\)/
     )
   })
   // 后缀名以content-type优先 jpg类型需识别为 jpeg
   it('Suffix names prioritize content-type', async () => {
     const mdData = `![test](http://www.xzclass.com/img.php?img=https://mmbiz.qpic.cn/sz_mmbiz_png/pUm6Hxkd434kficgNzJa7NqvNOg406ol3iajYjgeh12Q61pLtt3x2xZ8c2xJx5U8tViczPdvRvdI5xmlMbavtKFPw/640?wx_fmt=png)`
-    const newMdData = await run(mdData, config)
-    expect(newMdData).toMatch(/!\[test\]\(\.\/img\/run_test\/img-\d{6}\.jpeg\)/)
+    const { data } = await run(mdData, config)
+    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/img-\d{6}\.jpeg\)/)
   })
 
   it('normal referer', async () => {
@@ -183,12 +183,12 @@ describe('Run', () => {
     - ![2.jpg](https://www.yuque.com/api/filetransfer/images?url=http%3A%2F%2Fglorious.icu%2Fsky-take-out%2Fimage-20221106200821282.png&sign=810804669a4d7f1c82b4006d6e190d885c11cc6ed7e06926964f492439142b94)
     `
     const matchReg = /!\[(.*?)\]\((.*?)\)/gm
-    const res = await run(mdStr, config)
-    expect(res).toMatch(
+    const { data } = await run(mdStr, config)
+    expect(data).toMatch(
       /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
     )
-    const data = matchReg.exec(res) || []
-    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const execData = matchReg.exec(data) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
     expect(fileData.length).toBe(17192)
   })
@@ -199,12 +199,12 @@ describe('Run', () => {
     `
     const matchReg = /!\[(.*?)\]\((.*?)\)/gm
     config.referer = 'https://www.yuque.com'
-    const res = await run(mdStr, config)
-    expect(res).toMatch(
+    const { data } = await run(mdStr, config)
+    expect(data).toMatch(
       /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
     )
-    const data = matchReg.exec(res) || []
-    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const execData = matchReg.exec(data) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
     expect(fileData.length).toBe(17192)
   })
@@ -213,18 +213,16 @@ describe('Run', () => {
   it('img name too long', async () => {
     const mdData =
       '![test](https://gxr404.github.io/gxr_test/11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111.jpg)'
-    const newMdData = await run(mdData, config)
-    expect(newMdData).toMatch(
-      /!\[test\]\(\.\/img\/run_test\/1{100}-\d{6}\.jpeg\)/
-    )
+    const { data } = await run(mdData, config)
+    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/1{100}-\d{6}\.jpeg\)/)
   })
 
   // 相同的图片只下载一张
   it('Download the same image only once', async () => {
     const mdStr = `![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)\n![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
 
-    const res = await run(mdStr, config)
-    expect(res).toMatch(
+    const { data } = await run(mdStr, config)
+    expect(data).toMatch(
       /!\[1\]\((\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png)\)\n!\[2\]\(\1\)/gm
     )
   })
@@ -234,9 +232,7 @@ describe('Run', () => {
       ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
       ![3](/xx/404.png)
       ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
-    const res = await run(mdStr, config).catch((e) => {
-      console.log('e', e)
-    })
+    const { data } = await run(mdStr, config)
     const reg = new RegExp(
       `
       !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
@@ -244,7 +240,7 @@ describe('Run', () => {
       !\\[2\\]\\(\\1\\)`,
       'gm'
     )
-    expect(res).toMatch(reg)
+    expect(data).toMatch(reg)
   })
 
   it('error image', async () => {
@@ -252,18 +248,36 @@ describe('Run', () => {
     ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
     ![3](https://www.baidu.com/xx/404.png)
     ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    let fail = false
     try {
       await run(mdStr, config)
     } catch (e) {
-      expect(e.error).toBe('Error Status Code: 404')
+      fail = true
+      expect(e.error.message).toBe('Error Status Code: 404')
     }
-    // console.log(res)
-    // const reg = new RegExp(`
-    //   !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
-    //   !\\[3\\]\\(/xx/404.png\\)
-    //   !\\[2\\]\\(\\1\\)`,
-    // 'gm')
-    // expect(res).toMatch(reg)
+    expect(fail).toBe(true)
+  })
+
+  it('ignore error still return', async () => {
+    const mdStr = `
+      ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
+      ![3](https://www.baidu.com/xx/404.png)
+      ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+
+    const { data, errorInfo } = await run(mdStr, {
+      ...config,
+      errorStillReturn: true
+    })
+    expect(errorInfo[0].error.message).toBe('Error Status Code: 404')
+    expect(errorInfo[0].url).toBe('https://www.baidu.com/xx/404.png')
+    const reg = new RegExp(
+      `
+      !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
+      !\\[3\\]\\(https://www\\.baidu\\.com/xx/404\\.png\\)
+      !\\[2\\]\\(\\1\\)`,
+      'gm'
+    )
+    expect(data).toMatch(reg)
   })
 
   it('custom transform', async () => {
@@ -276,9 +290,9 @@ describe('Run', () => {
         ? 'https://news-bos.cdn.bcebos.com/mvideo/log-news.png'
         : url
     }
-    const res = await run(mdStr, config)
-    const data = matchReg.exec(res) || []
-    const filePath = path.resolve(`${__dirname}/temp/`, data[2])
+    const { data } = await run(mdStr, config)
+    const execData = matchReg.exec(data) || []
+    const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
     // 24774
     expect(fileData.length).toBe(88360)
