@@ -262,6 +262,7 @@ describe('Run', () => {
     const mdStr = `
       ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
       ![3](https://www.baidu.com/xx/404.png)
+      ![2](https://news-bos.cdn.bcebos.com/mvideo/log-news.png)
       ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
 
     const { data, errorInfo } = await run(mdStr, {
@@ -274,6 +275,7 @@ describe('Run', () => {
       `
       !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
       !\\[3\\]\\(https://www\\.baidu\\.com/xx/404\\.png\\)
+      !\\[2\\]\\(\\./img/run_test/log-news-\\d{6}.png\\)
       !\\[2\\]\\(\\1\\)`,
       'gm'
     )

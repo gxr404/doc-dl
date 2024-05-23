@@ -276,6 +276,7 @@ export const run = async (
       }
       if (item.status === 'rejected') {
         errorInfo.push(item.reason)
+        resList.push('')
       }
     })
   } else {
