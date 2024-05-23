@@ -1,3 +1,12 @@
+## [0.0.54](https://github.com/gxr404/doc-dl/compare/v0.0.53...v0.0.54) (2024-05-23)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 因错误的url导致替换顺序出错 ([e802762](https://github.com/gxr404/doc-dl/commit/e802762bfef83b489f590ea8bfe6cd89556ac05c))
+
+
+
 ## [0.0.53](https://github.com/gxr404/doc-dl/compare/v0.0.52...v0.0.53) (2024-05-23)
 
 
