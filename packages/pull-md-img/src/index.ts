@@ -25,7 +25,10 @@ const logger = getLogger()
  * @param {*} data
  * @returns {string[]}
  */
-export const getImgList = (data: string): Array<string> => {
+export const getImgList = (
+  data: string,
+  transform?: (url: string) => string
+): Array<string> => {
   let list = Array.from(data.match(config.mdImgReg) || [])
   list = list
     .map((itemUrl) => {
@@ -37,11 +40,11 @@ export const getImgList = (data: string): Array<string> => {
       return itemUrl
     })
     .filter((url) => Boolean(url))
-  // 去重
-  const resSet = new Set(list)
-  list = Array.from(resSet)
-  if (typeof config.transform === 'function') {
-    list = list.map((url) => config.transform(url))
+  // // 去重
+  // const resSet = new Set(list)
+  // list = Array.from(resSet)
+  if (typeof transform === 'function') {
+    list = list.map((url) => transform(url))
   }
   return list
 }
@@ -76,6 +79,9 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
     referer
   }
   return new Promise((resolve, reject) => {
+    // 已经下载过了 直接返回
+    if (downloadImg.cache[url]) return downloadImg.cache[url]
+
     const req = lib.request(url, { headers }, (res) => {
       // 优先使用content-type识别的文件后缀
       let contentType = res.headers['content-type']
@@ -124,6 +130,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       })
       res.on('end', () => {
         // logger.info(`${fileName} download OK`)
+        downloadImg.cache[url] = distPath
         resolve(distPath)
       })
     })
@@ -140,6 +147,9 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
     req.end()
   })
 }
+type TDownloadImgCache = { [key: string]: string }
+// 下载图片缓存对应已下载的内容 避免重复下载
+downloadImg.cache = {} as TDownloadImgCache
 
 /**
  * 创建新的markdown并更改img Url
@@ -161,22 +171,20 @@ export const changeMarkdown = (
 
   let newData = data
   const list = data.match(config.mdImgReg) || []
-  const listSet = Array.from(new Set(list))
-  let listIndex = 0
+  // const listSet = Array.from(new Set(list))
   // 替换其中url文本
-  listSet.forEach((src) => {
+  list.forEach((src, index) => {
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg
-      const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
+      const imgReg = new RegExp(replaceSpecialReg(src), 'm')
       newData = newData.replace(imgReg, (_, $1) => {
         let altText = $1
         if (!altText) {
           const fileName = path.basename(src)
           altText = fileName.replace(/\?(.*)|#(.*)/, '')
         }
-        return `![${altText}](${newImgList[listIndex]})`
+        return `![${altText}](${newImgList[index]})`
       })
-      listIndex = listIndex + 1
     }
   })
   return newData
@@ -223,7 +231,7 @@ export const run = async (
   const dirNameReg = /[:*?"<>|\n\r]/g
   config.imgDir = config.imgDir.replace(dirNameReg, '_').replace(/\s/g, '')
   // 获取文件内容中的图片列表
-  const imgList = getImgList(data)
+  const imgList = getImgList(data, config.transform)
   // 无图片无需处理直接返回
   if (!imgList.length) {
     return data
@@ -231,6 +239,8 @@ export const run = async (
   const imgDirPath = path.resolve(config.dist, config.imgDir)
   // 创建目录 img 目录
   await createDir(imgDirPath)
+  // 重置已下载缓存
+  downloadImg.cache = {} as TDownloadImgCache
   const imgListPromise = imgList.map((src) => {
     return downloadImg(src, imgDirPath)
   })

@@ -32,6 +32,24 @@ describe('get markdown img list', () => {
     expect(imgList.length).toBe(1)
     expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
   })
+
+  it('custom transform', async () => {
+    const mdStr = `
+    - ![1.jpg](./img/1.jpg)
+    - ![2.jpg](https://www.baidu.com/2.jpg)
+    - ![3.jpg](https://www.baidu.com/3.jpg)
+    `
+    function transform(url) {
+      return url === 'https://www.baidu.com/2.jpg'
+        ? 'https://www.baidu.com/3.jpg'
+        : url
+    }
+    const imgList = await getImgList(mdStr, transform)
+    expect(imgList.length).toBe(2)
+    expect(imgList[0]).toBe('https://www.baidu.com/3.jpg')
+    expect(imgList[1]).toBe('https://www.baidu.com/3.jpg')
+  })
+
   // 图片在列表中唯一
   it('Unique images in the list', async () => {
     const mdStr = `
@@ -39,7 +57,7 @@ describe('get markdown img list', () => {
     - ![2.jpg](https://www.baidu.com/2.jpg)
     `
     const imgList = await getImgList(mdStr)
-    expect(imgList.length).toBe(1)
+    expect(imgList.length).toBe(2)
     expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
   })
   // // 图片url移除search和hash
@@ -63,12 +81,12 @@ describe('Change markdown based on image list', () => {
       `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)\n- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`
     )
   })
-  // 相同url的图片 用相同的本地文件
+  // md中的图片需跟提供的图片列表一样多
   it('Images with the same URL', async () => {
     const mdStr = [
       '- ![1.jpg](https://www.baidu.com/1.jpg?123=123#11)',
       '- ![2.jpg](https://www.baidu.com/2.jpg?123=123#22)',
-      '- ![1.jpg](https://www.baidu.com/1.jpg?123=123#11)',
+      '- ![](https://www.baidu.com/1222.jpg?123=123#22)',
       '- ![3.jpg](https://www.baidu.com/12.jpg?123=123#33)',
       '- ![2.jpg](https://www.baidu.com/2.jpg?123=123#22)',
       '- ![1.jpg](https://www.baidu.com/1.jpg?123=123#11)'
@@ -80,10 +98,10 @@ describe('Change markdown based on image list', () => {
       [
         `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)`,
         `- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`,
-        `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)`,
-        `- ![3.jpg](./test-img/${Date.now()}/3xxxx.jpg)`,
-        `- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`,
-        `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)`
+        `- ![1222.jpg](./test-img/${Date.now()}/3xxxx.jpg)`,
+        `- ![3.jpg](undefined)`,
+        `- ![2.jpg](undefined)`,
+        `- ![1.jpg](undefined)`
       ].join('\n')
     )
   })
