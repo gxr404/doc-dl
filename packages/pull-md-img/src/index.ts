@@ -40,9 +40,9 @@ export const getImgList = (
       return itemUrl
     })
     .filter((url) => Boolean(url))
-  // // 去重
-  // const resSet = new Set(list)
-  // list = Array.from(resSet)
+  // 去重
+  const resSet = new Set(list)
+  list = Array.from(resSet)
   if (typeof transform === 'function') {
     list = list.map((url) => transform(url))
   }
@@ -91,7 +91,6 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       if (fileSuffix) {
         fileName = changeSuffix(fileName, fileSuffix)
       }
-
       // 检查是否重定向
       const isRedirect = [302, 301].indexOf(res.statusCode)
       if (~isRedirect) {
@@ -100,6 +99,13 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
         }
         // 重定向则向 响应头的location 重新下载
         resolve(downloadImg(res.headers['location'], imgDir))
+        return
+      }
+      if (res.statusCode !== 200) {
+        reject({
+          error: `Error Status Code: ${res.statusCode}`,
+          url
+        })
         return
       }
 
@@ -147,36 +153,47 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
 /**
  * 创建新的markdown并更改img Url
  * @param {string} data 处理的markdown数据
- * @param {array} imgList 图片列表
+ * @param {array} resList 图片列表
  * @return {string} 更改markdown中远程图片链接为本地链接
  */
-export const changeMarkdown = (
-  data: string,
-  imgList: Array<string>
-): string => {
-  // 创建新的img url list
-  const newImgList = imgList.map((src) => {
+export const changeMarkdown = (data: string, resList: string[]): string => {
+  function fixPathUrl(src: string) {
     if (config.suffix) src = changeSuffix(src, config.suffix)
-
     const fileName = path.basename(src)
     return `${config.imgDir}/${fileName}`
+  }
+
+  // 根据去重的列表还原原始的图片列表
+  const matchMap: { [key: string]: string } = {}
+  // 使用原始的图片列表 不使用transform 转换过后的图片列表
+  const rawImgList = getImgList(data)
+  rawImgList.forEach((rawUrl, index) => {
+    const key = rawUrl
+    const value = resList[index]
+    matchMap[key] = value
   })
 
   let newData = data
-  const list = data.match(config.mdImgReg) || []
-  // const listSet = Array.from(new Set(list))
+  const matchRes = data.match(config.mdImgReg)
+  let list = matchRes ? Array.from(matchRes) : []
+  list = Array.from(new Set(list))
   // 替换其中url文本
-  list.forEach((src, index) => {
+  list.forEach((src) => {
     if (/.*\]\(http.*/g.test(src)) {
       // 动态reg
-      const imgReg = new RegExp(replaceSpecialReg(src), 'm')
+      const imgReg = new RegExp(replaceSpecialReg(src), 'gm')
+      // 重置正则起始索引
+      config.mdImgReg.lastIndex = 0
+      const key = config.mdImgReg.exec(src)?.[2]
+      if (!matchMap[key]) return
+      const targetUrl = fixPathUrl(matchMap[key])
       newData = newData.replace(imgReg, (_, $1) => {
         let altText = $1
         if (!altText) {
           const fileName = path.basename(src)
           altText = fileName.replace(/\?(.*)|#(.*)/, '')
         }
-        return `![${altText}](${newImgList[index]})`
+        return `![${altText}](${targetUrl})`
       })
     }
   })
@@ -243,15 +260,7 @@ export const run = async (
   })
   const resList = await Promise.all(imgListPromise)
 
-  // 根据去重的列表还原原始的图片列表
-  const matchMap: { [key: string]: string } = {}
-  uniqueImgList.forEach((rawUrl, index) => {
-    const key = rawUrl
-    const value = resList[index]
-    matchMap[key] = value
-  })
-  const pathImgList = imgList.map((url) => matchMap[url] || url)
   // 更改md文件
-  const newData = changeMarkdown(data, pathImgList)
+  const newData = changeMarkdown(data, resList)
   return newData
 }
