@@ -110,7 +110,7 @@ export const run = async (options: TOptions): Promise<void> => {
 
   const oldMdContent = mdContent
 
-  mdContent = await mdImg
+  const { data } = await mdImg
     .run(mdContent, {
       path: '',
       suffix: '',
@@ -123,9 +123,11 @@ export const run = async (options: TOptions): Promise<void> => {
       console.log(`${errorPrefix}`)
       console.log(err)
       console.log(`${errorPrefix}图片下载失败, 仅作转换`)
-      return mdContent
+      return {
+        data: mdContent
+      }
     })
-
+  mdContent = data
   await createDir(`${options.dist}`)
 
   // 无更改则无图片下载
