@@ -1,3 +1,12 @@
+## [0.0.57](https://github.com/gxr404/doc-dl/compare/v0.0.56...v0.0.57) (2024-05-26)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 修复 run 返回更新导致获取数据错误 ([a0f24bc](https://github.com/gxr404/doc-dl/commit/a0f24bcbacf9df6a15175e7db471dad707d1c34f))
+
+
+
 ## [0.0.56](https://github.com/gxr404/doc-dl/compare/v0.0.54...v0.0.56) (2024-05-26)
 
 
