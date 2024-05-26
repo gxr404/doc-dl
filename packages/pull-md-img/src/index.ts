@@ -214,12 +214,12 @@ export const bin = async (): Promise<void> => {
     return
   }
   // 更改md文件
-  const newData = await run(data, config)
+  const res = await run(data, { ...config })
 
   const fileName = path.basename(config.path)
   const out = fs.createWriteStream(path.resolve(config.dist, fileName))
   // 写入文件
-  out.write(newData)
+  out.write(res.data)
 
   setTimeout(() => {
     logger.info('success')
