@@ -1,3 +1,21 @@
+## [0.0.56](https://github.com/gxr404/doc-dl/compare/v0.0.54...v0.0.56) (2024-05-26)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 添加完整的重定向http状态码 ([d4d83ac](https://github.com/gxr404/doc-dl/commit/d4d83acf53783f1a1b9b8e14980f19342bf7a0a7))
+
+
+
+## [0.0.55](https://github.com/gxr404/doc-dl/compare/v0.0.54...v0.0.55) (2024-05-26)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 添加完整的重定向http状态码 ([d4d83ac](https://github.com/gxr404/doc-dl/commit/d4d83acf53783f1a1b9b8e14980f19342bf7a0a7))
+
+
+
 ## [0.0.54](https://github.com/gxr404/doc-dl/compare/v0.0.53...v0.0.54) (2024-05-23)
 
 
