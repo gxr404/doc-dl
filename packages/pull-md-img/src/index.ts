@@ -92,7 +92,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
         fileName = changeSuffix(fileName, fileSuffix)
       }
       // 检查是否重定向
-      const isRedirect = [302, 301].indexOf(res.statusCode)
+      const isRedirect = [301, 302, 303, 307, 308].indexOf(res.statusCode)
       if (~isRedirect) {
         if (!config.isIgnoreConsole) {
           logger.info(`${fileName} 重定向...`)
