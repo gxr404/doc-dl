@@ -29,6 +29,7 @@
     "@types/mime-types": "^2.1.1",
     "@types/node": "18.13.0",
     "@types/progress": "^2.0.5",
+    "msw": "^2.3.0",
     "typescript": "4.9.5"
   },
   "gitHead": "0b29a4c72f19399a3902e48428d526498f16f19c"

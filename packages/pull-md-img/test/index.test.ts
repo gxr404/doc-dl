@@ -128,19 +128,23 @@ describe('Run', () => {
     isIgnoreConsole: true
   } as any
 
-  it('normal', async () => {
-    const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+  // afterEach(() => {
+  //   resetConfig(config)
+  // })
+
+  it('should work', async () => {
+    const mdData = `![test](https://localhost/normal.png)`
 
     const { data } = await run(mdData, config)
-    expect(data).toMatch(
-      /!\[test\]\(\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
-    )
+    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/normal-\d{6}\.png\)/)
   })
 
   it('content-type suffix test', async () => {
-    const mdData = `![test](https://mmbiz.qpic.cn/mmbiz_png/2esNbY6p4sZrUzvXjmsXNsLIEiaUDznZiaF3qkkcWeSxAbm8cPEHN8rszoadUDFYyWYdHIIHGI0C4aPntRw07pBg/640)`
+    const mdData = `![test](https://localhost/contentTypeXML)`
     const { data } = await run(mdData, config)
-    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/640-\d{6}\.png\)/)
+    expect(data).toMatch(
+      /!\[test\]\(\.\/img\/run_test\/contentTypeXML-\d{6}\.xml\)/
+    )
   })
 
   it('ignore local img', async () => {
@@ -150,7 +154,7 @@ describe('Run', () => {
   })
 
   it('mkdir img Special symbols', async () => {
-    const mdData = `![test](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    const mdData = `![test](https://localhost/normal.png)`
     const { data } = await run(mdData, {
       dist: 'test/temp/',
       imgDir: './img/11:22*33?44"55<66>77|88\r\n999',
@@ -158,84 +162,96 @@ describe('Run', () => {
     })
 
     expect(data).toMatch(
-      /!\[test\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png\)/
+      /!\[test\]\(\.\/img\/11_22_33_44_55_66_77_88__999\/normal-\d{6}\.png\)/
     )
   })
 
   // 后缀名以content-type优先
   it('Suffix names prioritize content-type', async () => {
-    const mdData = `![test](https://p6-passport.byteacctimg.com/img/user-avatar/eda8490a0609d437f24c116bf72df379~200x200.awebp)`
-
-    const { data } = await run(mdData, config)
+    const mdData = `![test](https://localhost/prioritizeContentType.awebp)`
+    let data = ''
+    try {
+      const res = await run(mdData, config)
+      data = res.data
+    } catch (e) {
+      console.log(e)
+      // throw e
+    }
     expect(data).toMatch(
-      /!\[test\]\(\.\/img\/run_test\/eda8490a0609d437f24c116bf72df379_200x200-\d{6}\.webp\)/
+      /!\[test\]\(\.\/img\/run_test\/prioritizeContentType-\d{6}\.webp\)/
     )
   })
   // 后缀名以content-type优先 jpg类型需识别为 jpeg
-  it('Suffix names prioritize content-type', async () => {
-    const mdData = `![test](http://www.xzclass.com/img.php?img=https://mmbiz.qpic.cn/sz_mmbiz_png/pUm6Hxkd434kficgNzJa7NqvNOg406ol3iajYjgeh12Q61pLtt3x2xZ8c2xJx5U8tViczPdvRvdI5xmlMbavtKFPw/640?wx_fmt=png)`
-    const { data } = await run(mdData, config)
-    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/img-\d{6}\.jpeg\)/)
+  it('The suffix jpg needs to be recognized as jpeg', async () => {
+    const mdData = `![test](https://localhost/jpgContentType)`
+    let data = ''
+    try {
+      const res = await run(mdData, config)
+      data = res.data
+    } catch (e) {
+      data = `error ${e.message}`
+      // throw e
+    }
+    expect(data).toMatch(
+      /!\[test\]\(\.\/img\/run_test\/jpgContentType-\d{6}\.jpeg\)/
+    )
   })
 
   it('normal referer', async () => {
     const mdStr = `
-    - ![2.jpg](https://www.yuque.com/api/filetransfer/images?url=http%3A%2F%2Fglorious.icu%2Fsky-take-out%2Fimage-20221106200821282.png&sign=810804669a4d7f1c82b4006d6e190d885c11cc6ed7e06926964f492439142b94)
+    - ![2.jpg](https://localhost/referer)
     `
     const matchReg = /!\[(.*?)\]\((.*?)\)/gm
     const { data } = await run(mdStr, config)
-    expect(data).toMatch(
-      /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
-    )
+    expect(data).toMatch(/!\[2.jpg\]\(\.\/img\/run_test\/referer-\d{6}\.txt\)/)
     const execData = matchReg.exec(data) || []
     const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
-    expect(fileData.length).toBe(17192)
+    expect(fileData.toString()).toBe('https://localhost/referer')
   })
 
   it('custom referer', async () => {
     const mdStr = `
-    - ![2.jpg](https://www.yuque.com/api/filetransfer/images?url=http%3A%2F%2Fglorious.icu%2Fsky-take-out%2Fimage-20221106200821282.png&sign=810804669a4d7f1c82b4006d6e190d885c11cc6ed7e06926964f492439142b94)
+    - ![2.jpg](https://localhost/referer)
     `
     const matchReg = /!\[(.*?)\]\((.*?)\)/gm
     config.referer = 'https://www.yuque.com'
     const { data } = await run(mdStr, config)
-    expect(data).toMatch(
-      /!\[2.jpg\]\(\.\/img\/run_test\/1699244722672-9fcdc40e-f8f5-4d34-973a-952bf53676b3-\d{6}\.png\)/
-    )
+    expect(data).toMatch(/!\[2.jpg\]\(\.\/img\/run_test\/referer-\d{6}\.txt\)/)
     const execData = matchReg.exec(data) || []
     const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
-    expect(fileData.length).toBe(17192)
+    expect(fileData.toString()).toBe(config.referer)
   })
 
   // 图片名称太长仅保留100个字符
   it('img name too long', async () => {
-    const mdData =
-      '![test](https://gxr404.github.io/gxr_test/11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111.jpg)'
+    const mdData = `![test](https://localhost/longName_${'1'.repeat(280)})`
     const { data } = await run(mdData, config)
-    expect(data).toMatch(/!\[test\]\(\.\/img\/run_test\/1{100}-\d{6}\.jpeg\)/)
+    expect(data).toMatch(
+      /!\[test\]\(\.\/img\/run_test\/longName_1{91}-\d{6}\.txt\)/
+    )
   })
 
   // 相同的图片只下载一张
   it('Download the same image only once', async () => {
-    const mdStr = `![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)\n![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    const mdStr = `![1](https://localhost/normal.png)\n![2](https://localhost/normal.png)`
 
     const { data } = await run(mdStr, config)
     expect(data).toMatch(
-      /!\[1\]\((\.\/img\/run_test\/PCfb_5bf082d29588c07f842ccde3f97243ea-\d{6}\.png)\)\n!\[2\]\(\1\)/gm
+      /!\[1\]\((\.\/img\/run_test\/normal-\d{6}\.png)\)\n!\[2\]\(\1\)/gm
     )
   })
 
   it('local image ignore', async () => {
     const mdStr = `
-      ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
+      ![1](https://localhost/normal.png)
       ![3](/xx/404.png)
-      ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+      ![2](https://localhost/normal.png)`
     const { data } = await run(mdStr, config)
     const reg = new RegExp(
       `
-      !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
+      !\\[1\\]\\((\\./img/run_test/normal-\\d{6}\\.png)\\)
       !\\[3\\]\\(/xx/404.png\\)
       !\\[2\\]\\(\\1\\)`,
       'gm'
@@ -245,9 +261,9 @@ describe('Run', () => {
 
   it('error image', async () => {
     const mdStr = `
-    ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
-    ![3](https://www.baidu.com/xx/404.png)
-    ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    ![1](https://localhost/normal.png)
+    ![3](https://localhost/404)
+    ![2](https://localhost/normal.png)`
     let fail = false
     try {
       await run(mdStr, config)
@@ -260,22 +276,22 @@ describe('Run', () => {
 
   it('ignore error still return', async () => {
     const mdStr = `
-      ![1](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)
-      ![3](https://www.baidu.com/xx/404.png)
-      ![2](https://news-bos.cdn.bcebos.com/mvideo/log-news.png)
-      ![2](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+      ![1](https://localhost/normal.png)
+      ![3](https://localhost/404)
+      ![2](https://localhost/prioritizeContentType.awebp)
+      ![2](https://localhost/normal.png)`
 
     const { data, errorInfo } = await run(mdStr, {
       ...config,
       errorStillReturn: true
     })
     expect(errorInfo[0].error.message).toBe('Error Status Code: 404')
-    expect(errorInfo[0].url).toBe('https://www.baidu.com/xx/404.png')
+    expect(errorInfo[0].url).toBe('https://localhost/404')
     const reg = new RegExp(
       `
-      !\\[1\\]\\((\\./img/run_test/PCfb_5bf082d29588c07f842ccde3f97243ea-\\d{6}\\.png)\\)
-      !\\[3\\]\\(https://www\\.baidu\\.com/xx/404\\.png\\)
-      !\\[2\\]\\(\\./img/run_test/log-news-\\d{6}.png\\)
+      !\\[1\\]\\((\\./img/run_test/normal-\\d{6}\\.png)\\)
+      !\\[3\\]\\(https://localhost/404\\)
+      !\\[2\\]\\(\\./img/run_test/prioritizeContentType-\\d{6}.webp\\)
       !\\[2\\]\\(\\1\\)`,
       'gm'
     )
@@ -283,13 +299,12 @@ describe('Run', () => {
   })
 
   it('custom transform', async () => {
-    const mdStr = `![](https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png)`
+    const mdStr = `![](https://localhost/normal.png)`
     const matchReg = /!\[(.*?)\]\((.*?)\)/gm
     matchReg.lastIndex = 0
     config.transform = (url) => {
-      return url ===
-        'https://www.baidu.com/img/PCfb_5bf082d29588c07f842ccde3f97243ea.png'
-        ? 'https://news-bos.cdn.bcebos.com/mvideo/log-news.png'
+      return url === 'https://localhost/normal.png'
+        ? 'https://localhost/prioritizeContentType.awebp'
         : url
     }
     const { data } = await run(mdStr, config)
@@ -297,6 +312,6 @@ describe('Run', () => {
     const filePath = path.resolve(`${__dirname}/temp/`, execData[2])
     const fileData = await fs.readFile(filePath)
     // 24774
-    expect(fileData.length).toBe(88360)
+    expect(fileData.toString()).toBe('awebp Data')
   })
 })
