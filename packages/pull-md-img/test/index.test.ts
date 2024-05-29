@@ -30,7 +30,7 @@ describe('get markdown img list', () => {
     - ![1.jpg](./img/1.jpg)
     - ![2.jpg](https://www.baidu.com/2.jpg)
     `
-    const imgList = await getImgList(mdStr)
+    const imgList = getImgList(mdStr)
     expect(imgList.length).toBe(1)
     expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
   })
@@ -46,7 +46,7 @@ describe('get markdown img list', () => {
         ? 'https://www.baidu.com/3.jpg'
         : url
     }
-    const imgList = await getImgList(mdStr, transform)
+    const imgList = getImgList(mdStr, transform)
     expect(imgList.length).toBe(2)
     expect(imgList[0]).toBe('https://www.baidu.com/3.jpg')
     expect(imgList[1]).toBe('https://www.baidu.com/3.jpg')
@@ -58,7 +58,7 @@ describe('get markdown img list', () => {
     - ![1.jpg](https://www.baidu.com/2.jpg)
     - ![2.jpg](https://www.baidu.com/2.jpg)
     `
-    const imgList = await getImgList(mdStr)
+    const imgList = getImgList(mdStr)
     expect(imgList.length).toBe(1)
     expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
   })
@@ -113,12 +113,18 @@ describe('Change markdown based on image list', () => {
   })
 
   it('markdown image without alt, then set default alt', async () => {
-    const mdStr = `- ![](https://www.baidu.com/1.jpg?123=123#13)\n- ![](https://www.baidu.com/3.jpg)\n- ![2.jpg](https://www.baidu.com/2.jpg?123=123#13)`
+    const mdStr = `
+    - ![](https://www.baidu.com/1.jpg?123=123#13)
+    - ![](https://www.baidu.com/3.jpg)
+    - ![2.jpg](https://www.baidu.com/2.jpg?123=123#13)
+    - ![(2).jpg](https://www.baidu.com/2.jpg?123=123#13)`
 
     const newMd = changeMarkdown(mdStr, ['1xxxx.jpg', '3xxxx.jpg', '2xxxx.jpg'])
-    expect(newMd).toBe(
-      `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)\n- ![3.jpg](./test-img/${Date.now()}/3xxxx.jpg)\n- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`
-    )
+    expect(newMd).toBe(`
+    - ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)
+    - ![3.jpg](./test-img/${Date.now()}/3xxxx.jpg)
+    - ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)
+    - ![(2).jpg](./test-img/${Date.now()}/2xxxx.jpg)`)
   })
 })
 
@@ -315,4 +321,17 @@ describe('Run', () => {
     // 24774
     expect(fileData.toString()).toBe('awebp Data')
   })
+
+  // it('code block has markdown image', async () => {
+  //   const mdStr = `
+  //   - ![1.jpg](./img/1.jpg)
+  //   \`\`\`
+  //   - ![(2).jpg](https://www.baidu.com/2.jpg)
+  //   \`\`\`
+  //   `
+  //   const imgList = getImgList(mdStr)
+  //   console.log(imgList)
+  //   expect(imgList.length).toBe(1)
+  //   expect(imgList[0]).toBe('https://www.baidu.com/2.jpg')
+  // })
 })
