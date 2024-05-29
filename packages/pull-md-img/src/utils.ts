@@ -66,6 +66,7 @@ const replaceSpecialReg = (str: string): string => {
   let res = str.replace(ESCAPE_RE, '\\$&')
   // 多加![]多加()
   res = res.replace('!\\[', '!\\[(').replace('\\]', ')\\]')
+  res = res.replace('\\]\\(', '\\]\\((').replace('\\)', ')\\)')
   return res
 }
 

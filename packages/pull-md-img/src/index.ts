@@ -187,10 +187,10 @@ export const changeMarkdown = (data: string, resList: string[]): string => {
       const key = config.mdImgReg.exec(src)?.[2]
       if (!matchMap[key]) return
       const targetUrl = fixPathUrl(matchMap[key])
-      newData = newData.replace(imgReg, (_, $1) => {
+      newData = newData.replace(imgReg, (_, $1, $2) => {
         let altText = $1
-        if (!altText) {
-          const fileName = path.basename(src)
+        if (!altText && $2) {
+          const fileName = path.basename($2)
           altText = fileName.replace(/\?(.*)|#(.*)/, '')
         }
         return `![${altText}](${targetUrl})`

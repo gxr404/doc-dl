@@ -113,10 +113,11 @@ describe('Change markdown based on image list', () => {
   })
 
   it('markdown image without alt, then set default alt', async () => {
-    const mdStr = `- ![](https://www.baidu.com/1.jpg?123=123#13)\n- ![2.jpg](https://www.baidu.com/2.jpg?123=123#13)`
-    const newMd = changeMarkdown(mdStr, ['1xxxx.jpg', '2xxxx.jpg'])
+    const mdStr = `- ![](https://www.baidu.com/1.jpg?123=123#13)\n- ![](https://www.baidu.com/3.jpg)\n- ![2.jpg](https://www.baidu.com/2.jpg?123=123#13)`
+
+    const newMd = changeMarkdown(mdStr, ['1xxxx.jpg', '3xxxx.jpg', '2xxxx.jpg'])
     expect(newMd).toBe(
-      `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)\n- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`
+      `- ![1.jpg](./test-img/${Date.now()}/1xxxx.jpg)\n- ![3.jpg](./test-img/${Date.now()}/3xxxx.jpg)\n- ![2.jpg](./test-img/${Date.now()}/2xxxx.jpg)`
     )
   })
 })
