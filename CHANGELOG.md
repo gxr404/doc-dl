@@ -1,3 +1,12 @@
+## [0.0.59](https://github.com/gxr404/doc-dl/compare/v0.0.58...v0.0.59) (2024-05-29)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 修复"Invalid regular expression" ([38cce05](https://github.com/gxr404/doc-dl/commit/38cce0579359448550a1df948a189b56ab60b2b8))
+
+
+
 ## [0.0.58](https://github.com/gxr404/doc-dl/compare/v0.0.57...v0.0.58) (2024-05-29)
 
 
