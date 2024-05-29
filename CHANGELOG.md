@@ -1,3 +1,17 @@
+## [0.0.58](https://github.com/gxr404/doc-dl/compare/v0.0.57...v0.0.58) (2024-05-29)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 修复图片默认alt多出')' ([4d3279b](https://github.com/gxr404/doc-dl/commit/4d3279b39c5c5eda516e23ff915ce692078ae78e))
+
+
+### Features
+
+* **pull-md-img:** update test api request ([1e07642](https://github.com/gxr404/doc-dl/commit/1e07642a66a3571c7cd9840fa8873f52fa4cc44f))
+
+
+
 ## [0.0.57](https://github.com/gxr404/doc-dl/compare/v0.0.56...v0.0.57) (2024-05-26)
 
 
