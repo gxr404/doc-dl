@@ -1,13 +1,13 @@
 import fs from 'fs'
 import path from 'path'
-
 import progressBar from 'progress'
+import randUserAgent from 'rand-user-agent'
+import mime from 'mime-types'
+import pLimit from 'p-limit'
+
 import getLogger from './log'
 import config, { resetConfig } from './config'
 import { shellArgsInit } from './args'
-import randUserAgent from 'rand-user-agent'
-import mime from 'mime-types'
-
 import {
   createDir,
   changeSuffix,
@@ -122,17 +122,20 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
           total: contentLength
         }
       )
+      let isEnd = false
       res.on('data', (chunk) => {
         // 输入后的回调
         out.write(chunk, () => {
           if (!config.isIgnoreConsole && !disableProgressBar) {
             bar.tick(chunk.length)
           }
+          if (isEnd) out.end()
           // logger.error('file wirte error: ',e)
         })
       })
       res.on('end', () => {
         // logger.info(`${fileName} download OK`)
+        isEnd = true
         resolve(distPath)
       })
     })
@@ -261,9 +264,10 @@ export const run = async (
 
   // 下载的图片列表去重
   const uniqueImgList = Array.from(new Set(imgList))
+  const limit = pLimit(20)
   // 重置已下载缓存
   const imgListPromise = uniqueImgList.map((src) => {
-    return downloadImg(src, imgDirPath)
+    return limit(() => downloadImg(src, imgDirPath))
   })
   let resList: string[] = []
   const errorInfo: ErrorInfoItem[] = []

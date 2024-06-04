@@ -111,6 +111,9 @@ importers:
       mime-types:
         specifier: ^2.1.35
         version: 2.1.35
+      p-limit:
+        specifier: 3.1.0
+        version: 3.1.0
       progress:
         specifier: ^2.0.3
         version: 2.0.3
