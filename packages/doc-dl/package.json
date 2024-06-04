@@ -1,6 +1,6 @@
 {
   "name": "doc-dl",
-  "version": "0.0.59",
+  "version": "0.0.60",
   "packageManager": "pnpm@9.0.5",
   "description": "doc downloader",
   "author": "gxr404 <1gxr40404@gmail.com>",

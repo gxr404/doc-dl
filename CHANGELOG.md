@@ -1,3 +1,12 @@
+## [0.0.60](https://github.com/gxr404/doc-dl/compare/v0.0.59...v0.0.60) (2024-06-04)
+
+
+### Features
+
+* **pull-md-img:**  add p-limit ([ab40f69](https://github.com/gxr404/doc-dl/commit/ab40f698bb73d34d9ae78a2144fb439803292158))
+
+
+
 ## [0.0.59](https://github.com/gxr404/doc-dl/compare/v0.0.58...v0.0.59) (2024-05-29)
 
 
