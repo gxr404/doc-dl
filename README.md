@@ -2,7 +2,7 @@
 
 根据输入的文章url 抓取页面内容,并转成markdown，连同文章中的图片也给保存到本地
 
-![example](/assets/example.gif)
+![example](https://github.com/gxr404/doc-dl/assets/17134256/936d09f7-1212-421c-962f-0580492b7261)
 
 ## 安装
 
