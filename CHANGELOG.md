@@ -1,3 +1,13 @@
+## [0.0.61](https://github.com/gxr404/doc-dl/compare/v0.0.60...v0.0.61) (2024-07-02)
+
+
+### Features
+
+* 个性化转markdown格式 ([e26c942](https://github.com/gxr404/doc-dl/commit/e26c942a40193cfaf98079a9b4b36a39f6d95609))
+* 同步"@web-clipper/turndown" ([8fd3f22](https://github.com/gxr404/doc-dl/commit/8fd3f22e9875776f8ab18fa5f7fac384013e227e))
+
+
+
 ## [0.0.60](https://github.com/gxr404/doc-dl/compare/v0.0.59...v0.0.60) (2024-06-04)
 
 
