@@ -1,3 +1,12 @@
+## [0.0.62](https://github.com/gxr404/doc-dl/compare/v0.0.61...v0.0.62) (2024-07-02)
+
+
+### Features
+
+* 个性化转markdown格式 ([007566d](https://github.com/gxr404/doc-dl/commit/007566db62e9431813d7043899f37e73aaff28da))
+
+
+
 ## [0.0.61](https://github.com/gxr404/doc-dl/compare/v0.0.60...v0.0.61) (2024-07-02)
 
 
