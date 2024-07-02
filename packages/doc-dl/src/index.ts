@@ -25,7 +25,7 @@ const addExtendInfo = (
 ): string => {
   const title = options.title || article.title || ''
   if (title) {
-    mdContent = `# ${title}\n<!--page header-->\n\n${mdContent}\n\n<!--page footer-->\n- 原文: ${options.url}`
+    mdContent = `# ${title}\n<!--page header-->\n\n${mdContent}\n\n<!--page footer-->\n- 原文: <${options.url}>\n`
   }
   return mdContent
 }
