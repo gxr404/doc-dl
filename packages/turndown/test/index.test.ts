@@ -3,10 +3,14 @@ import path from 'node:path'
 import { it, expect } from 'vitest'
 import TurndownService from 'turndown'
 
-import plugins from '../src/index'
+import getPlugins from '../src/index'
 
 const service = new TurndownService()
-service.use(plugins)
+service.use(
+  getPlugins({
+    articleUrl: 'http://www.test.com'
+  })
+)
 
 const fixturesFolder = path.join(__dirname, './fixtures')
 
@@ -38,8 +42,6 @@ it('test turndown plugins', async () => {
         'utf-8'
       )
     }
-    console.log(fixturesFolder)
     expect(service.turndown(file)).toEqual(expectResult)
-    return
   }
 })

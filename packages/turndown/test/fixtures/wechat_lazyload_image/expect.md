@@ -2,6 +2,6 @@
 
 ![](https://mmbiz.qpic.cn/mmbiz_png/k75fWMHJ2Ull29ggRibAoicTfC0PoSh8p439JcKKqD6MibP5zZTe7LiaA2EQ7kAkFmwhhq57icHebLBrc7fmRpxlWFg/640?wx_fmt=png)
 
-![](http://localhost:3000/images/numpy/numpy-nlp-vocabulary.png)
+![](http://www.test.com/images/numpy/numpy-nlp-vocabulary.png)
 
-![](http://localhost:3000/img/remote/1460000020522264)
+![](http://www.test.com/img/remote/1460000020522264)

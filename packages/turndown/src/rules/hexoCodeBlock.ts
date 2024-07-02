@@ -4,7 +4,6 @@ export default function (turndownService: TurndownService) {
   turndownService.addRule('hexoCodeBlock', {
     filter: ['figure', 'table'],
     replacement: function (content: string, node: HTMLElement) {
-      console.log(node)
       if (!(node instanceof Object)) {
         return content
       }

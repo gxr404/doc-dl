@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom'
 import TurndownService from 'turndown'
 import puppeteer from 'puppeteer'
 import * as mdImg from 'pull-md-img'
-import articleTurndown from '@doc-dl/turndown'
+import getArticleTurndown from '@doc-dl/turndown'
 import { shellArgsInit } from './args'
 import { options, puppeteerOptions } from './options'
 import packageJson from '../package.json'
@@ -63,10 +63,17 @@ const getDocument = async (url: string): Promise<string> => {
 
 export const run = async (options: TOptions): Promise<void> => {
   const turndownService = new TurndownService({
-    codeBlockStyle: 'fenced'
+    codeBlockStyle: 'fenced',
+    headingStyle: 'atx',
+    emDelimiter: '*',
+    bulletListMarker: '-'
   })
 
-  turndownService.use(articleTurndown)
+  turndownService.use(
+    getArticleTurndown({
+      articleUrl: options.url
+    })
+  )
 
   const errorPrefix = `${packageJson.name}[ERROR]: `
   const infoPrefix = `${packageJson.name}[INFO]: `
