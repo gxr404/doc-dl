@@ -1,4 +1,4 @@
-const fixUrl = (url: string, articleUrl: string): string => {
+export const fixUrl = (url: string, articleUrl: string): string => {
   if (!url) {
     return ''
   }
@@ -12,7 +12,7 @@ const fixUrl = (url: string, articleUrl: string): string => {
   return url
 }
 
-const codeBlock = (code: string, language?: string | null): string => {
+export const codeBlock = (code: string, language?: string | null): string => {
   let languageString = language
   if (typeof language !== 'string') {
     languageString = ''
@@ -23,7 +23,7 @@ const codeBlock = (code: string, language?: string | null): string => {
   return `\`\`\`${languageString}\n${code}\n\`\`\`\n\n`
 }
 
-const notEmptyIndex = (data: any[], index: number): number => {
+export const notEmptyIndex = (data: any[], index: number): number => {
   let expect = index
   let start = 0
   while (expect >= 0) {
@@ -36,10 +36,4 @@ const notEmptyIndex = (data: any[], index: number): number => {
     start = start + 1
   }
   return start
-}
-
-export default {
-  fixUrl,
-  codeBlock,
-  notEmptyIndex
 }

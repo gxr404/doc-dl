@@ -1,0 +1,177 @@
+<span class="dw-code-nohighlight"
+  ><div class="ibm-syntax-container">
+    <div>
+      <div id="highlighter_764830" class="syntaxhighlighter  htmlscript">
+        <table border="0" cellpadding="0" cellspacing="0" role="none">
+          <tbody>
+            <tr>
+              <td class="gutter">
+                <div class="line number1 index0 alt2">1</div>
+                <div class="line number2 index1 alt1">2</div>
+                <div class="line number3 index2 alt2">3</div>
+                <div class="line number4 index3 alt1">4</div>
+              </td>
+              <td class="code">
+                <div class="container">
+                  <div class="line number1 index0 alt2">
+                    <code class="htmlscript plain"
+                      >$ dd if=/dev/zero of=file.img bs=1k count=10000</code
+                    >
+                  </div>
+                  <div class="line number2 index1 alt1">
+                    <code class="htmlscript plain">10000+0 records in</code>
+                  </div>
+                  <div class="line number3 index2 alt2">
+                    <code class="htmlscript plain">10000+0 records out</code>
+                  </div>
+                  <div class="line number4 index3 alt1">
+                    <code class="htmlscript plain">$</code>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div></span
+>
+<p>
+  现在有了一个 10MB 的 file.img 文件。使用
+  <code>losetup</code>
+  命令将一个循环设备与这个文件关联起来，让它看起来像一个块设备，而不是文件系统中的常规文件：
+</p>
+<span class="dw-code-nohighlight"
+  ><div class="ibm-syntax-container">
+    <div>
+      <div id="highlighter_247768" class="syntaxhighlighter  htmlscript">
+        <table border="0" cellpadding="0" cellspacing="0" role="none">
+          <tbody>
+            <tr>
+              <td class="gutter">
+                <div class="line number1 index0 alt2">1</div>
+                <div class="line number2 index1 alt1">2</div>
+              </td>
+              <td class="code">
+                <div class="container">
+                  <div class="line number1 index0 alt2">
+                    <code class="htmlscript plain">$ losetup /dev/loop0 file.img</code>
+                  </div>
+                  <div class="line number2 index1 alt1">
+                    <code class="htmlscript plain">$</code>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div></span
+>
+<span class="dw-code-nohighlight"
+  ><div class="ibm-syntax-container">
+    <div>
+      <div id="highlighter_921893" class="syntaxhighlighter  htmlscript">
+        <table border="0" cellpadding="0" cellspacing="0" role="none">
+          <tbody>
+            <tr>
+              <td class="gutter">
+                <div class="line number1 index0 alt2">1</div>
+                <div class="line number2 index1 alt1">2</div>
+                <div class="line number3 index2 alt2">3</div>
+                <div class="line number4 index3 alt1">4</div>
+                <div class="line number5 index4 alt2">5</div>
+                <div class="line number6 index5 alt1">6</div>
+                <div class="line number7 index6 alt2">7</div>
+                <div class="line number8 index7 alt1">8</div>
+                <div class="line number9 index8 alt2">9</div>
+                <div class="line number10 index9 alt1">10</div>
+                <div class="line number11 index10 alt2">11</div>
+                <div class="line number12 index11 alt1">12</div>
+                <div class="line number13 index12 alt2">13</div>
+                <div class="line number14 index13 alt1">14</div>
+                <div class="line number15 index14 alt2">15</div>
+                <div class="line number16 index15 alt1">16</div>
+                <div class="line number17 index16 alt2">17</div>
+                <div class="line number18 index17 alt1">18</div>
+              </td>
+              <td class="code">
+                <div class="container">
+                  <div class="line number1 index0 alt2">
+                    <code class="htmlscript plain">#include &lt;</code
+                    ><code class="htmlscript plain">linux</code
+                    ><code class="htmlscript plain">/module.h&gt;</code>
+                  </div>
+                  <div class="line number2 index1 alt1">
+                    <code class="htmlscript plain">/* Defines the license for this LKM */</code>
+                  </div>
+                  <div class="line number3 index2 alt2">
+                    <code class="htmlscript plain">MODULE_LICENSE("GPL");</code>
+                  </div>
+                  <div class="line number4 index3 alt1">
+                    <code class="htmlscript plain">/* Init function called on module entry */</code>
+                  </div>
+                  <div class="line number5 index4 alt2">
+                    <code class="htmlscript plain">int my_module_init( void )</code>
+                  </div>
+                  <div class="line number6 index5 alt1">
+                    <code class="htmlscript plain">{</code>
+                  </div>
+                  <div class="line number7 index6 alt2">
+                    <code class="htmlscript spaces">&nbsp;&nbsp;</code
+                    ><code class="htmlscript plain"
+                      >printk(KERN_INFO "my_module_init called.&nbsp; Module is now
+                      loaded.\n");</code
+                    >
+                  </div>
+                  <div class="line number8 index7 alt1">
+                    <code class="htmlscript spaces">&nbsp;&nbsp;</code
+                    ><code class="htmlscript plain">return 0;</code>
+                  </div>
+                  <div class="line number9 index8 alt2">
+                    <code class="htmlscript plain">}</code>
+                  </div>
+                  <div class="line number10 index9 alt1">
+                    <code class="htmlscript plain"
+                      >/* Cleanup function called on module exit */</code
+                    >
+                  </div>
+                  <div class="line number11 index10 alt2">
+                    <code class="htmlscript plain">void my_module_cleanup( void )</code>
+                  </div>
+                  <div class="line number12 index11 alt1">
+                    <code class="htmlscript plain">{</code>
+                  </div>
+                  <div class="line number13 index12 alt2">
+                    <code class="htmlscript spaces">&nbsp;&nbsp;</code
+                    ><code class="htmlscript plain"
+                      >printk(KERN_INFO "my_module_cleanup called.&nbsp; Module is now
+                      unloaded.\n");</code
+                    >
+                  </div>
+                  <div class="line number14 index13 alt1">
+                    <code class="htmlscript spaces">&nbsp;&nbsp;</code
+                    ><code class="htmlscript plain">return;</code>
+                  </div>
+                  <div class="line number15 index14 alt2">
+                    <code class="htmlscript plain">}</code>
+                  </div>
+                  <div class="line number16 index15 alt1">
+                    <code class="htmlscript plain">/* Declare entry and exit functions */</code>
+                  </div>
+                  <div class="line number17 index16 alt2">
+                    <code class="htmlscript plain">module_init( my_module_init );</code>
+                  </div>
+                  <div class="line number18 index17 alt1">
+                    <code class="htmlscript plain">module_exit( my_module_cleanup );</code>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div></span
+>

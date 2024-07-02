@@ -1,5 +1,5 @@
-import * as TurndownService from 'turndown'
-import utils from '../utils/index'
+import TurndownService from 'turndown'
+import { notEmptyIndex } from '../utils'
 
 interface TableNode {
   colSpan: number
@@ -7,11 +7,10 @@ interface TableNode {
   content: string
 }
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('yuqueTableCard', {
     filter: (node) => {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'TABLE') {
@@ -22,9 +21,8 @@ export default function (turndownService: TurndownService): void {
       }
       return true
     },
-    replacement: function (content: string, node: HTMLElement) {
+    replacement: function (content: string, node) {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return content
       }
       const lines = node.querySelectorAll('tr')
@@ -44,7 +42,7 @@ export default function (turndownService: TurndownService): void {
       jsonNodes.forEach((row, rowIndex) => {
         const foo: Omit<TableNode, 'colSpan'>[] = []
         row.forEach((o) => {
-          const expectIndex = utils.notEmptyIndex(result[rowIndex], 0)
+          const expectIndex = notEmptyIndex(result[rowIndex], 0)
           for (let i = 0; i < o.colSpan; i++) {
             for (let j = 0; j < o.rowSpan; j++) {
               const first = i === 0 && j === 0

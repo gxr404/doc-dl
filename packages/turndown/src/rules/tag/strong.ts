@@ -1,6 +1,6 @@
-import * as TurndownService from 'turndown'
+import TurndownService from 'turndown'
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('tag_string', {
     filter: ['b', 'strong'],
     replacement: function (content: string) {

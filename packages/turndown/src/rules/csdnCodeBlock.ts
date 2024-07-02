@@ -1,10 +1,9 @@
-import * as TurndownService from 'turndown'
+import TurndownService from 'turndown'
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('csdnCodeBlock', {
-    filter: (node) => {
+    filter: (node: any) => {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'PRE') {
@@ -20,9 +19,8 @@ export default function (turndownService: TurndownService): void {
 
       return true
     },
-    replacement: function (content: string, node: HTMLElement) {
+    replacement: function (content: string, node) {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return content
       }
       node.querySelector('.pre-numbering')?.remove()

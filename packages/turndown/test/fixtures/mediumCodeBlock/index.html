@@ -1,0 +1,10 @@
+<pre
+  class="hq hr hs ht hu jn jo cl"
+><span id="f157" class="jp he ed at ji b fg jq jr r js" data-selectable-paragraph="">from typing import Sequence, TypeVar<br><br>T = TypeVar('T')      # Declare type variable<br><br>def first(l: Sequence[T]) -&gt; T:   # Generic function<br>    return l[0]</span></pre>
+<pre
+  class="hq hr hs ht hu jn jo cl"
+><span id="3c86" class="jp he ed at ji b fg jq jr r js" data-selectable-paragraph="">from typing import TypeVar, Generic, Iterable, Iterator</span><span id="218c" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph=""><br>List_co = TypeVar('List_co', covariant=True)</span><span id="d9bc" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph="">class <!-- -->ImmutableList(Generic[List_co]):</span><span id="4051" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph="">    def __init__(self, items: <!-- -->Iterable[List_co]) -&gt; None:<br>        ...<br>        ...</span><span id="c9a9" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph="">    def __iter__(self) -&gt; Iterator[List_co]:<br>        ...<br>        ...</span><span id="562e" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph=""><br>class Employee():<br>    ...<br></span><span id="8750" class="jp he ed at ji b fg jt ju jv jw jx jr r js" data-selectable-paragraph="">class Manager(Employee):<br>    ...</span></pre>
+
+<pre
+  class="gg gh gi gj gk gl gm gn"
+><span id="6d47" class="eu ev df bk gf b dj go gp r gq" data-selectable-paragraph="">function print() {<br> console.log("Hello World");<br>}</span></pre>

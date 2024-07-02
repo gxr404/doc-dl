@@ -1,10 +1,9 @@
-import * as TurndownService from 'turndown'
+import TurndownService from 'turndown'
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('syntaxhighlighter', {
     filter: (node) => {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'TABLE') {
@@ -19,14 +18,13 @@ export default function (turndownService: TurndownService): void {
       }
       return true
     },
-    replacement: function (content: string, node: HTMLElement) {
+    replacement: function (content: string, node) {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return content
       }
       const lines =
         node.querySelector('.container')?.querySelectorAll('line') ||
-        ([] as ArrayLike<any>)
+        ([] as Element[])
       const finalCode = Array.from(lines)
         .map((o) => o.textContent)
         .join('\n')

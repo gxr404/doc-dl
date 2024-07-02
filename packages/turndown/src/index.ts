@@ -1,4 +1,4 @@
-import * as TurndownService from 'turndown'
+import TurndownService from 'turndown'
 import { gfm } from 'turndown-plugin-gfm'
 import genLazyLoadImage from './rules/lazyLoadImage'
 import hexoCodeBlock from './rules/hexoCodeBlock'
@@ -18,34 +18,25 @@ import syntaxhighlighter from './rules/syntaxhighlighter'
 import infoq_code from './rules/infoq_code'
 import wechatCodeBlock_02 from './rules/wechatCodeBlock_02'
 
-export interface IOptions {
-  articleUrl: string
-  [key: string]: any
+export default function plugins(turndownService: TurndownService) {
+  return turndownService.use([
+    gfm,
+    genLazyLoadImage,
+    hexoCodeBlock,
+    noScript,
+    wechatCodeBlock,
+    wechatCodeBlock_02,
+    ibmCodeBlock,
+    mediumCodeBlock,
+    csdnCodeBlock,
+    yuqueTableCard,
+    mediumImage,
+    genZhihuGif,
+    gcoresGallery,
+    typoraCodeBlock,
+    juejinCodeBlock,
+    strong,
+    syntaxhighlighter,
+    infoq_code
+  ])
 }
-
-const genPlugin = (options: IOptions): TurndownService.Plugin => {
-  return (turndownService: TurndownService) => {
-    turndownService.use([
-      gfm,
-      genLazyLoadImage(options),
-      hexoCodeBlock,
-      noScript,
-      wechatCodeBlock,
-      wechatCodeBlock_02,
-      ibmCodeBlock,
-      mediumCodeBlock,
-      csdnCodeBlock,
-      yuqueTableCard,
-      mediumImage,
-      genZhihuGif(options),
-      gcoresGallery,
-      typoraCodeBlock,
-      juejinCodeBlock,
-      strong,
-      syntaxhighlighter,
-      infoq_code
-    ])
-  }
-}
-
-export default genPlugin

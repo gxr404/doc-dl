@@ -66,11 +66,7 @@ export const run = async (options: TOptions): Promise<void> => {
     codeBlockStyle: 'fenced'
   })
 
-  turndownService.use(
-    articleTurndown({
-      articleUrl: options.url
-    })
-  )
+  turndownService.use(articleTurndown)
 
   const errorPrefix = `${packageJson.name}[ERROR]: `
   const infoPrefix = `${packageJson.name}[INFO]: `

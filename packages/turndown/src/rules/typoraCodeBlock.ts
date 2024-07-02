@@ -1,11 +1,10 @@
-import * as TurndownService from 'turndown'
-import utils from '../utils/index'
+import TurndownService from 'turndown'
+import { codeBlock } from '../utils'
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('mediumCodeBlock', {
     filter: (node) => {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'PRE') {
@@ -15,7 +14,7 @@ export default function (turndownService: TurndownService): void {
         return false
       }
       const firstChild = node.firstChild as HTMLElement
-      if (!(firstChild instanceof HTMLElement)) {
+      if (!(firstChild instanceof Object)) {
         return false
       }
       if (!firstChild.className.includes('CodeMirror')) {
@@ -25,7 +24,6 @@ export default function (turndownService: TurndownService): void {
     },
     replacement: function (content: string, node: HTMLElement) {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return content
       }
 
@@ -38,7 +36,7 @@ export default function (turndownService: TurndownService): void {
         .join('\n')
 
       const lang = node.getAttribute('lang')
-      return utils.codeBlock(code, lang)
+      return codeBlock(code, lang)
     }
   })
 }

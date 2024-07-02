@@ -1,0 +1,20 @@
+<pre><code class="hljs language-js copyable" lang="js"><span class="hljs-keyword">const</span> evtTypes = [
+  <span class="hljs-string">'tap'</span>, <span class="hljs-comment">// 点击</span>
+  <span class="hljs-string">'input'</span>, <span class="hljs-comment">// 输入</span>
+  <span class="hljs-string">'confirm'</span>, <span class="hljs-comment">// 回车</span>
+  <span class="hljs-string">'longpress'</span> <span class="hljs-comment">// 长按</span>
+]
+<span class="hljs-keyword">const</span> hookMethod = <span class="hljs-function">(<span class="hljs-params">name, method</span>) =&gt;</span> {
+<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">...args</span>) </span>{
+  <span class="hljs-keyword">const</span> [evt] = args <span class="hljs-comment">// 取出第一个参数</span>
+  <span class="hljs-comment">// 判断是否为 event 对象</span>
+  <span class="hljs-keyword">if</span> (
+    evt &amp;&amp; evt.target &amp;&amp; evt.type &amp;&amp;
+    evtTypes.includes(evt.type) <span class="hljs-comment">// 判断事件类型</span>
+  ) {
+    <span class="hljs-comment">// 记录用户行为</span>
+  }
+  <span class="hljs-keyword">return</span> method.apply(<span class="hljs-built_in">this</span>, args)
+}
+}
+<span class="copy-code-btn">复制代码</span></code></pre>

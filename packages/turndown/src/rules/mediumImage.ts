@@ -1,10 +1,9 @@
-import * as TurndownService from 'turndown'
+import TurndownService from 'turndown'
 
-export default function (turndownService: TurndownService): void {
+export default function (turndownService: TurndownService) {
   turndownService.addRule('mediumImage', {
     filter: (node) => {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return false
       }
       if (node.tagName !== 'IMG') {
@@ -25,7 +24,6 @@ export default function (turndownService: TurndownService): void {
     },
     replacement: function (content: string, node: HTMLElement) {
       if (!(node instanceof Object)) {
-        // TODO node instanceof HTMLElement
         return content
       }
       const src = node.getAttribute('src') as string
