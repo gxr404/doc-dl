@@ -1,3 +1,12 @@
+## [0.0.63](https://github.com/gxr404/doc-dl/compare/v0.0.62...v0.0.63) (2024-07-06)
+
+
+### Bug Fixes
+
+* **pull-md-img:** cli 错误打印 ([ed99766](https://github.com/gxr404/doc-dl/commit/ed997660669721456ed46f1d06a2538c76963aeb))
+
+
+
 ## [0.0.62](https://github.com/gxr404/doc-dl/compare/v0.0.61...v0.0.62) (2024-07-02)
 
 
