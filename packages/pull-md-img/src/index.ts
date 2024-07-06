@@ -217,16 +217,28 @@ export const bin = async (): Promise<void> => {
     return
   }
   // 更改md文件
-  const res = await run(data, { ...config })
-
+  let resData
+  try {
+    const res = await run(data, { ...config })
+    resData = res.data || ''
+  } catch (err) {
+    let errorMsg = err.message || 'unknown error'
+    if (err.url) {
+      errorMsg = `${err?.error?.message}: ${err.url}`
+    }
+    logger.error(errorMsg)
+    return
+  }
   const fileName = path.basename(config.path)
   const out = fs.createWriteStream(path.resolve(config.dist, fileName))
   // 写入文件
-  out.write(res.data)
-
-  setTimeout(() => {
+  out.write(resData, (err) => {
+    if (!err) {
+      logger.error(err.message)
+      return
+    }
     logger.info('success')
-  }, 100)
+  })
 }
 
 type TConfig = Partial<typeof config>
