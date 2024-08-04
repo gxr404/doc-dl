@@ -35,7 +35,10 @@ const addExtendInfo = (
  * @param url 文章链接
  * @returns
  */
-const getDocument = async (url: string): Promise<string> => {
+const getDocument = async (
+  url: string,
+  isLaxRequest = false
+): Promise<string> => {
   // console.time('browser')
   const browser = await puppeteer.launch(puppeteerOptions)
   // console.timeEnd('browser')
@@ -47,9 +50,14 @@ const getDocument = async (url: string): Promise<string> => {
   // console.time('goto')
   await page.goto(url, {
     timeout: 0,
-    waitUntil: ['load', 'networkidle0']
-    // TODO
-    // waitUntil: ['domcontentloaded']
+    waitUntil: isLaxRequest
+      ? ['domcontentloaded', 'networkidle2']
+      : ['load', 'networkidle0']
+    // domcontentloaded 等待 DOMContentLoaded事件
+    // load 等待load事件
+    // networkidle0: 网络空闲的状态，也就是没有任何网络连接在 500 毫秒内活跃。具体来说，它意味着页面上所有的网络连接都已经完成，没有任何请求在进行或等待响应
+    // networkidle2: 网络连接减少到 2 个以下，并保持 500 毫秒。
+    //   这种情况下，页面可以有最多 1-2 个网络连接仍然活跃，而不会认为页面已经完全加载完毕。某些网站可能会有持续不断的后台请求。
   })
   // console.timeEnd('goto')
 
@@ -83,7 +91,7 @@ export const run = async (options: TOptions): Promise<void> => {
   )
   console.log('爬取页面中...')
 
-  const htmlContext = await getDocument(options.url).catch((e) => {
+  const htmlContext = await getDocument(options.url, options.lax).catch((e) => {
     console.log(errorPrefix)
     console.log(e)
     return ''

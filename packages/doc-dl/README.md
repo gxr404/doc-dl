@@ -19,6 +19,7 @@ Options:
   -t, --title <title>   自定义文章标题
   -d, --dir <path>      生成的目录(eg: -d res)
   -i, --img-dir <path>  生成目录内图片目录(eg: -i ./img/20)
+  -l, --lax             puppeteer的waitUntil对应的值, 宽松的请求[domcontentloaded, networkidle2], 默认严格的请求[load, networkidle0]
   -h, --help            display help for command
 
 Examples:
@@ -26,13 +27,17 @@ Examples:
   $ custom-help -h
 ```
 
-## Usage
+## 使用
 
 url文章链接支持大部分网站，如掘金/知乎文章/微信公众号文章...
 
 ```shell
 doc-dl -u <url>
 ```
+
+## 注意
+
+- 一些网站等待时间过长可尝试 `-l` 参数, 部分网页可能持续的发起请求，改用宽松的请求规则可能成功
 
 ## 实现原理
 

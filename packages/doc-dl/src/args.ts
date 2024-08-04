@@ -14,6 +14,10 @@ const shellArgsInit = (): void => {
     .option('-t, --title <title>', '自定义文章标题')
     .option('-d, --dist <path>', '生成的目录(eg: -d res)')
     .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)')
+    .option(
+      '-l, --lax',
+      'puppeteer的waitUntil, 宽松的请求[domcontentloaded, networkidle2], 默认严格的请求[load, networkidle0]'
+    )
   // 帮助
   program.on('--help', () => {
     console.log('\nExamples:')
@@ -48,11 +52,13 @@ const shellArgsInit = (): void => {
  * @param {*} val
  */
 const checkOptions = (val: string, key: string) => {
+  const ignoreKey = ['lax']
+  if (ignoreKey.includes(key)) return true
   if (!val) return false
   // 排除空格
   if (typeof val === 'string' && val.trim() === '') return false
   // - 开头的参数 排除
-  if (val.indexOf('-') === 0) return false
+  if (val.startsWith('-')) return false
   // 校验path后缀
   if (key === 'url' && !checkUrl(val)) {
     console.log('非合法url')

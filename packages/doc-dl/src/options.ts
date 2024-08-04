@@ -6,7 +6,8 @@ export const options = {
   /** 生成目录 */
   dist: './res',
   /** 自定义图片目录 */
-  imgDir: './img/'
+  imgDir: './img/',
+  lax: false
 }
 
 const UA =
