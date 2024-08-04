@@ -1,3 +1,12 @@
+## [0.0.64](https://github.com/gxr404/doc-dl/compare/v0.0.63...v0.0.64) (2024-08-04)
+
+
+### Features
+
+* **doc-dl:** add lax request options ([d44f6de](https://github.com/gxr404/doc-dl/commit/d44f6ded60031d98c0e5126137f2e35534057432))
+
+
+
 ## [0.0.63](https://github.com/gxr404/doc-dl/compare/v0.0.62...v0.0.63) (2024-07-06)
 
 
