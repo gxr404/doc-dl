@@ -18,6 +18,7 @@ const shellArgsInit = (): void => {
       '-l, --lax',
       'puppeteer的waitUntil, 宽松的请求[domcontentloaded, networkidle2], 默认严格的请求[load, networkidle0]'
     )
+    .option('--timeout <timeout>', '图片下载超时时间, 默认0不设置超时时间')
   // 帮助
   program.on('--help', () => {
     console.log('\nExamples:')

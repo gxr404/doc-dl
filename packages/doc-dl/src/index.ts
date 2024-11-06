@@ -128,7 +128,8 @@ export const run = async (options: TOptions): Promise<void> => {
       dist: options.dist,
       imgDir: `${options.imgDir}${Date.now()}`,
       isIgnoreConsole: true,
-      referer: options.url || ''
+      referer: options.url || '',
+      timeout: options.timeout
     })
     .catch((err) => {
       console.log(`${errorPrefix}`)

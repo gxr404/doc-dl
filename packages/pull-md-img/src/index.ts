@@ -54,7 +54,11 @@ export const getImgList = (
  * @param {*} url
  * @param {*} imgDir
  */
-const downloadImg = (url: string, imgDir: string): Promise<string> => {
+const downloadImg = (
+  url: string,
+  imgDir: string,
+  timeout?: number
+): Promise<string> => {
   let fileName = ''
   try {
     // fix url --> 有种特殊情况 ![](http://xxx "xxx")
@@ -98,7 +102,7 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
           logger.info(`${fileName} 重定向...`)
         }
         // 重定向则向 响应头的location 重新下载
-        resolve(downloadImg(res.headers['location'], imgDir))
+        resolve(downloadImg(res.headers['location'], imgDir, timeout))
         return
       }
       if (res.statusCode !== 200) {
@@ -141,8 +145,12 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
     })
     req.on('error', (e) => {
       if (!config.isIgnoreConsole) {
-        logger.error(`download ${url} error`)
-        logger.error(e)
+        if (e.message === 'TIMEOUT') {
+          logger.error(`download timeout ${url}`)
+        } else {
+          logger.error(`download error ${url}`)
+          logger.error(e)
+        }
       }
       reject({
         error: e,
@@ -150,6 +158,14 @@ const downloadImg = (url: string, imgDir: string): Promise<string> => {
       })
     })
     req.end()
+
+    if (timeout > 0) {
+      setTimeout(() => {
+        const imgTimeoutErr = new Error('TIMEOUT')
+        // destroy 会触发 on(error) 回调
+        req.destroy(imgTimeoutErr)
+      }, timeout)
+    }
   })
 }
 
@@ -279,7 +295,7 @@ export const run = async (
   const limit = pLimit(20)
   // 重置已下载缓存
   const imgListPromise = uniqueImgList.map((src) => {
-    return limit(() => downloadImg(src, imgDirPath))
+    return limit(() => downloadImg(src, imgDirPath, config.timeout))
   })
   let resList: string[] = []
   const errorInfo: ErrorInfoItem[] = []

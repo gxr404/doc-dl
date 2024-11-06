@@ -9,7 +9,8 @@ const config = {
   /** 含有错误仍然返回 忽略错误的图片 */
   errorStillReturn: false,
   referer: '',
-  transform: (url: string) => url
+  transform: (url: string) => url,
+  timeout: 0
 }
 
 export function resetConfig(needResetConfig: typeof config) {

@@ -7,7 +7,8 @@ export const options = {
   dist: './res',
   /** 自定义图片目录 */
   imgDir: './img/',
-  lax: false
+  lax: false,
+  timeout: 0
 }
 
 const UA =

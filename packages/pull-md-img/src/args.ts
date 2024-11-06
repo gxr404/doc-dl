@@ -21,6 +21,7 @@ const shellArgsInit = (): void => {
     )
     .option('-d, --dir <path>', '生成的目录(eg: -d res)')
     .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)')
+    .option('--timeout <timeout>', '图片下载超时时间, 默认0不设置超时时间')
   // 帮助
   program.on('--help', () => {
     console.log('')
