@@ -1,3 +1,12 @@
+## [0.0.65](https://github.com/gxr404/doc-dl/compare/v0.0.64...v0.0.65) (2024-11-06)
+
+
+### Features
+
+* **doc-dl&pull-md-img:** add timeout args ([352713b](https://github.com/gxr404/doc-dl/commit/352713b75d3f596ab4e6636d9b0cabf97b6984ed))
+
+
+
 ## [0.0.64](https://github.com/gxr404/doc-dl/compare/v0.0.63...v0.0.64) (2024-08-04)
 
 
