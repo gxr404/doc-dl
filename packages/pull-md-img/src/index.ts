@@ -238,7 +238,7 @@ export const bin = async (): Promise<void> => {
     const res = await run(data, { ...config })
     resData = res.data || ''
   } catch (err) {
-    let errorMsg = err.message || 'unknown error'
+    let errorMsg = err?.message || 'unknown error'
     if (err.url) {
       errorMsg = `${err?.error?.message}: ${err.url}`
     }
@@ -250,7 +250,7 @@ export const bin = async (): Promise<void> => {
   // 写入文件
   out.write(resData, (err) => {
     if (!err) {
-      logger.error(err.message)
+      logger.error(err?.message || err)
       return
     }
     logger.info('success')
