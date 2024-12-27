@@ -1,3 +1,12 @@
+## [0.0.66](https://github.com/gxr404/doc-dl/compare/v0.0.65...v0.0.66) (2024-12-27)
+
+
+### Bug Fixes
+
+* err.message undefined ([84af4f7](https://github.com/gxr404/doc-dl/commit/84af4f7e482efbfccc2e78a8024f5c6bfef3fc9c))
+
+
+
 ## [0.0.65](https://github.com/gxr404/doc-dl/compare/v0.0.64...v0.0.65) (2024-11-06)
 
 
