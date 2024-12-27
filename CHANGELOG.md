@@ -1,3 +1,13 @@
+## [0.0.67](https://github.com/gxr404/doc-dl/compare/v0.0.65...v0.0.67) (2024-12-27)
+
+
+### Bug Fixes
+
+* err.message undefined ([84af4f7](https://github.com/gxr404/doc-dl/commit/84af4f7e482efbfccc2e78a8024f5c6bfef3fc9c))
+* **pull-md-img:** err判断错误 ([af53c8a](https://github.com/gxr404/doc-dl/commit/af53c8a21e4deef2cd2fea914dab92b7b81ed9e0))
+
+
+
 ## [0.0.66](https://github.com/gxr404/doc-dl/compare/v0.0.65...v0.0.66) (2024-12-27)
 
 
