@@ -249,7 +249,7 @@ export const bin = async (): Promise<void> => {
   const out = fs.createWriteStream(path.resolve(config.dist, fileName))
   // 写入文件
   out.write(resData, (err) => {
-    if (!err) {
+    if (err) {
       logger.error(err?.message || err)
       return
     }
