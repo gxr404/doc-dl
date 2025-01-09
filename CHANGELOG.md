@@ -1,3 +1,12 @@
+## [0.0.68](https://github.com/gxr404/doc-dl/compare/v0.0.67...v0.0.68) (2025-01-09)
+
+
+### Features
+
+* add options custom header ([d3666ef](https://github.com/gxr404/doc-dl/commit/d3666effcfb74a6fcc195721e4fd0c589ec7ee99))
+
+
+
 ## [0.0.67](https://github.com/gxr404/doc-dl/compare/v0.0.65...v0.0.67) (2024-12-27)
 
 
