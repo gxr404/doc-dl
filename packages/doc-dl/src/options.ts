@@ -8,7 +8,9 @@ export const options = {
   /** 自定义图片目录 */
   imgDir: './img/',
   lax: false,
-  timeout: 0
+  timeout: 0,
+  header: [] as string[],
+  headerObj: {} as Record<string, string>
 }
 
 const UA =

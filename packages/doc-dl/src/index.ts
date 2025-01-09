@@ -37,7 +37,8 @@ const addExtendInfo = (
  */
 const getDocument = async (
   url: string,
-  isLaxRequest = false
+  isLaxRequest = false,
+  customHeader: Record<string, string>
 ): Promise<string> => {
   // console.time('browser')
   const browser = await puppeteer.launch(puppeteerOptions)
@@ -45,9 +46,24 @@ const getDocument = async (
 
   // console.time('page')
   const page = await browser.newPage()
-  // console.timeEnd('page')
 
-  // console.time('goto')
+  // 禁用javascript 防止 页面内js逻辑刷新
+  await page.setJavaScriptEnabled(false)
+  // 开启 request 拦截
+  await page.setRequestInterception(true)
+  // 设置请求头
+  page.on('request', (request) => {
+    // 非通过导航栏的请求不做修改
+    if (!request.isNavigationRequest()) {
+      request.continue()
+      return
+    }
+    // Add a new header for navigation request.
+    const headers = request.headers()
+    Object.assign(headers, customHeader)
+    request.continue({ headers })
+  })
+
   await page.goto(url, {
     timeout: 0,
     waitUntil: isLaxRequest
@@ -59,11 +75,9 @@ const getDocument = async (
     // networkidle2: 网络连接减少到 2 个以下，并保持 500 毫秒。
     //   这种情况下，页面可以有最多 1-2 个网络连接仍然活跃，而不会认为页面已经完全加载完毕。某些网站可能会有持续不断的后台请求。
   })
-  // console.timeEnd('goto')
 
   // console.time('eval')
   const html = (await page.$eval('html', (node) => node.outerHTML)) || ''
-  // console.timeEnd('eval')
 
   browser.close()
   return html
@@ -91,7 +105,11 @@ export const run = async (options: TOptions): Promise<void> => {
   )
   console.log('爬取页面中...')
 
-  const htmlContext = await getDocument(options.url, options.lax).catch((e) => {
+  const htmlContext = await getDocument(
+    options.url,
+    options.lax,
+    options.headerObj
+  ).catch((e) => {
     console.log(errorPrefix)
     console.log(e)
     return ''

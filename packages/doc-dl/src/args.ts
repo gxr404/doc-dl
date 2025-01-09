@@ -14,6 +14,7 @@ const shellArgsInit = (): void => {
     .option('-t, --title <title>', '自定义文章标题')
     .option('-d, --dist <path>', '生成的目录(eg: -d res)')
     .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)')
+    .option('-H, --header <header...>', '与curl的-H参数一致, 用于自定义请求头')
     .option(
       '-l, --lax',
       'puppeteer的waitUntil, 宽松的请求[domcontentloaded, networkidle2], 默认严格的请求[load, networkidle0]'
@@ -46,6 +47,14 @@ const shellArgsInit = (): void => {
     process.exitCode = 1
     process.exit(1)
   }
+
+  if (
+    options.header &&
+    Array.isArray(options.header) &&
+    options.header.length
+  ) {
+    options.headerObj = parseHeader(options.header)
+  }
 }
 
 /**
@@ -59,7 +68,7 @@ const checkOptions = (val: string, key: string) => {
   // 排除空格
   if (typeof val === 'string' && val.trim() === '') return false
   // - 开头的参数 排除
-  if (val.startsWith('-')) return false
+  if (typeof val === 'string' && val.startsWith('-')) return false
   // 校验path后缀
   if (key === 'url' && !checkUrl(val)) {
     console.log('非合法url')
@@ -76,6 +85,19 @@ const checkOptions = (val: string, key: string) => {
 const checkUrl = (href: string): boolean => {
   const reg = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w\- ./?%&=]*)?/
   return reg.test(href)
+}
+
+function parseHeader(headerArr: string[]) {
+  const headerObj: any = {}
+  headerArr.forEach((header) => {
+    const flag = header.indexOf(':')
+    const key = header.slice(0, flag).trim()
+    const val = header.slice(flag + 1).trim()
+    if (key && val) {
+      headerObj[key] = val
+    }
+  })
+  return headerObj
 }
 
 export { shellArgsInit }
