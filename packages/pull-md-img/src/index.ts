@@ -4,6 +4,7 @@ import progressBar from 'progress'
 import randUserAgent from 'rand-user-agent'
 import mime from 'mime-types'
 import pLimit from 'p-limit'
+import { ProxyAgent } from 'proxy-agent'
 
 import getLogger from './log'
 import config, { resetConfig } from './config'
@@ -82,8 +83,12 @@ const downloadImg = (
     'user-agent': randUserAgent('desktop', 'chrome'),
     referer
   }
+  const options: any = {
+    headers,
+    agent: new ProxyAgent()
+  }
   return new Promise((resolve, reject) => {
-    const req = lib.request(url, { headers }, (res) => {
+    const req = lib.request(url, options, (res) => {
       // 优先使用content-type识别的文件后缀
       let contentType = res.headers['content-type']
       // 'image/jpg' 需要识别成 'image/jpeg', 因为mime类型只有 jpeg
@@ -100,6 +105,10 @@ const downloadImg = (
       if (~isRedirect) {
         if (!config.isIgnoreConsole) {
           logger.info(`${fileName} 重定向...`)
+        }
+        if (res.headers['location'] === url) {
+          logger.error(`重定向url 与 当前url 一致 —— 会导致死循环`)
+          return
         }
         // 重定向则向 响应头的location 重新下载
         resolve(downloadImg(res.headers['location'], imgDir, timeout))
