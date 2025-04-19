@@ -85,7 +85,7 @@ const downloadImg = (
   }
   const options: any = {
     headers,
-    agent: new ProxyAgent()
+    agent: process.env.VITEST ? false : new ProxyAgent()
   }
   return new Promise((resolve, reject) => {
     const req = lib.request(url, options, (res) => {
