@@ -1,3 +1,13 @@
+## [0.0.69](https://github.com/gxr404/doc-dl/compare/v0.0.68...v0.0.69) (2025-04-19)
+
+
+### Bug Fixes
+
+* **pull-md-img:** 图片下载 有proxy走proxy ([b6ccfd2](https://github.com/gxr404/doc-dl/commit/b6ccfd2ba4efee97daca98834b2e1cd4d37ae167))
+* **pull-md-img:** 测试环境不使用 proxyAgent ([8809074](https://github.com/gxr404/doc-dl/commit/88090746d57b783502ce5294a16c4a113a0ccb44))
+
+
+
 ## [0.0.68](https://github.com/gxr404/doc-dl/compare/v0.0.67...v0.0.68) (2025-01-09)
 
 
