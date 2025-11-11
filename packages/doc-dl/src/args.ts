@@ -16,6 +16,10 @@ const shellArgsInit = (): void => {
     .option('-i, --img-dir <path>', '生成目录内图片目录(eg: -i ./img/20)')
     .option('-H, --header <header...>', '与curl的-H参数一致, 用于自定义请求头')
     .option(
+      '-b, --cookie <cookie>',
+      '为了与curl的-b参数一致, 用于自定义请求头cookie'
+    )
+    .option(
       '-l, --lax',
       'puppeteer的waitUntil, 宽松的请求[domcontentloaded, networkidle2], 默认严格的请求[load, networkidle0]'
     )
@@ -47,13 +51,16 @@ const shellArgsInit = (): void => {
     process.exitCode = 1
     process.exit(1)
   }
+  let opHeader = options.header
+  if (options.cookie) {
+    if (!Array.isArray(opHeader)) {
+      opHeader = options.header = []
+    }
+    opHeader.push(`cookie: ${options.cookie}`)
+  }
 
-  if (
-    options.header &&
-    Array.isArray(options.header) &&
-    options.header.length
-  ) {
-    options.headerObj = parseHeader(options.header)
+  if (opHeader && Array.isArray(opHeader) && opHeader.length) {
+    options.headerObj = parseHeader(opHeader)
   }
 }
 

@@ -10,6 +10,7 @@ export const options = {
   lax: false,
   timeout: 0,
   header: [] as string[],
+  cookie: '',
   headerObj: {} as Record<string, string>
 }
 
