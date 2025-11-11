@@ -1,3 +1,12 @@
+## [0.0.70](https://github.com/gxr404/doc-dl/compare/v0.0.69...v0.0.70) (2025-11-11)
+
+
+### Features
+
+* **doc-dl:** add "-b" options ([a253b78](https://github.com/gxr404/doc-dl/commit/a253b780a66deabe315b8a0f36b7388b16a61522))
+
+
+
 ## [0.0.69](https://github.com/gxr404/doc-dl/compare/v0.0.68...v0.0.69) (2025-04-19)
 
 
