@@ -1,3 +1,12 @@
+## [0.0.71](https://github.com/gxr404/doc-dl/compare/v0.0.70...v0.0.71) (2025-12-24)
+
+
+### Features
+
+* add horizontal ([29cef32](https://github.com/gxr404/doc-dl/commit/29cef324a5b697b89028545f02a6fdbf28564b2d))
+
+
+
 ## [0.0.70](https://github.com/gxr404/doc-dl/compare/v0.0.69...v0.0.70) (2025-11-11)
 
 
